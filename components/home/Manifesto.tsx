@@ -1,28 +1,44 @@
+import Container from "@/components/ui/Container";
+import Reveal from "@/components/ui/Reveal";
+
+import "./manifesto.css";
+
 export default function Manifesto() {
   return (
-    <section className="section manifesto-section">
-      <div className="container">
-        <div className="manifesto">
-          <div className="manifesto-label">
-            UNIqe / 01
-          </div>
+    <section className="home-manifesto section">
+      <Container>
+        <div className="home-manifesto-layout">
+          <Reveal animation="left">
+            <div className="home-manifesto-label">
+              <span className="section-eyebrow">
+                The Idea
+              </span>
 
-          <h2>
-            Build.
-            <br />
-            Connect.
-            <br />
-            <span>Evolve.</span>
-          </h2>
+              <span className="home-manifesto-index">
+                01 — 01
+              </span>
+            </div>
+          </Reveal>
 
-          <p>
-            UNIqe is designed as an evolving system rather than
-            a collection of disconnected products. New ideas can
-            become new modules, while the core experience remains
-            unified.
-          </p>
+          <Reveal animation="up" delay={120}>
+            <div className="home-manifesto-content">
+              <p className="home-manifesto-lead">
+                Technology becomes more meaningful
+                when everything works together.
+              </p>
+
+              <div className="home-manifesto-line" />
+
+              <p className="home-manifesto-text">
+                Uniqe is being built as a connected
+                digital environment where products,
+                applications, knowledge and technology
+                can evolve together.
+              </p>
+            </div>
+          </Reveal>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }
