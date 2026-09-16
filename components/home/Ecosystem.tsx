@@ -1,47 +1,57 @@
-import Link from "next/link";
+import Container from "@/components/ui/Container";
+import Card from "@/components/ui/Card";
+import Reveal from "@/components/ui/Reveal";
 
-const ecosystem = [
+import "./ecosystem.css";
+
+const ecosystemItems = [
   {
-    number: "01",
     name: "UApps",
+    title: "Applications",
     description:
-      "Applications and digital tools designed to solve real problems.",
+      "Digital tools and applications designed for everyday use.",
     href: "/uapps",
+    number: "01",
   },
   {
-    number: "02",
     name: "UWeb",
+    title: "Web",
     description:
-      "Modern web experiences, platforms and digital infrastructure.",
+      "Web experiences, platforms and services connected to the ecosystem.",
     href: "/uweb",
+    number: "02",
   },
   {
-    number: "03",
     name: "UShop",
+    title: "Commerce",
     description:
-      "A future-ready commerce layer connecting products and people.",
+      "A foundation for products, services and digital commerce.",
     href: "/ushop",
+    number: "03",
   },
   {
-    number: "04",
     name: "USchool",
+    title: "Education",
     description:
-      "Learning, skills and knowledge built around practical growth.",
+      "Learning, knowledge and educational experiences.",
     href: "/uschool",
+    number: "04",
   },
   {
-    number: "05",
     name: "UCore",
+    title: "Technology",
     description:
-      "The technological core connecting the UNIqe ecosystem.",
+      "The technological foundation connecting the ecosystem.",
     href: "/ucore",
+    number: "05",
   },
   {
-    number: "06",
     name: "LAB",
+    title: "Innovation",
     description:
-      "Experimental space for ideas, prototypes and new possibilities.",
+      "A space for experiments, ideas, prototypes and new possibilities.",
     href: "/lab",
+    number: "06",
   },
 ];
 
@@ -49,51 +59,73 @@ export default function Ecosystem() {
   return (
     <section
       id="ecosystem"
-      className="section ecosystem-section"
+      className="home-ecosystem section"
     >
-      <div className="container">
-        <div className="section-header">
-          <div className="section-eyebrow">
-            Ecosystem
+      <Container>
+        <Reveal animation="up">
+          <div className="section-header home-ecosystem-header">
+            <span className="section-eyebrow">
+              The Ecosystem
+            </span>
+
+            <h2 className="section-title">
+              One system.
+              <br />
+              Many directions.
+            </h2>
+
+            <p className="section-description">
+              Uniqe is structured as a collection of
+              connected spaces. Each part has its own
+              purpose while remaining part of one larger
+              system.
+            </p>
           </div>
+        </Reveal>
 
-          <h2 className="section-title">
-            Six worlds.
-            <br />
-            One UNIqe system.
-          </h2>
-
-          <p className="section-description">
-            Each part of UNIqe has a distinct purpose while
-            remaining connected to the same underlying ecosystem.
-          </p>
-        </div>
-
-        <div className="ecosystem-grid">
-          {ecosystem.map((item) => (
-            <Link
-              href={item.href}
+        <div className="home-ecosystem-grid animation-group">
+          {ecosystemItems.map((item) => (
+            <Reveal
               key={item.name}
-              className="ecosystem-card"
+              animation="up"
             >
-              <div className="ecosystem-card-top">
-                <span className="ecosystem-number">
-                  {item.number}
-                </span>
+              <Card
+                hover
+                className="home-ecosystem-card"
+              >
+                <a
+                  href={item.href}
+                  className="home-ecosystem-card-link"
+                >
+                  <div className="home-ecosystem-card-top">
+                    <span className="home-ecosystem-number">
+                      {item.number}
+                    </span>
 
-                <span className="ecosystem-arrow">
-                  ↗
-                </span>
-              </div>
+                    <span className="home-ecosystem-arrow">
+                      ↗
+                    </span>
+                  </div>
 
-              <div>
-                <h3>{item.name}</h3>
-                <p>{item.description}</p>
-              </div>
-            </Link>
+                  <div className="home-ecosystem-card-body">
+                    <span className="home-ecosystem-name">
+                      {item.name}
+                    </span>
+
+                    <h3 className="home-ecosystem-title">
+                      {item.title}
+                    </h3>
+
+                    <p className="home-ecosystem-description">
+                      {item.description}
+                    </p>
+                  </div>
+                </a>
+              </Card>
+            </Reveal>
           ))}
         </div>
-      </div>
+      </Container>
     </section>
   );
 }
