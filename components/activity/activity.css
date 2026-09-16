@@ -1,0 +1,681 @@
+/* ============================================================
+   ACTIVITY
+   ============================================================ */
+
+.activity-page {
+  overflow: hidden;
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+
+.activity-hero {
+  position: relative;
+  min-height: 760px;
+  display: flex;
+  align-items: center;
+  padding: 150px 0 110px;
+}
+
+.activity-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(420px, 0.9fr);
+  align-items: center;
+  gap: 80px;
+}
+
+.activity-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 680px;
+}
+
+.activity-hero-title {
+  margin: 22px 0 28px;
+  font-size: clamp(3.8rem, 7vw, 7.4rem);
+  line-height: 0.92;
+  letter-spacing: -0.065em;
+  font-weight: 800;
+}
+
+.activity-hero-title span {
+  color: var(--text-muted);
+}
+
+.activity-hero-description {
+  max-width: 600px;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-lg);
+  line-height: 1.8;
+}
+
+.activity-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 36px;
+}
+
+/* ============================================================
+   HERO VISUAL
+   ============================================================ */
+
+.activity-hero-visual {
+  position: relative;
+  width: min(100%, 600px);
+  aspect-ratio: 1;
+  margin-left: auto;
+  isolation: isolate;
+}
+
+.activity-hero-grid-lines {
+  position: absolute;
+  inset: 8%;
+  border: 1px solid var(--border);
+  opacity: 0.45;
+  background-image:
+    linear-gradient(
+      to right,
+      transparent 49.8%,
+      var(--border) 50%,
+      transparent 50.2%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 49.8%,
+      var(--border) 50%,
+      transparent 50.2%
+    );
+  background-size: 50% 50%;
+  border-radius: 50%;
+}
+
+.activity-hero-orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.activity-hero-orbit.orbit-one {
+  width: 38%;
+  height: 38%;
+}
+
+.activity-hero-orbit.orbit-two {
+  width: 62%;
+  height: 62%;
+}
+
+.activity-hero-orbit.orbit-three {
+  width: 86%;
+  height: 86%;
+}
+
+.activity-hero-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.activity-hero-core span {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.06em;
+}
+
+.activity-hero-node {
+  position: absolute;
+  z-index: 3;
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  background: var(--surface);
+  font-size: 1.15rem;
+  box-shadow: var(--shadow-md);
+}
+
+.activity-hero-node.node-one {
+  top: 17%;
+  right: 22%;
+}
+
+.activity-hero-node.node-two {
+  right: 7%;
+  bottom: 30%;
+}
+
+.activity-hero-node.node-three {
+  left: 15%;
+  bottom: 17%;
+}
+
+.activity-hero-label {
+  position: absolute;
+  color: var(--text-muted);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+
+.activity-hero-label.label-one {
+  top: 8%;
+  left: 44%;
+}
+
+.activity-hero-label.label-two {
+  right: 2%;
+  top: 49%;
+}
+
+.activity-hero-label.label-three {
+  left: 2%;
+  top: 54%;
+}
+
+/* ============================================================
+   CONTROLS
+   ============================================================ */
+
+.activity-controls {
+  padding: 0 0 20px;
+}
+
+.activity-filters {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.activity-filters-label {
+  margin-bottom: 14px;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.activity-filter-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.activity-filter {
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  color: var(--text-muted);
+  background: transparent;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition:
+    color var(--transition-fast),
+    border-color var(--transition-fast),
+    background var(--transition-fast);
+}
+
+.activity-filter:hover {
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+
+.activity-filter.is-active {
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+  background: var(--surface);
+}
+
+/* ============================================================
+   FEED
+   ============================================================ */
+
+.activity-feed {
+  position: relative;
+}
+
+.activity-section-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+  align-items: end;
+  gap: 60px;
+  margin-bottom: 54px;
+}
+
+.activity-section-heading .section-title {
+  margin-top: 18px;
+}
+
+.activity-feed-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 50px;
+  align-items: start;
+}
+
+.activity-timeline {
+  position: relative;
+}
+
+.activity-timeline::before {
+  content: "";
+  position: absolute;
+  top: 26px;
+  bottom: 26px;
+  left: 25px;
+  width: 1px;
+  background: var(--border);
+}
+
+.activity-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.activity-item:last-child {
+  margin-bottom: 0;
+}
+
+.activity-item-marker {
+  position: relative;
+  z-index: 2;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  background: var(--background);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.activity-item-line {
+  display: none;
+}
+
+.activity-item-card {
+  min-width: 0;
+}
+
+.activity-item-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.activity-item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.activity-item-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.activity-item-type {
+  color: var(--text-primary);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.activity-item-source {
+  color: var(--text-muted);
+  font-size: 0.68rem;
+}
+
+.activity-item-time {
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  white-space: nowrap;
+}
+
+.activity-item-content h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  letter-spacing: -0.035em;
+}
+
+.activity-item-content p {
+  max-width: 700px;
+  margin: 10px 0 0;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-size: 0.88rem;
+}
+
+.activity-item-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 28px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.activity-item-arrow {
+  transition: transform var(--transition-normal);
+}
+
+.activity-item-card:hover .activity-item-arrow {
+  transform: translate(4px, -4px);
+}
+
+/* ============================================================
+   SUMMARY
+   ============================================================ */
+
+.activity-summary {
+  position: sticky;
+  top: 100px;
+}
+
+.activity-summary-card {
+  min-height: 340px;
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-summary-number {
+  display: block;
+  margin-top: 45px;
+  font-size: clamp(4rem, 7vw, 6rem);
+  line-height: 0.9;
+  letter-spacing: -0.07em;
+}
+
+.activity-summary-label {
+  margin-top: 10px;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+.activity-summary-card p {
+  margin: auto 0 0;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  line-height: 1.7;
+}
+
+/* ============================================================
+   CTA
+   ============================================================ */
+
+.activity-cta {
+  padding-top: 80px;
+  padding-bottom: 120px;
+}
+
+.activity-cta-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 70px;
+  overflow: hidden;
+  padding: 80px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--surface);
+}
+
+.activity-cta-mark {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.activity-cta-content {
+  max-width: 720px;
+}
+
+.activity-cta-content h2 {
+  margin: 18px 0 22px;
+  font-size: clamp(2.5rem, 5vw, 4.8rem);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+.activity-cta-content p {
+  max-width: 640px;
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.activity-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 32px;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1023px) {
+  .activity-hero {
+    min-height: auto;
+    padding-top: 130px;
+  }
+
+  .activity-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 70px;
+  }
+
+  .activity-hero-content {
+    max-width: 760px;
+  }
+
+  .activity-hero-visual {
+    width: min(100%, 560px);
+    margin: 0 auto;
+  }
+
+  .activity-section-heading {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .activity-feed-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .activity-summary {
+    position: static;
+  }
+
+  .activity-summary-card {
+    min-height: 260px;
+  }
+
+  .activity-cta-card {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 60px;
+  }
+}
+
+@media (max-width: 767px) {
+  .activity-hero {
+    padding: 110px 0 80px;
+  }
+
+  .activity-hero-title {
+    font-size: clamp(3.2rem, 14vw, 5.2rem);
+  }
+
+  .activity-hero-description {
+    font-size: 1rem;
+  }
+
+  .activity-hero-visual {
+    width: 100%;
+  }
+
+  .activity-hero-core {
+    width: 120px;
+    height: 120px;
+  }
+
+  .activity-hero-core span {
+    font-size: 1.45rem;
+  }
+
+  .activity-filters {
+    padding: 0 20px;
+  }
+
+  .activity-filter-list {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
+  }
+
+  .activity-filter {
+    flex: 0 0 auto;
+  }
+
+  .activity-item {
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .activity-item-marker {
+    width: 44px;
+    height: 44px;
+  }
+
+  .activity-timeline::before {
+    left: 21px;
+  }
+
+  .activity-item-top {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .activity-item-content h3 {
+    font-size: 1.2rem;
+  }
+
+  .activity-cta {
+    padding-top: 50px;
+    padding-bottom: 80px;
+  }
+
+  .activity-cta-card {
+    padding: 40px 28px;
+  }
+
+  .activity-cta-mark {
+    width: 90px;
+    height: 90px;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 479px) {
+  .activity-hero {
+    padding-top: 90px;
+  }
+
+  .activity-hero-actions,
+  .activity-cta-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .activity-hero-actions .button,
+  .activity-cta-actions .button {
+    width: 100%;
+  }
+
+  .activity-hero-node {
+    width: 44px;
+    height: 44px;
+    font-size: 0.95rem;
+  }
+
+  .activity-hero-label {
+    font-size: 0.55rem;
+  }
+
+  .activity-item {
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .activity-item-marker {
+    width: 40px;
+    height: 40px;
+    font-size: 0.8rem;
+  }
+
+  .activity-timeline::before {
+    left: 19px;
+  }
+
+  .activity-summary-number {
+    font-size: 4rem;
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .activity-filter,
+  .activity-item-arrow {
+    transition: none;
+  }
+}
