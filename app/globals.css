@@ -1,27 +1,206 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
-
 :root {
-  --background: #07080c;
-  --background-secondary: #0d0f15;
-  --surface: rgba(255, 255, 255, 0.045);
-  --surface-hover: rgba(255, 255, 255, 0.075);
-  --border: rgba(255, 255, 255, 0.09);
-  --border-hover: rgba(255, 255, 255, 0.17);
+  /* =========================================================
+     UNIqe DESIGN SYSTEM
+     Foundation 1.1
+     ========================================================= */
 
-  --text-primary: #f5f7fa;
-  --text-secondary: #9da4b3;
-  --text-muted: #686f7d;
+  /* ---------------------------------------------------------
+     COLORS — Background
+     --------------------------------------------------------- */
 
-  --accent: #ffffff;
-  --accent-dark: #dfe3e9;
+  --color-bg: #07080c;
+  --color-bg-soft: #0a0c11;
+  --color-bg-elevated: #0e1016;
 
-  --max-width: 1280px;
+  --color-surface: rgba(255, 255, 255, 0.045);
+  --color-surface-hover: rgba(255, 255, 255, 0.075);
+  --color-surface-active: rgba(255, 255, 255, 0.10);
 
-  --radius-small: 12px;
-  --radius-medium: 20px;
-  --radius-large: 28px;
+  /* ---------------------------------------------------------
+     COLORS — Border
+     --------------------------------------------------------- */
+
+  --color-border-subtle: rgba(255, 255, 255, 0.055);
+  --color-border: rgba(255, 255, 255, 0.09);
+  --color-border-strong: rgba(255, 255, 255, 0.16);
+
+  /* ---------------------------------------------------------
+     COLORS — Text
+     --------------------------------------------------------- */
+
+  --color-text-primary: #f5f7fa;
+  --color-text-secondary: #9da4b3;
+  --color-text-tertiary: #767d8a;
+  --color-text-muted: #686f7d;
+  --color-text-disabled: #454a54;
+
+  /* ---------------------------------------------------------
+     COLORS — Brand
+     --------------------------------------------------------- */
+
+  --color-brand: #ffffff;
+  --color-brand-soft: #dfe3e9;
+  --color-brand-dark: #08090c;
+
+  /* ---------------------------------------------------------
+     COLORS — Status
+     --------------------------------------------------------- */
+
+  --color-success: #69d49a;
+  --color-warning: #e7c86d;
+  --color-danger: #e27676;
+  --color-info: #76aee7;
+
+  /* ---------------------------------------------------------
+     TYPOGRAPHY
+     --------------------------------------------------------- */
+
+  --font-family:
+    "Inter",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  --font-size-xs: 10px;
+  --font-size-sm: 12px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-2xl: 22px;
+  --font-size-3xl: 28px;
+  --font-size-4xl: 36px;
+  --font-size-5xl: 48px;
+  --font-size-6xl: 64px;
+  --font-size-7xl: 80px;
+  --font-size-8xl: 96px;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  --line-height-tight: 1;
+  --line-height-snug: 1.15;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  /* ---------------------------------------------------------
+     SPACING
+     --------------------------------------------------------- */
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-14: 56px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-28: 112px;
+  --space-32: 128px;
+
+  /* ---------------------------------------------------------
+     RADIUS
+     --------------------------------------------------------- */
+
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-2xl: 36px;
   --radius-pill: 999px;
+  --radius-full: 50%;
+
+  /* ---------------------------------------------------------
+     SHADOWS
+     --------------------------------------------------------- */
+
+  --shadow-xs:
+    0 1px 2px rgba(0, 0, 0, 0.15);
+
+  --shadow-sm:
+    0 4px 16px rgba(0, 0, 0, 0.18);
+
+  --shadow-md:
+    0 12px 32px rgba(0, 0, 0, 0.24);
+
+  --shadow-lg:
+    0 24px 64px rgba(0, 0, 0, 0.32);
+
+  --shadow-brand:
+    0 0 80px rgba(255, 255, 255, 0.07);
+
+  /* ---------------------------------------------------------
+     LAYOUT
+     --------------------------------------------------------- */
+
+  --container-xs: 540px;
+  --container-sm: 720px;
+  --container-md: 960px;
+  --container-lg: 1120px;
+  --container-xl: 1280px;
+
+  --container-padding: 20px;
+
+  /* ---------------------------------------------------------
+     Z-INDEX
+     --------------------------------------------------------- */
+
+  --z-base: 1;
+  --z-content: 10;
+  --z-header: 100;
+  --z-overlay: 500;
+  --z-modal: 1000;
+  --z-toast: 1500;
+
+  /* ---------------------------------------------------------
+     MOTION
+     --------------------------------------------------------- */
+
+  --transition-fast: 140ms ease;
+  --transition-normal: 200ms ease;
+  --transition-slow: 320ms ease;
+
+  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* ---------------------------------------------------------
+     LEGACY ALIASES
+     ---------------------------------------------------------
+     These keep the current Foundation 1.0 components working
+     while we migrate them gradually to the design system.
+     --------------------------------------------------------- */
+
+  --background: var(--color-bg);
+  --background-secondary: var(--color-bg-soft);
+
+  --surface: var(--color-surface);
+  --surface-hover: var(--color-surface-hover);
+
+  --border: var(--color-border);
+  --border-hover: var(--color-border-strong);
+
+  --text-primary: var(--color-text-primary);
+  --text-secondary: var(--color-text-secondary);
+  --text-muted: var(--color-text-muted);
+
+  --accent: var(--color-brand);
+  --accent-dark: var(--color-brand-dark);
+
+  --max-width: var(--container-xl);
+
+  --radius-small: var(--radius-sm);
+  --radius-medium: var(--radius-lg);
+  --radius-large: var(--radius-xl);
 }
+
 
 * {
   box-sizing: border-box;
@@ -29,30 +208,48 @@
   padding: 0;
 }
 
+
 html {
   scroll-behavior: smooth;
 }
 
+
+html,
+body {
+  min-height: 100%;
+}
+
+
 body {
   min-height: 100vh;
+
   background:
     radial-gradient(
       circle at 50% -10%,
       rgba(255, 255, 255, 0.075),
       transparent 35%
     ),
-    var(--background);
-  color: var(--text-primary);
-  font-family: "Inter", Arial, Helvetica, sans-serif;
-  line-height: 1.5;
+    var(--color-bg);
+
+  color: var(--color-text-primary);
+
+  font-family: var(--font-family);
+
+  line-height: var(--line-height-normal);
+
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
 
 body::before {
   content: "";
+
   position: fixed;
   inset: 0;
+
   pointer-events: none;
+
   background-image:
     linear-gradient(
       rgba(255, 255, 255, 0.018) 1px,
@@ -63,96 +260,351 @@ body::before {
       rgba(255, 255, 255, 0.018) 1px,
       transparent 1px
     );
+
   background-size: 64px 64px;
-  mask-image: linear-gradient(to bottom, black, transparent 80%);
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      black,
+      transparent 80%
+    );
+
   z-index: -1;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-button {
-  font: inherit;
-}
 
 ::selection {
   background: rgba(255, 255, 255, 0.18);
   color: #ffffff;
 }
 
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+
+button {
+  border: 0;
+}
+
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.65);
+  outline-offset: 3px;
+}
+
+
+img,
+svg {
+  max-width: 100%;
+}
+
+
+img {
+  display: block;
+}
+
+
+/* =========================================================
+   LAYOUT UTILITIES
+   ========================================================= */
+
 .container {
   width: min(
-    calc(100% - 40px),
-    var(--max-width)
+    calc(100% - (var(--container-padding) * 2)),
+    var(--container-xl)
   );
+
   margin-inline: auto;
 }
 
-.site-main {
-  overflow: hidden;
-}
 
 .section {
-  padding: 110px 0;
+  padding-block: var(--space-28);
 }
 
+
 .section-header {
-  max-width: 720px;
-  margin-bottom: 50px;
+  max-width: var(--container-sm);
+  margin-bottom: var(--space-12);
 }
+
 
 .section-eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 18px;
-  color: var(--text-secondary);
-  font-size: 12px;
-  font-weight: 700;
+  gap: var(--space-2);
+
+  margin-bottom: var(--space-5);
+
+  color: var(--color-text-secondary);
+
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
+
 .section-eyebrow::before {
   content: "";
+
   width: 22px;
   height: 1px;
-  background: var(--text-secondary);
+
+  background: var(--color-text-secondary);
 }
+
 
 .section-title {
-  font-size: clamp(32px, 5vw, 58px);
-  line-height: 1.05;
+  font-size: clamp(
+    var(--font-size-4xl),
+    5vw,
+    var(--font-size-6xl)
+  );
+
+  line-height: var(--line-height-tight);
+
   letter-spacing: -0.045em;
-  font-weight: 800;
+
+  font-weight: var(--font-weight-extrabold);
 }
+
 
 .section-description {
-  margin-top: 20px;
-  color: var(--text-secondary);
-  font-size: 17px;
-  line-height: 1.8;
+  margin-top: var(--space-5);
+
+  color: var(--color-text-secondary);
+
+  font-size: var(--font-size-lg);
+
+  line-height: var(--line-height-relaxed);
 }
 
-@media (max-width: 700px) {
-  .container {
-    width: min(
-      calc(100% - 28px),
-      var(--max-width)
+
+/* =========================================================
+   COMMON SURFACES
+   ========================================================= */
+
+.surface {
+  border: 1px solid var(--color-border);
+
+  border-radius: var(--radius-lg);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.018)
     );
+}
+
+
+.surface-hover {
+  transition:
+    transform var(--transition-normal),
+    border-color var(--transition-normal),
+    background var(--transition-normal);
+}
+
+
+.surface-hover:hover {
+  border-color: var(--color-border-strong);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.08),
+      rgba(255, 255, 255, 0.025)
+    );
+
+  transform: translateY(-4px);
+}
+
+
+/* =========================================================
+   COMMON BUTTONS
+   ========================================================= */
+
+.button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: var(--space-2);
+
+  min-height: 48px;
+
+  padding-inline: var(--space-5);
+
+  border-radius: var(--radius-pill);
+
+  font-size: var(--font-size-sm);
+
+  font-weight: var(--font-weight-bold);
+
+  cursor: pointer;
+
+  transition:
+    transform var(--transition-normal),
+    background var(--transition-normal),
+    border-color var(--transition-normal),
+    color var(--transition-normal);
+}
+
+
+.button:hover {
+  transform: translateY(-2px);
+}
+
+
+.button-primary {
+  background: var(--color-brand);
+
+  color: var(--color-brand-dark);
+}
+
+
+.button-primary:hover {
+  background: #ffffff;
+}
+
+
+.button-secondary {
+  border: 1px solid var(--color-border);
+
+  background: var(--color-surface);
+
+  color: var(--color-text-secondary);
+}
+
+
+.button-secondary:hover {
+  border-color: var(--color-border-strong);
+
+  background: var(--color-surface-hover);
+
+  color: var(--color-text-primary);
+}
+
+
+/* =========================================================
+   COMMON TEXT
+   ========================================================= */
+
+.text-primary {
+  color: var(--color-text-primary);
+}
+
+
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+
+
+.text-tertiary {
+  color: var(--color-text-tertiary);
+}
+
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+
+.text-success {
+  color: var(--color-success);
+}
+
+
+.text-warning {
+  color: var(--color-warning);
+}
+
+
+.text-danger {
+  color: var(--color-danger);
+}
+
+
+.text-info {
+  color: var(--color-info);
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+.sr-only {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  padding: 0;
+  margin: -1px;
+
+  overflow: hidden;
+
+  clip: rect(0, 0, 0, 0);
+
+  white-space: nowrap;
+
+  border: 0;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 700px) {
+  :root {
+    --container-padding: 14px;
   }
 
   .section {
-    padding: 75px 0;
+    padding-block: var(--space-20);
   }
 
   .section-header {
-    margin-bottom: 32px;
+    margin-bottom: var(--space-8);
   }
 
   .section-description {
     font-size: 15px;
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
