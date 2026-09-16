@@ -1,0 +1,28 @@
+.placeholder-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 30px;
+  text-align: center;
+}
+
+.placeholder-page span {
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.placeholder-page h1 {
+  font-size: clamp(52px, 10vw, 100px);
+  line-height: 0.95;
+  letter-spacing: -0.06em;
+}
+
+.placeholder-page p {
+  color: var(--text-secondary);
+}
