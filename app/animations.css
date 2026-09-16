@@ -1,0 +1,435 @@
+/* =========================================================
+   Uniqe ANIMATION SYSTEM
+   Foundation 1.5
+   ========================================================= */
+
+
+/* =========================================================
+   ANIMATION TOKENS
+   ========================================================= */
+
+:root {
+  --motion-duration-fast: 160ms;
+  --motion-duration-normal: 280ms;
+  --motion-duration-slow: 500ms;
+
+  --motion-ease:
+    cubic-bezier(0.22, 1, 0.36, 1);
+
+  --motion-ease-soft:
+    cubic-bezier(0.16, 1, 0.3, 1);
+
+  --motion-distance-sm: 8px;
+  --motion-distance-md: 18px;
+  --motion-distance-lg: 32px;
+}
+
+
+/* =========================================================
+   FADE
+   ========================================================= */
+
+@keyframes uniqe-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation:
+    uniqe-fade-in
+    var(--motion-duration-normal)
+    var(--motion-ease)
+    both;
+}
+
+
+/* =========================================================
+   FADE + UP
+   ========================================================= */
+
+@keyframes uniqe-fade-up {
+  from {
+    opacity: 0;
+    transform:
+      translateY(var(--motion-distance-md));
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation:
+    uniqe-fade-up
+    var(--motion-duration-normal)
+    var(--motion-ease)
+    both;
+}
+
+
+/* =========================================================
+   FADE + DOWN
+   ========================================================= */
+
+@keyframes uniqe-fade-down {
+  from {
+    opacity: 0;
+    transform:
+      translateY(calc(var(--motion-distance-md) * -1));
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0);
+  }
+}
+
+.animate-fade-down {
+  animation:
+    uniqe-fade-down
+    var(--motion-duration-normal)
+    var(--motion-ease)
+    both;
+}
+
+
+/* =========================================================
+   FADE + LEFT
+   ========================================================= */
+
+@keyframes uniqe-fade-left {
+  from {
+    opacity: 0;
+    transform:
+      translateX(var(--motion-distance-md));
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateX(0);
+  }
+}
+
+.animate-fade-left {
+  animation:
+    uniqe-fade-left
+    var(--motion-duration-normal)
+    var(--motion-ease)
+    both;
+}
+
+
+/* =========================================================
+   FADE + RIGHT
+   ========================================================= */
+
+@keyframes uniqe-fade-right {
+  from {
+    opacity: 0;
+    transform:
+      translateX(calc(var(--motion-distance-md) * -1));
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateX(0);
+  }
+}
+
+.animate-fade-right {
+  animation:
+    uniqe-fade-right
+    var(--motion-duration-normal)
+    var(--motion-ease)
+    both;
+}
+
+
+/* =========================================================
+   SCALE
+   ========================================================= */
+
+@keyframes uniqe-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scale-in {
+  animation:
+    uniqe-scale-in
+    var(--motion-duration-normal)
+    var(--motion-ease)
+    both;
+}
+
+
+/* =========================================================
+   HOVER LIFT
+   ========================================================= */
+
+.animate-hover-lift {
+  transition:
+    transform var(--motion-duration-normal)
+      var(--motion-ease),
+    box-shadow var(--motion-duration-normal)
+      var(--motion-ease);
+}
+
+.animate-hover-lift:hover {
+  transform:
+    translateY(-4px);
+}
+
+
+/* =========================================================
+   HOVER SCALE
+   ========================================================= */
+
+.animate-hover-scale {
+  transition:
+    transform var(--motion-duration-normal)
+      var(--motion-ease);
+}
+
+.animate-hover-scale:hover {
+  transform: scale(1.02);
+}
+
+
+/* =========================================================
+   PRESS
+   ========================================================= */
+
+.animate-press {
+  transition:
+    transform var(--motion-duration-fast)
+      var(--motion-ease);
+}
+
+.animate-press:active {
+  transform: scale(0.98);
+}
+
+
+/* =========================================================
+   GLOW
+   ========================================================= */
+
+.animate-glow {
+  transition:
+    box-shadow var(--motion-duration-normal)
+      var(--motion-ease);
+}
+
+.animate-glow:hover {
+  box-shadow:
+    0 0 0 1px
+      rgba(255, 255, 255, 0.08),
+    0 0 32px
+      rgba(255, 255, 255, 0.06);
+}
+
+
+/* =========================================================
+   STAGGER DELAYS
+   ========================================================= */
+
+.delay-1 {
+  animation-delay: 60ms;
+}
+
+.delay-2 {
+  animation-delay: 120ms;
+}
+
+.delay-3 {
+  animation-delay: 180ms;
+}
+
+.delay-4 {
+  animation-delay: 240ms;
+}
+
+.delay-5 {
+  animation-delay: 300ms;
+}
+
+.delay-6 {
+  animation-delay: 360ms;
+}
+
+
+/* =========================================================
+   ANIMATION GROUP
+   ========================================================= */
+
+.animation-group > * {
+  animation-fill-mode: both;
+}
+
+.animation-group > :nth-child(1) {
+  animation-delay: 60ms;
+}
+
+.animation-group > :nth-child(2) {
+  animation-delay: 120ms;
+}
+
+.animation-group > :nth-child(3) {
+  animation-delay: 180ms;
+}
+
+.animation-group > :nth-child(4) {
+  animation-delay: 240ms;
+}
+
+.animation-group > :nth-child(5) {
+  animation-delay: 300ms;
+}
+
+.animation-group > :nth-child(6) {
+  animation-delay: 360ms;
+}
+
+
+/* =========================================================
+   SHIMMER
+   ========================================================= */
+
+@keyframes uniqe-shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-shimmer::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.06),
+      transparent
+    );
+
+  transform: translateX(-100%);
+
+  animation:
+    uniqe-shimmer
+    2.4s
+    ease-in-out
+    infinite;
+}
+
+
+/* =========================================================
+   PULSE
+   ========================================================= */
+
+@keyframes uniqe-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.animate-pulse {
+  animation:
+    uniqe-pulse
+    2s
+    ease-in-out
+    infinite;
+}
+
+
+/* =========================================================
+   FLOAT
+   ========================================================= */
+
+@keyframes uniqe-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-float {
+  animation:
+    uniqe-float
+    4s
+    ease-in-out
+    infinite;
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+
+  .animate-fade-in,
+  .animate-fade-up,
+  .animate-fade-down,
+  .animate-fade-left,
+  .animate-fade-right,
+  .animate-scale-in,
+  .animate-pulse,
+  .animate-float,
+  .animate-shimmer {
+    animation: none !important;
+  }
+
+  .animate-hover-lift,
+  .animate-hover-scale,
+  .animate-press,
+  .animate-glow {
+    transition: none !important;
+  }
+}
