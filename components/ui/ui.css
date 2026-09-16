@@ -1,0 +1,36 @@
+/* =========================================================
+   UNIqe UI COMPONENTS
+   Foundation 1.1
+   ========================================================= */
+
+.button {
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.surface {
+  position: relative;
+  overflow: hidden;
+}
+
+.surface::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.025),
+      transparent 35%
+    );
+
+  opacity: 0.8;
+}
