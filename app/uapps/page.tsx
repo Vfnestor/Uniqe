@@ -1,3 +1,5 @@
+import "@/components/uapps/uapps.css";
+
 import UAppsHero from "@/components/uapps/UAppsHero";
 import AppsGrid from "@/components/uapps/AppsGrid";
 import UAppsCTA from "@/components/uapps/UAppsCTA";
