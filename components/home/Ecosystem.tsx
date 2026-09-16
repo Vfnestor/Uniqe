@@ -1,6 +1,7 @@
 import Container from "@/components/ui/Container";
-import Card from "@/components/ui/Card";
 import Reveal from "@/components/ui/Reveal";
+
+import EcosystemInteractive from "./EcosystemInteractive";
 
 import "./ecosystem.css";
 
@@ -9,41 +10,46 @@ const ecosystemItems = [
     name: "UApps",
     title: "Applications",
     description:
-      "Digital tools and applications designed for everyday use.",
+      "Digital tools and applications designed for everyday use, productivity and everyday digital experiences.",
     href: "/uapps",
     number: "01",
+    icon: "◈",
   },
   {
     name: "UWeb",
     title: "Web",
     description:
-      "Web experiences, platforms and services connected to the ecosystem.",
+      "Web experiences, platforms and services connected through the Uniqe ecosystem.",
     href: "/uweb",
     number: "02",
+    icon: "◌",
   },
   {
     name: "UShop",
     title: "Commerce",
     description:
-      "A foundation for products, services and digital commerce.",
+      "A foundation for products, services and digital commerce within the Uniqe environment.",
     href: "/ushop",
     number: "03",
+    icon: "◇",
   },
   {
     name: "USchool",
     title: "Education",
     description:
-      "Learning, knowledge and educational experiences.",
+      "Learning, knowledge and educational experiences designed to make information more accessible.",
     href: "/uschool",
     number: "04",
+    icon: "△",
   },
   {
     name: "UCore",
     title: "Technology",
     description:
-      "The technological foundation connecting the ecosystem.",
+      "The technological foundation that connects and supports the different parts of the ecosystem.",
     href: "/ucore",
     number: "05",
+    icon: "⬡",
   },
   {
     name: "LAB",
@@ -52,6 +58,7 @@ const ecosystemItems = [
       "A space for experiments, ideas, prototypes and new possibilities.",
     href: "/lab",
     number: "06",
+    icon: "✦",
   },
 ];
 
@@ -75,56 +82,22 @@ export default function Ecosystem() {
             </h2>
 
             <p className="section-description">
-              Uniqe is structured as a collection of
-              connected spaces. Each part has its own
-              purpose while remaining part of one larger
-              system.
+              Explore the different parts of Uniqe.
+              Each module has its own purpose while
+              remaining connected to the larger
+              ecosystem.
             </p>
           </div>
         </Reveal>
 
-        <div className="home-ecosystem-grid animation-group">
-          {ecosystemItems.map((item) => (
-            <Reveal
-              key={item.name}
-              animation="up"
-            >
-              <Card
-                hover
-                className="home-ecosystem-card"
-              >
-                <a
-                  href={item.href}
-                  className="home-ecosystem-card-link"
-                >
-                  <div className="home-ecosystem-card-top">
-                    <span className="home-ecosystem-number">
-                      {item.number}
-                    </span>
-
-                    <span className="home-ecosystem-arrow">
-                      ↗
-                    </span>
-                  </div>
-
-                  <div className="home-ecosystem-card-body">
-                    <span className="home-ecosystem-name">
-                      {item.name}
-                    </span>
-
-                    <h3 className="home-ecosystem-title">
-                      {item.title}
-                    </h3>
-
-                    <p className="home-ecosystem-description">
-                      {item.description}
-                    </p>
-                  </div>
-                </a>
-              </Card>
-            </Reveal>
-          ))}
-        </div>
+        <Reveal
+          animation="up"
+          delay={120}
+        >
+          <EcosystemInteractive
+            items={ecosystemItems}
+          />
+        </Reveal>
       </Container>
     </section>
   );
