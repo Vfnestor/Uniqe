@@ -1,27 +1,19 @@
-import Hero from "@/components/home/Hero";
-import Ecosystem from "@/components/home/Ecosystem";
-import Vision from "@/components/home/Vision";
-import FeaturedProjects from "@/components/home/FeaturedProjects";
-import LatestUpdates from "@/components/home/LatestUpdates";
-import Manifesto from "@/components/home/Manifesto";
-import Footer from "@/components/home/Footer";
+import UAppsHero from "@/components/uapps/UAppsHero";
+import AppsGrid from "@/components/uapps/AppsGrid";
+import UAppsCTA from "@/components/uapps/UAppsCTA";
 
-export default function HomePage() {
+import {
+  uapps,
+} from "@/components/uapps/apps";
+
+export default function UAppsPage() {
   return (
-    <main>
-      <Hero />
+    <main className="uapps-page">
+      <UAppsHero />
 
-      <Ecosystem />
+      <AppsGrid apps={uapps} />
 
-      <Vision />
-
-      <FeaturedProjects />
-
-      <LatestUpdates />
-
-      <Manifesto />
-
-      <Footer />
+      <UAppsCTA />
     </main>
   );
 }
