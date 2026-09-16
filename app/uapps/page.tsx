@@ -1,9 +1,19 @@
+import UAppsHero from "@/components/uapps/UAppsHero";
+import AppsGrid from "@/components/uapps/AppsGrid";
+import UAppsCTA from "@/components/uapps/UAppsCTA";
+
+import {
+  uapps,
+} from "@/components/uapps/apps";
+
 export default function UAppsPage() {
   return (
-    <main className="placeholder-page">
-      <span>UNIqe</span>
-      <h1>UApps</h1>
-      <p>Applications & digital tools.</p>
+    <main className="uapps-page">
+      <UAppsHero />
+
+      <AppsGrid apps={uapps} />
+
+      <UAppsCTA />
     </main>
   );
 }
