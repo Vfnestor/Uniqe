@@ -2,9 +2,7 @@ import UAppsHero from "@/components/uapps/UAppsHero";
 import AppsGrid from "@/components/uapps/AppsGrid";
 import UAppsCTA from "@/components/uapps/UAppsCTA";
 
-import {
-  uapps,
-} from "@/components/uapps/apps";
+import { uapps } from "@/components/uapps/apps";
 
 export default function UAppsPage() {
   return (
