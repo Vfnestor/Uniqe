@@ -1,9 +1,17 @@
+import "@/components/ucore/ucore.css";
+
+import UCoreHero from "@/components/ucore/UCoreHero";
+import CoreModulesGrid from "@/components/ucore/CoreModulesGrid";
+import UCoreCTA from "@/components/ucore/UCoreCTA";
+
+import { ucoreModules } from "@/components/ucore/core-modules";
+
 export default function UCorePage() {
   return (
-    <main className="placeholder-page">
-      <span>UNIqe</span>
-      <h1>UCore</h1>
-      <p>The technology core of UNIqe.</p>
+    <main className="ucore-page">
+      <UCoreHero />
+      <CoreModulesGrid modules={ucoreModules} />
+      <UCoreCTA />
     </main>
   );
 }
