@@ -3,11 +3,14 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "./placeholder.css";
 import "./responsive.css";
+import "./animations.css";
 
 import "@/components/ui/ui.css";
 import "@/components/theme/theme.css";
 
-import { ThemeProvider } from "@/components/theme/ThemeProvider";
+import {
+  ThemeProvider,
+} from "@/components/theme/ThemeProvider";
 
 export const metadata: Metadata = {
   title: {
