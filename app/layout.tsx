@@ -1,14 +1,19 @@
 import type { Metadata } from "next";
+
 import "./globals.css";
 import "./placeholder.css";
+
+import "@/components/ui/ui.css";
 
 export const metadata: Metadata = {
   title: {
     default: "UNIqe",
     template: "%s | UNIqe",
   },
+
   description:
     "UNIqe — a digital ecosystem for apps, web, commerce, education, technology and innovation.",
+
   keywords: [
     "UNIqe",
     "UApps",
@@ -19,12 +24,15 @@ export const metadata: Metadata = {
     "LAB",
     "My U",
   ],
+
   applicationName: "UNIqe",
+
   authors: [
     {
       name: "UNIqe",
     },
   ],
+
   robots: {
     index: true,
     follow: true,
