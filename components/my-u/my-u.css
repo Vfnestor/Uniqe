@@ -1,0 +1,751 @@
+/* ============================================================
+   MY U
+   ============================================================ */
+
+.my-u-page {
+  overflow: hidden;
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+
+.my-u-hero {
+  position: relative;
+  min-height: 760px;
+  display: flex;
+  align-items: center;
+  padding: 150px 0 110px;
+}
+
+.my-u-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(420px, 0.9fr);
+  align-items: center;
+  gap: 80px;
+}
+
+.my-u-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 680px;
+}
+
+.my-u-hero-title {
+  margin: 22px 0 28px;
+  font-size: clamp(3.8rem, 7vw, 7.4rem);
+  line-height: 0.92;
+  letter-spacing: -0.065em;
+  font-weight: 800;
+}
+
+.my-u-hero-title span {
+  color: var(--text-muted);
+}
+
+.my-u-hero-description {
+  max-width: 600px;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-lg);
+  line-height: 1.8;
+}
+
+.my-u-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 36px;
+}
+
+/* ============================================================
+   HERO VISUAL
+   ============================================================ */
+
+.my-u-hero-visual {
+  position: relative;
+  width: min(100%, 600px);
+  aspect-ratio: 1;
+  margin-left: auto;
+  isolation: isolate;
+}
+
+.my-u-hero-grid-lines {
+  position: absolute;
+  inset: 8%;
+  border: 1px solid var(--border);
+  opacity: 0.45;
+  background-image:
+    linear-gradient(
+      to right,
+      transparent 49.8%,
+      var(--border) 50%,
+      transparent 50.2%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 49.8%,
+      var(--border) 50%,
+      transparent 50.2%
+    );
+  background-size: 50% 50%;
+  border-radius: 50%;
+}
+
+.my-u-hero-orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.my-u-hero-orbit.orbit-one {
+  width: 38%;
+  height: 38%;
+}
+
+.my-u-hero-orbit.orbit-two {
+  width: 62%;
+  height: 62%;
+}
+
+.my-u-hero-orbit.orbit-three {
+  width: 86%;
+  height: 86%;
+}
+
+.my-u-hero-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.my-u-hero-core span {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.06em;
+}
+
+.my-u-hero-node {
+  position: absolute;
+  z-index: 3;
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  background: var(--surface);
+  font-size: 1.15rem;
+  box-shadow: var(--shadow-md);
+}
+
+.my-u-hero-node.node-one {
+  top: 17%;
+  right: 22%;
+}
+
+.my-u-hero-node.node-two {
+  right: 7%;
+  bottom: 30%;
+}
+
+.my-u-hero-node.node-three {
+  left: 15%;
+  bottom: 17%;
+}
+
+.my-u-hero-label {
+  position: absolute;
+  color: var(--text-muted);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+
+.my-u-hero-label.label-one {
+  top: 8%;
+  left: 48%;
+}
+
+.my-u-hero-label.label-two {
+  right: 4%;
+  top: 49%;
+}
+
+.my-u-hero-label.label-three {
+  left: 1%;
+  top: 54%;
+}
+
+/* ============================================================
+   OVERVIEW
+   ============================================================ */
+
+.my-u-overview {
+  position: relative;
+}
+
+.my-u-section-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+  align-items: end;
+  gap: 60px;
+  margin-bottom: 54px;
+}
+
+.my-u-section-heading .section-title {
+  margin-top: 18px;
+}
+
+.my-u-overview-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr);
+  gap: 20px;
+}
+
+.my-u-profile-card {
+  height: 100%;
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+}
+
+.my-u-profile-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.my-u-avatar {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.my-u-profile-label {
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.my-u-profile-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.my-u-profile-eyebrow {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.my-u-profile-content h3 {
+  margin: 18px 0 22px;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+}
+
+.my-u-profile-content p {
+  max-width: 480px;
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.my-u-profile-footer {
+  padding-top: 22px;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+
+.my-u-services {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.my-u-service-card {
+  height: 100%;
+}
+
+.my-u-service-link {
+  min-height: 250px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  color: inherit;
+  text-decoration: none;
+}
+
+.my-u-service-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.my-u-service-icon {
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  font-size: 1.1rem;
+}
+
+.my-u-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--text-muted);
+  font-size: 0.66rem;
+  font-weight: 600;
+}
+
+.my-u-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.my-u-status-active {
+  color: var(--text-primary);
+}
+
+.my-u-status-development {
+  color: var(--text-secondary);
+}
+
+.my-u-status-coming-soon {
+  color: var(--text-muted);
+}
+
+.my-u-service-content {
+  flex: 1;
+  padding-top: 34px;
+}
+
+.my-u-service-content h3 {
+  margin: 0;
+  font-size: 1.65rem;
+  letter-spacing: -0.04em;
+}
+
+.my-u-service-content p {
+  margin: 12px 0 0;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-size: 0.9rem;
+}
+
+.my-u-service-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  font-weight: 600;
+}
+
+.my-u-service-arrow {
+  transition: transform var(--transition-normal);
+}
+
+.my-u-service-card:hover .my-u-service-arrow {
+  transform: translate(4px, -4px);
+}
+
+/* ============================================================
+   QUICK ACTIONS
+   ============================================================ */
+
+.my-u-actions-heading {
+  margin: 100px 0 32px;
+}
+
+.my-u-actions-heading h3 {
+  margin: 14px 0 0;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.my-u-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.my-u-action {
+  min-height: 170px;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  color: inherit;
+  text-decoration: none;
+  background: var(--surface);
+  transition:
+    transform var(--transition-normal),
+    border-color var(--transition-normal),
+    background var(--transition-normal);
+}
+
+.my-u-action:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-strong);
+  background: var(--surface-hover);
+}
+
+.my-u-action-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+}
+
+.my-u-action-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 7px;
+  padding: 20px 0;
+}
+
+.my-u-action-content strong {
+  font-size: 1rem;
+}
+
+.my-u-action-content span {
+  color: var(--text-muted);
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.my-u-action-arrow {
+  align-self: flex-end;
+  color: var(--text-muted);
+  transition: transform var(--transition-normal);
+}
+
+.my-u-action:hover .my-u-action-arrow {
+  transform: translate(4px, -4px);
+}
+
+/* ============================================================
+   ACTIVITY
+   ============================================================ */
+
+.my-u-activity {
+  position: relative;
+}
+
+.my-u-activity-list {
+  display: grid;
+  gap: 12px;
+}
+
+.my-u-activity-card {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 22px;
+}
+
+.my-u-activity-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+}
+
+.my-u-activity-content h3 {
+  margin: 0;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.my-u-activity-content p {
+  margin: 5px 0 0;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.my-u-activity-time {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   CTA
+   ============================================================ */
+
+.my-u-cta {
+  padding-top: 80px;
+  padding-bottom: 120px;
+}
+
+.my-u-cta-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 70px;
+  overflow: hidden;
+  padding: 80px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--surface);
+}
+
+.my-u-cta-mark {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.my-u-cta-content {
+  max-width: 700px;
+}
+
+.my-u-cta-content h2 {
+  margin: 18px 0 22px;
+  font-size: clamp(2.5rem, 5vw, 4.8rem);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+.my-u-cta-content p {
+  max-width: 620px;
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.my-u-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 32px;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1023px) {
+  .my-u-hero {
+    min-height: auto;
+    padding-top: 130px;
+  }
+
+  .my-u-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 70px;
+  }
+
+  .my-u-hero-content {
+    max-width: 760px;
+  }
+
+  .my-u-hero-visual {
+    width: min(100%, 560px);
+    margin: 0 auto;
+  }
+
+  .my-u-section-heading {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .my-u-overview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .my-u-profile-card {
+    min-height: 420px;
+  }
+
+  .my-u-actions-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .my-u-cta-card {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 60px;
+  }
+}
+
+@media (max-width: 767px) {
+  .my-u-hero {
+    padding: 110px 0 80px;
+  }
+
+  .my-u-hero-title {
+    font-size: clamp(3.2rem, 14vw, 5.2rem);
+  }
+
+  .my-u-hero-description {
+    font-size: 1rem;
+  }
+
+  .my-u-hero-visual {
+    width: 100%;
+  }
+
+  .my-u-hero-core {
+    width: 120px;
+    height: 120px;
+  }
+
+  .my-u-hero-core span {
+    font-size: 1.45rem;
+  }
+
+  .my-u-services {
+    grid-template-columns: 1fr;
+  }
+
+  .my-u-profile-card {
+    min-height: 380px;
+  }
+
+  .my-u-actions-heading {
+    margin-top: 70px;
+  }
+
+  .my-u-actions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .my-u-activity-card {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .my-u-activity-time {
+    grid-column: 2;
+  }
+
+  .my-u-cta {
+    padding-top: 50px;
+    padding-bottom: 80px;
+  }
+
+  .my-u-cta-card {
+    padding: 40px 28px;
+  }
+
+  .my-u-cta-mark {
+    width: 90px;
+    height: 90px;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 479px) {
+  .my-u-hero {
+    padding-top: 90px;
+  }
+
+  .my-u-hero-actions,
+  .my-u-cta-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .my-u-hero-actions .button,
+  .my-u-cta-actions .button {
+    width: 100%;
+  }
+
+  .my-u-hero-node {
+    width: 44px;
+    height: 44px;
+    font-size: 0.95rem;
+  }
+
+  .my-u-hero-label {
+    font-size: 0.55rem;
+  }
+
+  .my-u-profile-card {
+    min-height: 360px;
+  }
+
+  .my-u-service-link {
+    min-height: 230px;
+  }
+
+  .my-u-action {
+    min-height: 150px;
+  }
+
+  .my-u-activity-content p {
+    font-size: 0.74rem;
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .my-u-service-arrow,
+  .my-u-action,
+  .my-u-action-arrow {
+    transition: none;
+  }
+}
