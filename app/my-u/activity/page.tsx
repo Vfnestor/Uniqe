@@ -13,10 +13,8 @@ export default function ActivityPage() {
       <ActivityHero />
 
       <section className="activity-controls">
-        <Container />
+        <ActivityFilters />
       </section>
-
-      <ActivityFilters />
 
       <ActivityFeed
         activities={activityItems}
