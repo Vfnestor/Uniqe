@@ -38,7 +38,10 @@ export default function UAppsHero() {
                   Explore Apps
                 </Button>
 
-                <Button href="/lab" variant="secondary">
+                <Button
+                  href="/lab"
+                  variant="secondary"
+                >
                   Visit LAB
                 </Button>
               </div>
@@ -47,6 +50,8 @@ export default function UAppsHero() {
 
           <Reveal animation="scale" delay={180}>
             <div className="uapps-hero-visual">
+              <div className="uapps-hero-grid-lines" />
+
               <div className="uapps-hero-orbit orbit-one" />
               <div className="uapps-hero-orbit orbit-two" />
               <div className="uapps-hero-orbit orbit-three" />
@@ -65,6 +70,18 @@ export default function UAppsHero() {
 
               <div className="uapps-hero-node node-three">
                 ✦
+              </div>
+
+              <div className="uapps-hero-label label-one">
+                APPS
+              </div>
+
+              <div className="uapps-hero-label label-two">
+                BUILD
+              </div>
+
+              <div className="uapps-hero-label label-three">
+                EXPLORE
               </div>
             </div>
           </Reveal>
