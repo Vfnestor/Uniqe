@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 
 import "./globals.css";
 import "./placeholder.css";
+import "./responsive.css";
+
 import "@/components/ui/ui.css";
 import "@/components/theme/theme.css";
 
@@ -9,15 +11,15 @@ import { ThemeProvider } from "@/components/theme/ThemeProvider";
 
 export const metadata: Metadata = {
   title: {
-    default: "UNIqe",
-    template: "%s | UNIqe",
+    default: "Uniqe",
+    template: "%s | Uniqe",
   },
 
   description:
-    "UNIqe — a digital ecosystem for apps, web, commerce, education, technology and innovation.",
+    "Uniqe — a digital ecosystem for apps, web, commerce, education, technology and innovation.",
 
   keywords: [
-    "UNIqe",
+    "Uniqe",
     "UApps",
     "UWeb",
     "UShop",
@@ -27,11 +29,11 @@ export const metadata: Metadata = {
     "My U",
   ],
 
-  applicationName: "UNIqe",
+  applicationName: "Uniqe",
 
   authors: [
     {
-      name: "UNIqe",
+      name: "Uniqe",
     },
   ],
 
