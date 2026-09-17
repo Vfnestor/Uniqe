@@ -2,8 +2,6 @@
 
 import StateShell from "@/components/states/StateShell";
 
-import StateActions from "@/components/states/StateActions";
-
 export default function MaintenancePage() {
   return (
     <StateShell
@@ -12,16 +10,27 @@ export default function MaintenancePage() {
       title="Uniqe is being updated"
       description="We're working on the platform. Please check back soon."
       actions={
-        <StateActions
-          primaryLabel="Try again"
-          primaryAction={() => {
-            window.location.reload();
-          }}
-          secondaryLabel="Go home"
-          secondaryAction={() => {
-            window.location.href = "/";
-          }}
-        />
+        <div className="state-actions">
+          <button
+            type="button"
+            className="button button-primary"
+            onClick={() => {
+              window.location.reload();
+            }}
+          >
+            Try again
+          </button>
+
+          <button
+            type="button"
+            className="button button-secondary"
+            onClick={() => {
+              window.location.href = "/";
+            }}
+          >
+            Go home
+          </button>
+        </div>
       }
     />
   );
