@@ -1,5 +1,3 @@
-import { NextResponse } from "next";
-
 import { env } from "@/lib/config/env";
 import { siteConfig } from "@/lib/config/site";
 import { logger } from "@/lib/monitoring/logger";
@@ -13,18 +11,13 @@ export async function GET() {
     timestamp: new Date().toISOString(),
   };
 
-  logger.info(
-    "Health check requested"
-  );
+  logger.info("Health check requested");
 
-  return NextResponse.json(
-    response,
-    {
-      status: 200,
-      headers: {
-        "Cache-Control":
-          "no-store, no-cache, must-revalidate",
-      },
-    }
-  );
+  return Response.json(response, {
+    status: 200,
+    headers: {
+      "Cache-Control":
+        "no-store, no-cache, must-revalidate",
+    },
+  });
 }
