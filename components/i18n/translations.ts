@@ -255,8 +255,6 @@ export const translations = {
       "Experimental":
         "آزمایشی",
 
-      "Automation":
-        "اتوماسیون",
 
       "Websites":
         "وب‌سایت‌ها",
