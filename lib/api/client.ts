@@ -36,9 +36,10 @@ function buildUrl(path: string): string {
   const baseUrl =
     apiConfig.baseUrl.replace(/\/$/, "");
 
-  const normalizedPath = path.startsWith("/")
-    ? path
-    : `/${path}`;
+  const normalizedPath =
+    path.startsWith("/")
+      ? path
+      : `/${path}`;
 
   return `${baseUrl}${normalizedPath}`;
 }
@@ -53,24 +54,17 @@ function serializeBody(
     return undefined;
   }
 
-  if (typeof body === "string") {
-    return body;
-  }
-
-  if (body instanceof FormData) {
-    return body;
-  }
-
-  if (body instanceof Blob) {
-    return body;
-  }
-
-  if (body instanceof URLSearchParams) {
+  if (
+    typeof body === "string" ||
+    body instanceof FormData ||
+    body instanceof Blob ||
+    body instanceof URLSearchParams
+  ) {
     return body;
   }
 
   if (body instanceof ArrayBuffer) {
-    return body;
+    return new Uint8Array(body);
   }
 
   return JSON.stringify(body);
@@ -80,18 +74,22 @@ async function request<T>(
   path: string,
   options: ApiRequestOptions = {}
 ): Promise<T> {
+  const {
+    timeout = apiConfig.timeout,
+    body,
+    ...requestInit
+  } = options;
+
   const controller =
     new AbortController();
 
-  const timeout =
-    options.timeout ?? apiConfig.timeout;
-
-  const timeoutId = setTimeout(() => {
-    controller.abort();
-  }, timeout);
+  const timeoutId = setTimeout(
+    () => controller.abort(),
+    timeout
+  );
 
   const headers = new Headers(
-    options.headers
+    requestInit.headers
   );
 
   headers.set(
@@ -100,11 +98,11 @@ async function request<T>(
   );
 
   const serializedBody =
-    serializeBody(options.body);
+    serializeBody(body);
 
   if (
     serializedBody !== undefined &&
-    !(options.body instanceof FormData) &&
+    !(body instanceof FormData) &&
     !headers.has("Content-Type")
   ) {
     headers.set(
@@ -114,17 +112,11 @@ async function request<T>(
   }
 
   const fetchOptions: RequestInit = {
-    ...options,
-    body: serializedBody,
+    ...requestInit,
     headers,
+    body: serializedBody,
     signal: controller.signal,
   };
-
-  delete (
-    fetchOptions as RequestInit & {
-      timeout?: number;
-    }
-  ).timeout;
 
   let response: Response;
 
@@ -197,6 +189,16 @@ async function request<T>(
   return responseData as T;
 }
 
+function withBody(
+  body?: unknown,
+  options: ApiRequestOptions = {}
+): ApiRequestOptions {
+  return {
+    ...options,
+    body,
+  };
+}
+
 export const apiClient = {
   request,
 
@@ -220,11 +222,10 @@ export const apiClient = {
   ) {
     return request<T>(
       path,
-      {
+      withBody(body, {
         ...options,
         method: "POST",
-        body,
-      }
+      })
     );
   },
 
@@ -235,11 +236,10 @@ export const apiClient = {
   ) {
     return request<T>(
       path,
-      {
+      withBody(body, {
         ...options,
         method: "PUT",
-        body,
-      }
+      })
     );
   },
 
@@ -250,11 +250,10 @@ export const apiClient = {
   ) {
     return request<T>(
       path,
-      {
+      withBody(body, {
         ...options,
         method: "PATCH",
-        body,
-      }
+      })
     );
   },
 
