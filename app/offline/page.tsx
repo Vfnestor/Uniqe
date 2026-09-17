@@ -1,3 +1,5 @@
+"use client";
+
 import StateShell from "@/components/states/StateShell";
 
 import StateActions from "@/components/states/StateActions";
