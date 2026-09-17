@@ -1,67 +1,53 @@
 "use client";
 
 import { useTheme } from "./ThemeProvider";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 
 export default function ThemeToggle() {
-  const { theme, setTheme } =
-    useTheme();
+  const {
+    theme,
+    setTheme,
+  } = useTheme();
+
+  const { t } =
+    useLanguage();
+
+  const isDark =
+    theme === "dark";
 
   return (
-    <div
-      className="theme-toggle"
-      role="group"
-      aria-label="Theme selection"
+    <button
+      type="button"
+      className="global-theme-toggle"
+      onClick={() =>
+        setTheme(
+          isDark
+            ? "light"
+            : "dark",
+        )
+      }
+      aria-label={
+        isDark
+          ? t.theme.light
+          : t.theme.dark
+      }
+      title={
+        isDark
+          ? t.theme.light
+          : t.theme.dark
+      }
     >
-      <button
-        type="button"
-        className={
-          theme === "dark"
-            ? "theme-option active"
-            : "theme-option"
-        }
-        onClick={() =>
-          setTheme("dark")
-        }
-        aria-pressed={
-          theme === "dark"
-        }
+      <span
+        aria-hidden="true"
       >
-        Dark
-      </button>
+        {isDark ? "☀" : "☾"}
+      </span>
 
-      <button
-        type="button"
-        className={
-          theme === "light"
-            ? "theme-option active"
-            : "theme-option"
-        }
-        onClick={() =>
-          setTheme("light")
-        }
-        aria-pressed={
-          theme === "light"
-        }
-      >
-        Light
-      </button>
-
-      <button
-        type="button"
-        className={
-          theme === "system"
-            ? "theme-option active"
-            : "theme-option"
-        }
-        onClick={() =>
-          setTheme("system")
-        }
-        aria-pressed={
-          theme === "system"
-        }
-      >
-        System
-      </button>
-    </div>
+      <span>
+        {isDark
+          ? t.theme.light
+          : t.theme.dark}
+      </span>
+    </button>
   );
 }
