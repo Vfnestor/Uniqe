@@ -1,7 +1,10 @@
 "use client";
 
 import { useTheme } from "./ThemeProvider";
-import { useLanguage } from "@/components/i18n/LanguageProvider";
+
+import {
+  useLanguage,
+} from "@/components/i18n/LanguageProvider";
 
 export default function ThemeToggle() {
   const {
@@ -38,12 +41,13 @@ export default function ThemeToggle() {
       }
     >
       <span
+        className="global-theme-icon"
         aria-hidden="true"
       >
         {isDark ? "☀" : "☾"}
       </span>
 
-      <span>
+      <span className="global-theme-label">
         {isDark
           ? t.theme.light
           : t.theme.dark}
