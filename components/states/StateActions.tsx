@@ -2,17 +2,35 @@
 
 type StateActionsProps = {
   primaryLabel?: string;
-  primaryAction?: () => void;
+  primaryHref?: string;
+  primaryReload?: boolean;
 
   secondaryLabel?: string;
-  secondaryAction?: () => void;
+  secondaryHref?: string;
+  secondaryReload?: boolean;
 };
+
+function handleAction(
+  href?: string,
+  reload?: boolean
+) {
+  if (reload) {
+    window.location.reload();
+    return;
+  }
+
+  if (href) {
+    window.location.href = href;
+  }
+}
 
 export default function StateActions({
   primaryLabel,
-  primaryAction,
+  primaryHref,
+  primaryReload,
   secondaryLabel,
-  secondaryAction,
+  secondaryHref,
+  secondaryReload,
 }: StateActionsProps) {
   if (
     !primaryLabel &&
@@ -23,21 +41,31 @@ export default function StateActions({
 
   return (
     <div className="state-actions">
-      {primaryLabel && primaryAction ? (
+      {primaryLabel ? (
         <button
           type="button"
           className="button button-primary"
-          onClick={primaryAction}
+          onClick={() =>
+            handleAction(
+              primaryHref,
+              primaryReload
+            )
+          }
         >
           {primaryLabel}
         </button>
       ) : null}
 
-      {secondaryLabel && secondaryAction ? (
+      {secondaryLabel ? (
         <button
           type="button"
           className="button button-secondary"
-          onClick={secondaryAction}
+          onClick={() =>
+            handleAction(
+              secondaryHref,
+              secondaryReload
+            )
+          }
         >
           {secondaryLabel}
         </button>
