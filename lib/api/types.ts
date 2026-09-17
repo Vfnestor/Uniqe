@@ -9,6 +9,10 @@ export type ApiErrorBody = {
   details?: unknown;
 };
 
-export type ApiRequestOptions = RequestInit & {
+export type ApiRequestOptions = Omit<
+  RequestInit,
+  "body"
+> & {
+  body?: unknown;
   timeout?: number;
 };
