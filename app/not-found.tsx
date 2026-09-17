@@ -1,6 +1,6 @@
-import StateShell from "@/components/states/StateShell";
+import Link from "next/link";
 
-import StateActions from "@/components/states/StateActions";
+import StateShell from "@/components/states/StateShell";
 
 export default function NotFound() {
   return (
@@ -10,12 +10,14 @@ export default function NotFound() {
       title="This page doesn't exist"
       description="The page you are looking for may have moved, changed, or never existed."
       actions={
-        <StateActions
-          primaryLabel="Go home"
-          primaryAction={() => {
-            window.location.href = "/";
-          }}
-        />
+        <div className="state-actions">
+          <Link
+            href="/"
+            className="button button-primary"
+          >
+            Go home
+          </Link>
+        </div>
       }
     />
   );
