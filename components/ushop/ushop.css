@@ -795,3 +795,309 @@ html[data-language="fa"] .ushop-card:hover .ushop-card-arrow {
     transition: none;
   }
 }
+/* ============================================================
+   USHOP MOBILE FIX
+   ============================================================ */
+
+@media (max-width: 767px) {
+  .ushop-page {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* ---------- HERO ---------- */
+
+  .ushop-hero {
+    width: 100%;
+    min-height: auto;
+    padding: 96px 0 60px;
+  }
+
+  .ushop-hero-grid {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 42px;
+  }
+
+  .ushop-hero-content {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .ushop-hero-title {
+    max-width: 100%;
+    margin: 16px 0 20px;
+    font-size: clamp(2.9rem, 13vw, 4.5rem);
+    line-height: 0.95;
+    overflow-wrap: anywhere;
+  }
+
+  .ushop-hero-description {
+    max-width: 100%;
+    font-size: 0.95rem;
+    line-height: 1.75;
+  }
+
+  .ushop-hero-actions {
+    width: 100%;
+    gap: 10px;
+    margin-top: 26px;
+  }
+
+  .ushop-hero-actions > * {
+    max-width: 100%;
+  }
+
+  .ushop-hero-visual {
+    width: min(100%, 390px);
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .ushop-hero-core {
+    width: 108px;
+    height: 108px;
+  }
+
+  .ushop-hero-core span {
+    font-size: 2.8rem;
+  }
+
+  .ushop-hero-node {
+    width: 42px;
+    height: 42px;
+    font-size: 0.9rem;
+  }
+
+  .ushop-hero-label {
+    font-size: 0.55rem;
+    letter-spacing: 0.12em;
+  }
+
+  /* ---------- PRODUCTS HEADING ---------- */
+
+  .ushop-section-heading {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+    margin-bottom: 26px;
+  }
+
+  .ushop-section-heading .section-title {
+    margin-top: 12px;
+  }
+
+  /* ---------- FILTER ---------- */
+
+  .ushop-filter-row {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+
+  .ushop-filter-wrapper {
+    width: 100%;
+  }
+
+  .ushop-filter-list {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .ushop-filter-button {
+    width: 100%;
+    min-width: 0;
+    min-height: 42px;
+    padding: 0 9px;
+    gap: 6px;
+    font-size: 0.7rem;
+  }
+
+  .ushop-filter-count {
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    font-size: 0.6rem;
+  }
+
+  .ushop-results-count {
+    align-self: flex-end;
+    font-size: 0.7rem;
+  }
+
+  /* ---------- PRODUCT GRID ---------- */
+
+  .ushop-grid {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .ushop-grid > * {
+    min-width: 0;
+    width: 100%;
+  }
+
+  /* ---------- PRODUCT CARD ---------- */
+
+  .ushop-card {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .ushop-card-link {
+    width: 100%;
+    min-height: 0;
+    height: auto;
+    min-width: 0;
+  }
+
+  .ushop-card-top {
+    padding-bottom: 18px;
+  }
+
+  .ushop-card-content {
+    min-width: 0;
+  }
+
+  .ushop-card-meta {
+    width: 100%;
+    min-width: 0;
+    margin-bottom: 13px;
+    gap: 7px 10px;
+  }
+
+  .ushop-card-category {
+    font-size: 0.64rem;
+    letter-spacing: 0.08em;
+  }
+
+  .ushop-status {
+    font-size: 0.62rem;
+  }
+
+  .ushop-card-title {
+    max-width: 100%;
+    font-size: clamp(1.55rem, 8vw, 2rem);
+    line-height: 1.08;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  .ushop-card-description {
+    max-width: 100%;
+    margin-top: 13px;
+    font-size: 0.86rem;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+  }
+
+  .ushop-card-price-row {
+    width: 100%;
+    margin-top: 18px;
+    gap: 8px 12px;
+  }
+
+  .ushop-card-price {
+    font-size: 1.05rem;
+  }
+
+  .ushop-card-stock {
+    font-size: 0.64rem;
+  }
+
+  .ushop-card-bottom {
+    width: 100%;
+    margin-top: 26px;
+    padding-top: 15px;
+    font-size: 0.7rem;
+  }
+
+  /* ---------- CTA ---------- */
+
+  .ushop-cta {
+    padding-top: 50px;
+    padding-bottom: 70px;
+  }
+
+  .ushop-cta-card {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    padding: 30px 22px;
+  }
+
+  .ushop-cta-mark {
+    width: 78px;
+    height: 78px;
+    font-size: 2rem;
+  }
+
+  .ushop-cta-content {
+    max-width: 100%;
+  }
+
+  .ushop-cta-content h2 {
+    font-size: clamp(2rem, 10vw, 3.2rem);
+  }
+
+  .ushop-cta-content p {
+    max-width: 100%;
+    font-size: 0.9rem;
+    line-height: 1.75;
+  }
+
+  /* ---------- RTL ---------- */
+
+  html[data-language="fa"] .ushop-card-arrow {
+    transform: scaleX(-1);
+  }
+
+  html[data-language="fa"] .ushop-card:hover .ushop-card-arrow {
+    transform: scaleX(-1) translate(3px, -3px);
+  }
+}
+
+/* ============================================================
+   VERY SMALL PHONES
+   ============================================================ */
+
+@media (max-width: 380px) {
+  .ushop-hero {
+    padding-top: 88px;
+  }
+
+  .ushop-hero-title {
+    font-size: clamp(2.6rem, 13vw, 3.8rem);
+  }
+
+  .ushop-filter-list {
+    grid-template-columns: 1fr;
+  }
+
+  .ushop-filter-button {
+    justify-content: space-between;
+  }
+
+  .ushop-card-link {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .ushop-card-title {
+    font-size: 1.5rem;
+  }
+
+  .ushop-card-description {
+    font-size: 0.82rem;
+  }
+
+  .ushop-cta-card {
+    padding: 26px 18px;
+  }
+}
