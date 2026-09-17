@@ -54,12 +54,19 @@ function serializeBody(
     return undefined;
   }
 
-  if (
-    typeof body === "string" ||
-    body instanceof FormData ||
-    body instanceof Blob ||
-    body instanceof URLSearchParams
-  ) {
+  if (typeof body === "string") {
+    return body;
+  }
+
+  if (body instanceof FormData) {
+    return body;
+  }
+
+  if (body instanceof Blob) {
+    return body;
+  }
+
+  if (body instanceof URLSearchParams) {
     return body;
   }
 
@@ -189,16 +196,6 @@ async function request<T>(
   return responseData as T;
 }
 
-function withBody(
-  body?: unknown,
-  options: ApiRequestOptions = {}
-): ApiRequestOptions {
-  return {
-    ...options,
-    body,
-  };
-}
-
 export const apiClient = {
   request,
 
@@ -222,10 +219,11 @@ export const apiClient = {
   ) {
     return request<T>(
       path,
-      withBody(body, {
+      {
         ...options,
         method: "POST",
-      })
+        body,
+      }
     );
   },
 
@@ -236,10 +234,11 @@ export const apiClient = {
   ) {
     return request<T>(
       path,
-      withBody(body, {
+      {
         ...options,
         method: "PUT",
-      })
+        body,
+      }
     );
   },
 
@@ -250,10 +249,11 @@ export const apiClient = {
   ) {
     return request<T>(
       path,
-      withBody(body, {
+      {
         ...options,
         method: "PATCH",
-      })
+        body,
+      }
     );
   },
 
