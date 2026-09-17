@@ -4,6 +4,7 @@ import "./globals.css";
 import "./responsive.css";
 import "./animations.css";
 import "@/components/notifications/notifications.css";
+import "@/components/favorites/favorites.css";
 
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import CommandPaletteGlobal from "@/components/command/CommandPaletteGlobal";
