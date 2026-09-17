@@ -5,7 +5,6 @@ import {
 } from "react";
 
 import StateShell from "@/components/states/StateShell";
-
 import StateActions from "@/components/states/StateActions";
 
 type ErrorPageProps = {
@@ -33,11 +32,9 @@ export default function ErrorPage({
       actions={
         <StateActions
           primaryLabel="Try again"
-          primaryAction={reset}
+          primaryReload
           secondaryLabel="Go home"
-          secondaryAction={() => {
-            window.location.href = "/";
-          }}
+          secondaryHref="/"
         />
       }
     />
