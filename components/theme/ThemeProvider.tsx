@@ -10,12 +10,13 @@ import {
 
 export type Theme =
   | "dark"
-  | "light"
-  | "system";
+  | "light";
 
 type ThemeContextType = {
   theme: Theme;
-  setTheme: (theme: Theme) => void;
+  setTheme: (
+    theme: Theme,
+  ) => void;
 };
 
 const ThemeContext =
@@ -38,14 +39,15 @@ export function ThemeProvider({
     const savedTheme =
       window.localStorage.getItem(
         STORAGE_KEY,
-      ) as Theme | null;
+      );
 
     if (
       savedTheme === "dark" ||
-      savedTheme === "light" ||
-      savedTheme === "system"
+      savedTheme === "light"
     ) {
-      setThemeState(savedTheme);
+      setThemeState(
+        savedTheme,
+      );
     }
   }, []);
 
@@ -53,18 +55,30 @@ export function ThemeProvider({
     const root =
       document.documentElement;
 
-    root.dataset.theme = theme;
+    root.dataset.theme =
+      theme;
+
+    root.style.colorScheme =
+      theme;
   }, [theme]);
 
   const setTheme = (
     nextTheme: Theme,
   ) => {
-    setThemeState(nextTheme);
+    setThemeState(
+      nextTheme,
+    );
 
     window.localStorage.setItem(
       STORAGE_KEY,
       nextTheme,
     );
+
+    document.documentElement.dataset.theme =
+      nextTheme;
+
+    document.documentElement.style.colorScheme =
+      nextTheme;
   };
 
   return (
@@ -81,7 +95,9 @@ export function ThemeProvider({
 
 export function useTheme() {
   const context =
-    useContext(ThemeContext);
+    useContext(
+      ThemeContext,
+    );
 
   if (!context) {
     throw new Error(
