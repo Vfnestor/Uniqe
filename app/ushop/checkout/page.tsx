@@ -5,16 +5,16 @@ import { useEffect, useMemo, useState } from "react";
 
 import { useLanguage } from "@/components/i18n/LanguageProvider";
 import { ushopProducts } from "@/components/ushop/products";
+import {
+  createOrderId,
+  saveOrder,
+  type UShopOrder,
+} from "@/components/ushop/order";
 
 import "@/components/ushop/checkout.css";
 
 type CartItem = {
   productId: string;
-  quantity: number;
-};
-
-type CartProductItem = {
-  product: (typeof ushopProducts)[number];
   quantity: number;
 };
 
@@ -29,6 +29,11 @@ type CheckoutForm = {
   postalCode: string;
 };
 
+type CartProduct = {
+  product: (typeof ushopProducts)[number];
+  quantity: number;
+};
+
 const CART_KEY = "uniqe-cart";
 const CHECKOUT_KEY = "uniqe-checkout-draft";
 
@@ -37,21 +42,34 @@ const DISCOUNT_RATE = 0.1;
 
 const SHIPPING_FEE = 12;
 
+const initialForm: CheckoutForm = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  country: "",
+  city: "",
+  address: "",
+  postalCode: "",
+};
+
 function readCart(): CartItem[] {
   if (typeof window === "undefined") {
     return [];
   }
 
   try {
-    const raw = window.localStorage.getItem(
-      CART_KEY,
-    );
+    const raw =
+      window.localStorage.getItem(
+        CART_KEY,
+      );
 
     if (!raw) {
       return [];
     }
 
-    const parsed: unknown = JSON.parse(raw);
+    const parsed: unknown =
+      JSON.parse(raw);
 
     if (!Array.isArray(parsed)) {
       return [];
@@ -59,12 +77,18 @@ function readCart(): CartItem[] {
 
     return parsed
       .filter((item): item is CartItem => {
-        if (!item || typeof item !== "object") {
+        if (
+          !item ||
+          typeof item !== "object"
+        ) {
           return false;
         }
 
         const candidate =
-          item as Record<string, unknown>;
+          item as Record<
+            string,
+            unknown
+          >;
 
         return (
           typeof candidate.productId ===
@@ -94,13 +118,16 @@ function formatPrice(
   currency: string,
   isPersian: boolean,
 ) {
-  const formatted = new Intl.NumberFormat(
-    isPersian ? "fa-IR" : "en-US",
-    {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 2,
-    },
-  ).format(value);
+  const formatted =
+    new Intl.NumberFormat(
+      isPersian
+        ? "fa-IR"
+        : "en-US",
+      {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+      },
+    ).format(value);
 
   if (currency === "USD") {
     return `$${formatted}`;
@@ -109,28 +136,20 @@ function formatPrice(
   return `${formatted} ${currency}`;
 }
 
-const initialForm: CheckoutForm = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  phone: "",
-  country: "",
-  city: "",
-  address: "",
-  postalCode: "",
-};
-
 export default function CheckoutPage() {
-  const { language } = useLanguage();
+  const { language } =
+    useLanguage();
 
-  const isPersian = language === "fa";
+  const isPersian =
+    language === "fa";
 
-  const [cart, setCart] = useState<CartItem[]>(
-    [],
-  );
+  const [cart, setCart] =
+    useState<CartItem[]>([]);
 
   const [form, setForm] =
-    useState<CheckoutForm>(initialForm);
+    useState<CheckoutForm>(
+      initialForm,
+    );
 
   const [discountCode, setDiscountCode] =
     useState("");
@@ -141,65 +160,24 @@ export default function CheckoutPage() {
   const [discountError, setDiscountError] =
     useState(false);
 
-  const [errors, setErrors] = useState<
-    Partial<Record<keyof CheckoutForm, boolean>>
-  >({});
+  const [errors, setErrors] =
+    useState<
+      Partial<
+        Record<
+          keyof CheckoutForm,
+          boolean
+        >
+      >
+    >({});
 
-  const [submitted, setSubmitted] =
+  const [loaded, setLoaded] =
     useState(false);
 
-  const [isLoaded, setIsLoaded] =
+  const [creatingOrder, setCreatingOrder] =
     useState(false);
-
-  useEffect(() => {
-    setCart(readCart());
-
-    try {
-      const raw =
-        window.localStorage.getItem(
-          CHECKOUT_KEY,
-        );
-
-      if (raw) {
-        const parsed = JSON.parse(raw);
-
-        if (
-          parsed &&
-          typeof parsed === "object"
-        ) {
-          setForm((current) => ({
-            ...current,
-            ...(parsed.form ?? {}),
-          }));
-
-          if (
-            typeof parsed.discountCode ===
-            "string"
-          ) {
-            setDiscountCode(
-              parsed.discountCode,
-            );
-
-            if (
-              parsed.discountCode
-                .trim()
-                .toUpperCase() ===
-              DISCOUNT_CODE
-            ) {
-              setDiscountApplied(true);
-            }
-          }
-        }
-      }
-    } catch {
-      // Ignore malformed checkout drafts.
-    }
-
-    setIsLoaded(true);
-  }, []);
 
   const cartProducts =
-    useMemo<CartProductItem[]>(
+    useMemo<CartProduct[]>(
       () =>
         cart
           .map((item) => {
@@ -216,57 +194,53 @@ export default function CheckoutPage() {
 
             return {
               product,
-              quantity: item.quantity,
+              quantity:
+                item.quantity,
             };
           })
           .filter(
             (
               item,
-            ): item is CartProductItem =>
+            ): item is CartProduct =>
               item !== null,
           ),
       [cart],
     );
 
-  const itemCount = useMemo(
-    () =>
-      cartProducts.reduce(
-        (total, item) =>
-          total + item.quantity,
-        0,
-      ),
-    [cartProducts],
-  );
+  const subtotal =
+    useMemo(
+      () =>
+        cartProducts.reduce(
+          (total, item) =>
+            total +
+            item.product.price *
+              item.quantity,
+          0,
+        ),
+      [cartProducts],
+    );
 
-  const subtotal = useMemo(
-    () =>
-      cartProducts.reduce(
-        (total, item) =>
-          total +
-          item.product.price *
-            item.quantity,
-        0,
-      ),
-    [cartProducts],
-  );
+  const requiresShipping =
+    useMemo(
+      () =>
+        cartProducts.some(
+          ({ product }) =>
+            product.fulfillment ===
+            "shipping",
+        ),
+      [cartProducts],
+    );
 
-  const requiresShipping = useMemo(
-    () =>
-      cartProducts.some(
-        ({ product }) =>
-          product.fulfillment ===
-          "shipping",
-      ),
-    [cartProducts],
-  );
+  const shipping =
+    requiresShipping
+      ? SHIPPING_FEE
+      : 0;
 
-  const shipping = requiresShipping
-    ? SHIPPING_FEE
-    : 0;
-
-  const discount = discountApplied
-    ? subtotal * DISCOUNT_RATE
-    : 0;
+  const discount =
+    discountApplied
+      ? subtotal *
+        DISCOUNT_RATE
+      : 0;
 
   const total = Math.max(
     0,
@@ -274,6 +248,65 @@ export default function CheckoutPage() {
       shipping -
       discount,
   );
+
+  useEffect(() => {
+    setCart(readCart());
+
+    try {
+      const raw =
+        window.localStorage.getItem(
+          CHECKOUT_KEY,
+        );
+
+      if (raw) {
+        const parsed =
+          JSON.parse(raw);
+
+        if (
+          parsed &&
+          typeof parsed ===
+            "object"
+        ) {
+          if (
+            parsed.form &&
+            typeof parsed.form ===
+              "object"
+          ) {
+            setForm(
+              (current) => ({
+                ...current,
+                ...parsed.form,
+              }),
+            );
+          }
+
+          if (
+            typeof parsed.discountCode ===
+            "string"
+          ) {
+            setDiscountCode(
+              parsed.discountCode,
+            );
+
+            if (
+              parsed.discountCode
+                .replace(/\s+/g, "")
+                .toUpperCase() ===
+              DISCOUNT_CODE
+            ) {
+              setDiscountApplied(
+                true,
+              );
+            }
+          }
+        }
+      }
+    } catch {
+      // Ignore malformed draft.
+    }
+
+    setLoaded(true);
+  }, []);
 
   const updateField = (
     field: keyof CheckoutForm,
@@ -297,8 +330,6 @@ export default function CheckoutPage() {
         .replace(/\s+/g, "")
         .toUpperCase();
 
-    setDiscountError(false);
-
     if (
       normalized ===
       DISCOUNT_CODE
@@ -306,89 +337,203 @@ export default function CheckoutPage() {
       setDiscountCode(
         DISCOUNT_CODE,
       );
-
-      setDiscountApplied(true);
-
+      setDiscountApplied(
+        true,
+      );
+      setDiscountError(
+        false,
+      );
       return;
     }
 
-    setDiscountApplied(false);
-    setDiscountError(true);
-  };
-
-  const validateForm = () => {
-    const requiredFields: Array<
-      keyof CheckoutForm
-    > = [
-      "firstName",
-      "lastName",
-      "email",
-      "phone",
-      "country",
-      "city",
-      "address",
-      "postalCode",
-    ];
-
-    const nextErrors: Partial<
-      Record<keyof CheckoutForm, boolean>
-    > = {};
-
-    for (const field of requiredFields) {
-      if (!form[field].trim()) {
-        nextErrors[field] = true;
-      }
-    }
-
-    if (
-      form.email.trim() &&
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
-        form.email.trim(),
-      )
-    ) {
-      nextErrors.email = true;
-    }
-
-    setErrors(nextErrors);
-
-    return (
-      Object.keys(nextErrors).length === 0
+    setDiscountApplied(
+      false,
+    );
+    setDiscountError(
+      true,
     );
   };
 
-  const saveCheckoutDraft = () => {
-    if (!validateForm()) {
-      return;
-    }
+  const validateForm =
+    () => {
+      const required: Array<
+        keyof CheckoutForm
+      > = [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "country",
+        "city",
+        "address",
+        "postalCode",
+      ];
 
-    const draft = {
-      form,
-      discountCode:
-        discountApplied
-          ? DISCOUNT_CODE
-          : "",
-      cart,
-      subtotal,
-      shipping,
-      discount,
-      total,
-      savedAt:
-        new Date().toISOString(),
+      const nextErrors: Partial<
+        Record<
+          keyof CheckoutForm,
+          boolean
+        >
+      > = {};
+
+      for (const field of required) {
+        if (
+          !form[field].trim()
+        ) {
+          nextErrors[field] =
+            true;
+        }
+      }
+
+      if (
+        form.email.trim() &&
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+          form.email.trim(),
+        )
+      ) {
+        nextErrors.email =
+          true;
+      }
+
+      setErrors(
+        nextErrors,
+      );
+
+      return (
+        Object.keys(
+          nextErrors,
+        ).length === 0
+      );
     };
 
-    window.localStorage.setItem(
-      CHECKOUT_KEY,
-      JSON.stringify(draft),
-    );
+  const createOrder =
+    () => {
+      if (creatingOrder) {
+        return;
+      }
 
-    setSubmitted(true);
+      if (!validateForm()) {
+        return;
+      }
 
-    window.setTimeout(() => {
-      setSubmitted(false);
-    }, 3000);
-  };
+      setCreatingOrder(
+        true,
+      );
 
-  if (!isLoaded) {
+      const items =
+        cartProducts.map(
+          ({
+            product,
+            quantity,
+          }) => ({
+            productId:
+              product.id,
+            slug:
+              product.slug,
+            name:
+              product.name,
+            nameFa:
+              product.nameFa,
+            quantity,
+            unitPrice:
+              product.price,
+            currency:
+              product.currency,
+            fulfillment:
+              product.fulfillment,
+          }),
+        );
+
+      const currency =
+        cartProducts[0]
+          ?.product.currency ??
+        "USD";
+
+      const order: UShopOrder =
+        {
+          id: createOrderId(),
+
+          createdAt:
+            new Date().toISOString(),
+
+          customer: {
+            firstName:
+              form.firstName.trim(),
+            lastName:
+              form.lastName.trim(),
+            email:
+              form.email.trim(),
+            phone:
+              form.phone.trim(),
+          },
+
+          shipping: {
+            country:
+              form.country.trim(),
+            city:
+              form.city.trim(),
+            address:
+              form.address.trim(),
+            postalCode:
+              form.postalCode.trim(),
+          },
+
+          items,
+
+          subtotal,
+
+          discount,
+
+          shippingFee:
+            shipping,
+
+          total,
+
+          currency,
+
+          orderStatus:
+            "pending",
+
+          paymentStatus:
+            "unpaid",
+
+          discountCode:
+            discountApplied
+              ? DISCOUNT_CODE
+              : undefined,
+        };
+
+      saveOrder(order);
+
+      window.localStorage.setItem(
+        CHECKOUT_KEY,
+        JSON.stringify({
+          form,
+          discountCode:
+            discountApplied
+              ? DISCOUNT_CODE
+              : "",
+          cart,
+          subtotal,
+          shipping,
+          discount,
+          total,
+          savedAt:
+            new Date().toISOString(),
+        }),
+      );
+
+      window.localStorage.removeItem(
+        CART_KEY,
+      );
+
+      window.location.href =
+        `/ushop/payment?order=${encodeURIComponent(
+          order.id,
+        )}`;
+    };
+
+  if (!loaded) {
     return (
       <main className="ushop-checkout-page">
         <div className="ushop-checkout-loading">
@@ -400,11 +545,17 @@ export default function CheckoutPage() {
     );
   }
 
-  if (cartProducts.length === 0) {
+  if (
+    cartProducts.length === 0
+  ) {
     return (
       <main
         className="ushop-checkout-page"
-        dir={isPersian ? "rtl" : "ltr"}
+        dir={
+          isPersian
+            ? "rtl"
+            : "ltr"
+        }
       >
         <div className="ushop-checkout-container">
           <section className="ushop-checkout-empty">
@@ -413,9 +564,8 @@ export default function CheckoutPage() {
             </div>
 
             <span>
-              {isPersian
-                ? "CHECKOUT"
-                : "CHECKOUT"}
+              UShop /
+              CHECKOUT
             </span>
 
             <h1>
@@ -426,8 +576,8 @@ export default function CheckoutPage() {
 
             <p>
               {isPersian
-                ? "برای ادامه تسویه حساب ابتدا محصولی به سبد خرید اضافه کنید."
-                : "Add a product to your cart before continuing to checkout."}
+                ? "برای ادامه ابتدا محصولی به سبد خرید اضافه کنید."
+                : "Add a product to your cart before continuing."}
             </p>
 
             <Link
@@ -451,7 +601,11 @@ export default function CheckoutPage() {
   return (
     <main
       className="ushop-checkout-page"
-      dir={isPersian ? "rtl" : "ltr"}
+      dir={
+        isPersian
+          ? "rtl"
+          : "ltr"
+      }
     >
       <div className="ushop-checkout-container">
         <header className="ushop-checkout-header">
@@ -460,7 +614,9 @@ export default function CheckoutPage() {
             className="ushop-checkout-back"
           >
             <span>
-              {isPersian ? "→" : "←"}
+              {isPersian
+                ? "→"
+                : "←"}
             </span>
 
             {isPersian
@@ -481,14 +637,16 @@ export default function CheckoutPage() {
 
             <p>
               {isPersian
-                ? "اطلاعات سفارش خود را تکمیل کنید تا آماده مرحله بعد شویم."
-                : "Complete your order details and prepare for the next step."}
+                ? "اطلاعات سفارش را تکمیل کنید."
+                : "Complete your order details."}
             </p>
           </div>
 
           <div className="ushop-checkout-steps">
             <div className="active">
-              <strong>01</strong>
+              <strong>
+                01
+              </strong>
 
               <span>
                 {isPersian
@@ -500,7 +658,9 @@ export default function CheckoutPage() {
             <i />
 
             <div>
-              <strong>02</strong>
+              <strong>
+                02
+              </strong>
 
               <span>
                 {isPersian
@@ -512,7 +672,9 @@ export default function CheckoutPage() {
             <i />
 
             <div>
-              <strong>03</strong>
+              <strong>
+                03
+              </strong>
 
               <span>
                 {isPersian
@@ -561,7 +723,6 @@ export default function CheckoutPage() {
                   </span>
 
                   <input
-                    type="text"
                     value={
                       form.firstName
                     }
@@ -573,18 +734,10 @@ export default function CheckoutPage() {
                     }
                     placeholder={
                       isPersian
-                        ? "نام شما"
-                        : "Your first name"
+                        ? "نام"
+                        : "First name"
                     }
                   />
-
-                  {errors.firstName && (
-                    <small>
-                      {isPersian
-                        ? "این فیلد الزامی است."
-                        : "This field is required."}
-                    </small>
-                  )}
                 </label>
 
                 <label
@@ -601,7 +754,6 @@ export default function CheckoutPage() {
                   </span>
 
                   <input
-                    type="text"
                     value={
                       form.lastName
                     }
@@ -613,18 +765,10 @@ export default function CheckoutPage() {
                     }
                     placeholder={
                       isPersian
-                        ? "نام خانوادگی شما"
-                        : "Your last name"
+                        ? "نام خانوادگی"
+                        : "Last name"
                     }
                   />
-
-                  {errors.lastName && (
-                    <small>
-                      {isPersian
-                        ? "این فیلد الزامی است."
-                        : "This field is required."}
-                    </small>
-                  )}
                 </label>
 
                 <label
@@ -637,12 +781,15 @@ export default function CheckoutPage() {
                   <span>
                     {isPersian
                       ? "ایمیل"
-                      : "Email Address"}
+                      : "Email"}
                   </span>
 
                   <input
                     type="email"
-                    value={form.email}
+                    dir="ltr"
+                    value={
+                      form.email
+                    }
                     onChange={(event) =>
                       updateField(
                         "email",
@@ -650,16 +797,7 @@ export default function CheckoutPage() {
                       )
                     }
                     placeholder="you@example.com"
-                    dir="ltr"
                   />
-
-                  {errors.email && (
-                    <small>
-                      {isPersian
-                        ? "ایمیل معتبر وارد کنید."
-                        : "Enter a valid email address."}
-                    </small>
-                  )}
                 </label>
 
                 <label
@@ -672,12 +810,15 @@ export default function CheckoutPage() {
                   <span>
                     {isPersian
                       ? "شماره تماس"
-                      : "Phone Number"}
+                      : "Phone"}
                   </span>
 
                   <input
                     type="tel"
-                    value={form.phone}
+                    dir="ltr"
+                    value={
+                      form.phone
+                    }
                     onChange={(event) =>
                       updateField(
                         "phone",
@@ -685,21 +826,12 @@ export default function CheckoutPage() {
                       )
                     }
                     placeholder="+98 ..."
-                    dir="ltr"
                   />
-
-                  {errors.phone && (
-                    <small>
-                      {isPersian
-                        ? "این فیلد الزامی است."
-                        : "This field is required."}
-                    </small>
-                  )}
                 </label>
               </div>
             </div>
 
-            <div className="ushop-checkout-section-heading shipping-heading">
+            <div className="ushop-checkout-section-heading">
               <div className="ushop-checkout-section-number">
                 02
               </div>
@@ -707,57 +839,19 @@ export default function CheckoutPage() {
               <div>
                 <span>
                   {isPersian
-                    ? "اطلاعات دریافت"
-                    : "DELIVERY INFORMATION"}
+                    ? "اطلاعات ارسال"
+                    : "SHIPPING INFORMATION"}
                 </span>
 
                 <h2>
                   {isPersian
-                    ? "آدرس و ارسال"
-                    : "Address & Delivery"}
+                    ? "آدرس دریافت"
+                    : "Delivery Address"}
                 </h2>
               </div>
             </div>
 
             <div className="ushop-checkout-card">
-              <div className="ushop-checkout-delivery-banner">
-                <div className="ushop-checkout-delivery-icon">
-                  {requiresShipping
-                    ? "◇"
-                    : "✦"}
-                </div>
-
-                <div>
-                  <strong>
-                    {requiresShipping
-                      ? isPersian
-                        ? "ارسال فیزیکی"
-                        : "Physical Shipping"
-                      : isPersian
-                        ? "تحویل دیجیتال / سرویس"
-                        : "Digital / Service Delivery"}
-                  </strong>
-
-                  <p>
-                    {requiresShipping
-                      ? isPersian
-                        ? "این سفارش شامل محصولی است که نیاز به ارسال فیزیکی دارد."
-                        : "Your order contains a product that requires physical shipping."
-                      : isPersian
-                        ? "این سفارش به ارسال فیزیکی نیاز ندارد."
-                        : "This order does not require physical shipping."}
-                  </p>
-                </div>
-
-                <strong className="ushop-checkout-delivery-price">
-                  {requiresShipping
-                    ? `$${SHIPPING_FEE}`
-                    : isPersian
-                      ? "رایگان"
-                      : "FREE"}
-                </strong>
-              </div>
-
               <div className="ushop-checkout-form-grid two">
                 <label
                   className={
@@ -773,8 +867,9 @@ export default function CheckoutPage() {
                   </span>
 
                   <input
-                    type="text"
-                    value={form.country}
+                    value={
+                      form.country
+                    }
                     onChange={(event) =>
                       updateField(
                         "country",
@@ -787,14 +882,6 @@ export default function CheckoutPage() {
                         : "Country"
                     }
                   />
-
-                  {errors.country && (
-                    <small>
-                      {isPersian
-                        ? "این فیلد الزامی است."
-                        : "This field is required."}
-                    </small>
-                  )}
                 </label>
 
                 <label
@@ -811,8 +898,9 @@ export default function CheckoutPage() {
                   </span>
 
                   <input
-                    type="text"
-                    value={form.city}
+                    value={
+                      form.city
+                    }
                     onChange={(event) =>
                       updateField(
                         "city",
@@ -825,14 +913,6 @@ export default function CheckoutPage() {
                         : "City"
                     }
                   />
-
-                  {errors.city && (
-                    <small>
-                      {isPersian
-                        ? "این فیلد الزامی است."
-                        : "This field is required."}
-                    </small>
-                  )}
                 </label>
 
                 <label
@@ -849,7 +929,7 @@ export default function CheckoutPage() {
                   </span>
 
                   <input
-                    type="text"
+                    dir="ltr"
                     value={
                       form.postalCode
                     }
@@ -859,29 +939,16 @@ export default function CheckoutPage() {
                         event.target.value,
                       )
                     }
-                    placeholder={
-                      isPersian
-                        ? "کد پستی"
-                        : "Postal Code"
-                    }
-                    dir="ltr"
+                    placeholder="0000000000"
                   />
-
-                  {errors.postalCode && (
-                    <small>
-                      {isPersian
-                        ? "این فیلد الزامی است."
-                        : "This field is required."}
-                    </small>
-                  )}
                 </label>
 
                 <label
-                  className={
-                    errors.address
-                      ? "has-error full"
-                      : "full"
-                  }
+                  className="full"
+                  style={{
+                    gridColumn:
+                      "1 / -1",
+                  }}
                 >
                   <span>
                     {isPersian
@@ -890,7 +957,9 @@ export default function CheckoutPage() {
                   </span>
 
                   <textarea
-                    value={form.address}
+                    value={
+                      form.address
+                    }
                     onChange={(event) =>
                       updateField(
                         "address",
@@ -900,23 +969,15 @@ export default function CheckoutPage() {
                     placeholder={
                       isPersian
                         ? "آدرس کامل خود را وارد کنید..."
-                        : "Enter your full address..."
+                        : "Enter your complete address..."
                     }
-                    rows={4}
+                    rows={5}
                   />
-
-                  {errors.address && (
-                    <small>
-                      {isPersian
-                        ? "این فیلد الزامی است."
-                        : "This field is required."}
-                    </small>
-                  )}
                 </label>
               </div>
             </div>
 
-            <div className="ushop-checkout-section-heading discount-heading">
+            <div className="ushop-checkout-section-heading">
               <div className="ushop-checkout-section-number">
                 03
               </div>
@@ -931,166 +992,159 @@ export default function CheckoutPage() {
                 <h2>
                   {isPersian
                     ? "کد تخفیف"
-                    : "Promo Code"}
+                    : "Discount Code"}
                 </h2>
               </div>
             </div>
 
             <div className="ushop-checkout-card">
-              <div className="ushop-checkout-promo">
-                <div>
-                  <strong>
-                    {isPersian
-                      ? "کد تخفیف دارید؟"
-                      : "Have a promo code?"}
-                  </strong>
-
-                  <p>
-                    {isPersian
-                      ? "کد خود را وارد کنید تا تخفیف روی سفارش اعمال شود."
-                      : "Enter your code to apply a discount to your order."}
-                  </p>
-                </div>
-
-                <div className="ushop-checkout-promo-input">
-                  <input
-                    type="text"
-                    value={discountCode}
-                    onChange={(event) => {
-                      setDiscountCode(
-                        event.target.value,
-                      );
-
-                      setDiscountError(
-                        false,
-                      );
-
-                      if (
-                        discountApplied
-                      ) {
-                        setDiscountApplied(
-                          false,
-                        );
-                      }
-                    }}
-                    placeholder="UNIQE10"
-                    dir="ltr"
-                    spellCheck={false}
-                  />
-
-                  <button
-                    type="button"
-                    onClick={
-                      applyDiscount
+              <div className="ushop-checkout-discount">
+                <input
+                  value={
+                    discountCode
+                  }
+                  onChange={(event) => {
+                    setDiscountCode(
+                      event.target.value,
+                    );
+                    setDiscountError(
+                      false,
+                    );
+                  }}
+                  onKeyDown={(event) => {
+                    if (
+                      event.key ===
+                      "Enter"
+                    ) {
+                      event.preventDefault();
+                      applyDiscount();
                     }
-                    disabled={
-                      !discountCode.trim()
-                    }
-                  >
-                    {discountApplied
-                      ? "✓"
-                      : isPersian
-                        ? "اعمال"
-                        : "Apply"}
-                  </button>
-                </div>
+                  }}
+                  placeholder={
+                    isPersian
+                      ? "کد تخفیف"
+                      : "Discount code"
+                  }
+                  dir="ltr"
+                />
+
+                <button
+                  type="button"
+                  onClick={
+                    applyDiscount
+                  }
+                >
+                  {isPersian
+                    ? "اعمال"
+                    : "Apply"}
+                </button>
               </div>
 
               {discountApplied && (
-                <p className="ushop-checkout-promo-success">
+                <div className="ushop-checkout-discount-success">
                   ✓{" "}
                   {isPersian
-                    ? "کد UNIQE10 با موفقیت اعمال شد — ۱۰٪ تخفیف"
-                    : "UNIQE10 applied successfully — 10% off"}
-                </p>
+                    ? "کد UNIQE10 اعمال شد — ۱۰٪ تخفیف"
+                    : "UNIQE10 applied — 10% discount"}
+                </div>
               )}
 
               {discountError && (
-                <p className="ushop-checkout-promo-error">
-                  !{" "}
+                <div className="ushop-checkout-discount-error">
                   {isPersian
                     ? "کد تخفیف معتبر نیست."
-                    : "This promo code is not valid."}
-                </p>
+                    : "Invalid discount code."}
+                </div>
               )}
             </div>
+
+            <button
+              type="button"
+              className="ushop-checkout-submit"
+              onClick={
+                createOrder
+              }
+              disabled={
+                creatingOrder
+              }
+            >
+              <span>
+                {creatingOrder
+                  ? isPersian
+                    ? "در حال ساخت سفارش..."
+                    : "Creating order..."
+                  : isPersian
+                    ? "ثبت سفارش و ادامه پرداخت"
+                    : "Create Order & Continue"}
+              </span>
+
+              <strong>
+                →
+              </strong>
+            </button>
           </section>
 
           <aside className="ushop-checkout-summary">
-            <div className="ushop-checkout-summary-glow" />
-
             <div className="ushop-checkout-summary-inner">
-              <div className="ushop-checkout-summary-heading">
-                <div>
-                  <span>
-                    {isPersian
-                      ? "خلاصه سفارش"
-                      : "ORDER SUMMARY"}
-                  </span>
+              <div className="ushop-checkout-summary-top">
+                <span>
+                  {isPersian
+                    ? "خلاصه سفارش"
+                    : "ORDER SUMMARY"}
+                </span>
 
-                  <h2>
-                    {isPersian
-                      ? "جزئیات سفارش"
-                      : "Order Details"}
-                  </h2>
-                </div>
-
-                <div className="ushop-checkout-summary-logo">
-                  U
-                </div>
+                <strong>
+                  {cartProducts.length}
+                </strong>
               </div>
 
-              <div className="ushop-checkout-summary-products">
+              <div className="ushop-checkout-items">
                 {cartProducts.map(
                   ({
                     product,
                     quantity,
-                  }) => {
-                    const name =
-                      isPersian
-                        ? product.nameFa
-                        : product.name;
-
-                    return (
-                      <div
-                        className="ushop-checkout-summary-product"
-                        key={product.id}
-                      >
-                        <div className="ushop-checkout-summary-product-icon">
-                          {product.icon}
-                        </div>
-
-                        <div className="ushop-checkout-summary-product-info">
-                          <strong>
-                            {name}
-                          </strong>
-
-                          <span>
-                            × {quantity}
-                          </span>
-                        </div>
-
-                        <strong>
-                          {formatPrice(
-                            product.price *
-                              quantity,
-                            product.currency,
-                            isPersian,
-                          )}
-                        </strong>
+                  }) => (
+                    <div
+                      className="ushop-checkout-item"
+                      key={
+                        product.id
+                      }
+                    >
+                      <div className="ushop-checkout-item-icon">
+                        {product.icon}
                       </div>
-                    );
-                  },
+
+                      <div className="ushop-checkout-item-info">
+                        <strong>
+                          {isPersian
+                            ? product.nameFa
+                            : product.name}
+                        </strong>
+
+                        <span>
+                          ×{" "}
+                          {quantity}
+                        </span>
+                      </div>
+
+                      <b>
+                        {formatPrice(
+                          product.price *
+                            quantity,
+                          product.currency,
+                          isPersian,
+                        )}
+                      </b>
+                    </div>
+                  ),
                 )}
               </div>
-
-              <div className="ushop-checkout-summary-divider" />
 
               <div className="ushop-checkout-summary-lines">
                 <div>
                   <span>
                     {isPersian
-                      ? "جمع محصولات"
+                      ? "جمع جزء"
                       : "Subtotal"}
                   </span>
 
@@ -1111,24 +1165,24 @@ export default function CheckoutPage() {
                   </span>
 
                   <strong>
-                    {shipping > 0
-                      ? formatPrice(
+                    {shipping === 0
+                      ? isPersian
+                        ? "رایگان"
+                        : "Free"
+                      : formatPrice(
                           shipping,
                           "USD",
                           isPersian,
-                        )
-                      : isPersian
-                        ? "رایگان"
-                        : "FREE"}
+                        )}
                   </strong>
                 </div>
 
-                {discountApplied && (
+                {discount > 0 && (
                   <div className="discount">
                     <span>
                       {isPersian
-                        ? "تخفیف ۱۰٪"
-                        : "10% Discount"}
+                        ? "تخفیف"
+                        : "Discount"}
                     </span>
 
                     <strong>
@@ -1143,22 +1197,12 @@ export default function CheckoutPage() {
                 )}
               </div>
 
-              <div className="ushop-checkout-summary-divider" />
-
-              <div className="ushop-checkout-summary-total">
-                <div>
-                  <span>
-                    {isPersian
-                      ? "مبلغ نهایی"
-                      : "TOTAL"}
-                  </span>
-
-                  <small>
-                    {isPersian
-                      ? "قبل از پرداخت"
-                      : "Before payment"}
-                  </small>
-                </div>
+              <div className="ushop-checkout-total">
+                <span>
+                  {isPersian
+                    ? "مبلغ نهایی"
+                    : "Final Total"}
+                </span>
 
                 <strong>
                   {formatPrice(
@@ -1169,67 +1213,20 @@ export default function CheckoutPage() {
                 </strong>
               </div>
 
-              <button
-                type="button"
-                className="ushop-checkout-submit"
-                onClick={
-                  saveCheckoutDraft
-                }
-              >
+              <div className="ushop-checkout-secure">
                 <span>
-                  {submitted
-                    ? isPersian
-                      ? "✓ اطلاعات ذخیره شد"
-                      : "✓ Details Saved"
-                    : isPersian
-                      ? "ذخیره و ادامه"
-                      : "Save & Continue"}
+                  ✓
                 </span>
-
-                {!submitted && (
-                  <span className="ushop-checkout-submit-arrow">
-                    {isPersian
-                      ? "←"
-                      : "→"}
-                  </span>
-                )}
-              </button>
-
-              <Link
-                href="/ushop/cart"
-                className="ushop-checkout-edit-cart"
-              >
-                <span>
-                  {isPersian
-                    ? "ویرایش سبد خرید"
-                    : "Edit Cart"}
-                </span>
-
-                <span>↗</span>
-              </Link>
-
-              <div className="ushop-checkout-security">
-                <span>✓</span>
 
                 <p>
                   {isPersian
-                    ? "اطلاعات شما در این مرحله فقط به‌صورت محلی ذخیره می‌شود."
-                    : "Your information is currently saved locally on this device."}
+                    ? "اطلاعات سفارش شما در این مرحله فقط به‌صورت محلی ذخیره می‌شود."
+                    : "Your order information is currently stored locally for this preparation phase."}
                 </p>
               </div>
             </div>
           </aside>
         </div>
-
-        <footer className="ushop-checkout-footer">
-          <span>UNIQE / USHOP</span>
-
-          <p>
-            {isPersian
-              ? "مرحله اول فرآیند سفارش"
-              : "Step one of the ordering experience"}
-          </p>
-        </footer>
       </div>
     </main>
   );
