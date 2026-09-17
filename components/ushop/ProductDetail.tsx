@@ -99,6 +99,21 @@ export default function ProductDetail({
     ? product.featuresFa
     : product.features;
 
+  const fulfillmentLabel = {
+    instant: isPersian
+      ? "تحویل فوری"
+      : "Instant Delivery",
+    shipping: isPersian
+      ? "ارسال فیزیکی"
+      : "Physical Shipping",
+    service: isPersian
+      ? "ارائه خدمات"
+      : "Professional Service",
+    experimental: isPersian
+      ? "تجربی"
+      : "Experimental",
+  }[product.fulfillment];
+
   const isAvailable =
     product.status === "available" &&
     (product.stock === undefined ||
@@ -155,159 +170,367 @@ export default function ProductDetail({
   };
 
   return (
-    <main className="product-detail-page">
+    <main
+      className="product-detail-page"
+      dir={isPersian ? "rtl" : "ltr"}
+    >
       <div className="product-detail-container">
         <Link
           href="/ushop"
           className="product-back-link"
         >
+          <span aria-hidden="true">
+            {isPersian ? "→" : "←"}
+          </span>
+
           {isPersian
-            ? "← بازگشت به UShop"
-            : "← Back to UShop"}
+            ? "بازگشت به فروشگاه"
+            : "Back to UShop"}
         </Link>
 
-        <section className="product-detail">
-          <div className="product-detail-visual">
-            <div className="product-detail-icon">
-              {product.icon}
+        <section className="product-hero">
+          <div className="product-showcase">
+            <div className="product-showcase-grid" />
+
+            <div className="product-showcase-orbit product-showcase-orbit-one" />
+            <div className="product-showcase-orbit product-showcase-orbit-two" />
+
+            <div className="product-showcase-glow" />
+
+            <div className="product-showcase-top">
+              <span>
+                {isPersian
+                  ? "محصول"
+                  : "PRODUCT"}
+              </span>
+
+              <strong>
+                {product.number}
+              </strong>
             </div>
 
-            <span className="product-detail-number">
-              {product.number}
-            </span>
-          </div>
+            <div className="product-showcase-card">
+              <div className="product-showcase-icon">
+                {product.icon}
+              </div>
 
-          <div className="product-detail-content">
-            <div className="product-detail-meta">
+              <div className="product-showcase-card-name">
+                {name}
+              </div>
+
+              <div className="product-showcase-card-label">
+                UNIQE / USHOP
+              </div>
+            </div>
+
+            <div className="product-showcase-bottom">
               <span>{category}</span>
 
               <span
-                className={`product-detail-status ${
-                  product.status
-                }`}
+                className={`product-status-dot ${product.status}`}
               >
+                <i />
+                {status}
+              </span>
+            </div>
+          </div>
+
+          <div className="product-main-content">
+            <div className="product-meta-row">
+              <span className="product-category-pill">
+                {category}
+              </span>
+
+              <span
+                className={`product-status-pill ${product.status}`}
+              >
+                <i />
+
                 {status}
               </span>
             </div>
 
-            <h1>{name}</h1>
+            <div className="product-title-wrap">
+              <span className="product-kicker">
+                {isPersian
+                  ? `محصول ${product.number}`
+                  : `PRODUCT ${product.number}`}
+              </span>
 
-            <p className="product-detail-description">
+              <h1>{name}</h1>
+            </div>
+
+            <p className="product-description">
               {description}
             </p>
 
-            <div className="product-detail-price">
-              {priceLabel}
-            </div>
-
-            <div className="product-detail-info">
-              <div>
+            <div className="product-purchase-card">
+              <div className="product-price-block">
                 <span>
                   {isPersian
-                    ? "وضعیت"
-                    : "Status"}
-                </span>
-
-                <strong>{status}</strong>
-              </div>
-
-              <div>
-                <span>
-                  {isPersian
-                    ? "نوع ارائه"
-                    : "Fulfillment"}
+                    ? "قیمت"
+                    : "Price"}
                 </span>
 
                 <strong>
-                  {product.fulfillment}
+                  {priceLabel}
                 </strong>
               </div>
 
-              {product.stock !== undefined && (
-                <div>
+              <div className="product-purchase-divider" />
+
+              <div className="product-purchase-action">
+                <button
+                  type="button"
+                  className="product-add-button"
+                  disabled={!isAvailable}
+                  onClick={addToCart}
+                >
                   <span>
-                    {isPersian
-                      ? "موجودی"
-                      : "Stock"}
+                    {!isAvailable
+                      ? isPersian
+                        ? "در حال حاضر قابل خرید نیست"
+                        : "Currently Unavailable"
+                      : addedToCart
+                        ? isPersian
+                          ? "✓ به سبد اضافه شد"
+                          : "✓ Added to Cart"
+                        : isPersian
+                          ? "افزودن به سبد خرید"
+                          : "Add to Cart"}
                   </span>
 
-                  <strong>
-                    {product.stock}
-                  </strong>
-                </div>
-              )}
-
-              {product.sku && (
-                <div>
-                  <span>SKU</span>
-
-                  <strong>{product.sku}</strong>
-                </div>
-              )}
-            </div>
-
-            <div className="product-detail-actions">
-              <button
-                type="button"
-                className="product-add-button"
-                disabled={!isAvailable}
-                onClick={addToCart}
-              >
-                {!isAvailable
-                  ? isPersian
-                    ? "در حال حاضر قابل خرید نیست"
-                    : "Currently unavailable"
-                  : addedToCart
-                    ? isPersian
-                      ? "✓ به سبد اضافه شد"
-                      : "✓ Added to Cart"
-                    : isPersian
-                      ? "افزودن به سبد خرید"
-                      : "Add to Cart"}
-              </button>
-
-              {addedToCart && (
-                <Link
-                  href="/ushop/cart"
-                  className="product-cart-link"
-                >
-                  {isPersian
-                    ? "مشاهده سبد خرید"
-                    : "View Cart"}
-                </Link>
-              )}
-
-              <Link
-                href="/ushop"
-                className="product-explore-button"
-              >
-                {isPersian
-                  ? "مشاهده محصولات"
-                  : "Explore Products"}
-              </Link>
-            </div>
-
-            {features.length > 0 && (
-              <div className="product-features">
-                <h2>
-                  {isPersian
-                    ? "ویژگی‌ها"
-                    : "Features"}
-                </h2>
-
-                <ul>
-                  {features.map(
-                    (feature, index) => (
-                      <li key={index}>
-                        <span>✓</span>
-                        <span>{feature}</span>
-                      </li>
-                    ),
+                  {isAvailable && (
+                    <span className="product-button-arrow">
+                      {isPersian ? "←" : "→"}
+                    </span>
                   )}
-                </ul>
+                </button>
+
+                {addedToCart && (
+                  <Link
+                    href="/ushop/cart"
+                    className="product-view-cart"
+                  >
+                    {isPersian
+                      ? "مشاهده سبد خرید"
+                      : "View Cart"}
+                  </Link>
+                )}
               </div>
+            </div>
+
+            <div className="product-trust-row">
+              <div>
+                <span className="product-trust-icon">
+                  ✓
+                </span>
+
+                <span>
+                  {isPersian
+                    ? "تجربه خرید امن"
+                    : "Secure Experience"}
+                </span>
+              </div>
+
+              <div>
+                <span className="product-trust-icon">
+                  ◇
+                </span>
+
+                <span>
+                  {isPersian
+                    ? "بخشی از اکوسیستم Uniqe"
+                    : "Part of Uniqe Ecosystem"}
+                </span>
+              </div>
+
+              <div>
+                <span className="product-trust-icon">
+                  ↗
+                </span>
+
+                <span>
+                  {isPersian
+                    ? "آماده توسعه"
+                    : "Built to Evolve"}
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="product-information">
+          <div className="product-section-intro">
+            <span className="product-section-number">
+              01
+            </span>
+
+            <div>
+              <span className="product-section-label">
+                {isPersian
+                  ? "اطلاعات محصول"
+                  : "PRODUCT INFORMATION"}
+              </span>
+
+              <h2>
+                {isPersian
+                  ? "جزئیات محصول"
+                  : "Product Details"}
+              </h2>
+            </div>
+          </div>
+
+          <div className="product-info-grid">
+            <div className="product-info-card">
+              <span>
+                {isPersian
+                  ? "وضعیت"
+                  : "STATUS"}
+              </span>
+
+              <strong>{status}</strong>
+
+              <small>
+                {isPersian
+                  ? "وضعیت فعلی محصول"
+                  : "Current product availability"}
+              </small>
+            </div>
+
+            <div className="product-info-card">
+              <span>
+                {isPersian
+                  ? "نوع ارائه"
+                  : "FULFILLMENT"}
+              </span>
+
+              <strong>
+                {fulfillmentLabel}
+              </strong>
+
+              <small>
+                {isPersian
+                  ? "روش دریافت محصول"
+                  : "How the product is delivered"}
+              </small>
+            </div>
+
+            <div className="product-info-card">
+              <span>
+                {isPersian
+                  ? "موجودی"
+                  : "STOCK"}
+              </span>
+
+              <strong>
+                {product.stock !== undefined
+                  ? product.stock
+                  : "∞"}
+              </strong>
+
+              <small>
+                {product.stock !== undefined
+                  ? isPersian
+                    ? "واحد موجود"
+                    : "Units available"
+                  : isPersian
+                    ? "بدون محدودیت موجودی"
+                    : "No stock limit"}
+              </small>
+            </div>
+
+            <div className="product-info-card">
+              <span>SKU</span>
+
+              <strong>
+                {product.sku ?? "—"}
+              </strong>
+
+              <small>
+                {isPersian
+                  ? "شناسه محصول"
+                  : "Product identifier"}
+              </small>
+            </div>
+          </div>
+        </section>
+
+        <section className="product-features-section">
+          <div className="product-section-intro">
+            <span className="product-section-number">
+              02
+            </span>
+
+            <div>
+              <span className="product-section-label">
+                {isPersian
+                  ? "ویژگی‌ها"
+                  : "CAPABILITIES"}
+              </span>
+
+              <h2>
+                {isPersian
+                  ? "چه چیزی دریافت می‌کنید؟"
+                  : "What you get"}
+              </h2>
+            </div>
+          </div>
+
+          <div className="product-features-grid">
+            {features.map(
+              (feature, index) => (
+                <article
+                  className="product-feature-card"
+                  key={`${feature}-${index}`}
+                >
+                  <div className="product-feature-top">
+                    <span>
+                      {String(index + 1).padStart(
+                        2,
+                        "0",
+                      )}
+                    </span>
+
+                    <span>✦</span>
+                  </div>
+
+                  <p>{feature}</p>
+                </article>
+              ),
             )}
           </div>
+        </section>
+
+        <section className="product-bottom-cta">
+          <div>
+            <span>
+              {isPersian
+                ? "بخشی از دنیای Uniqe"
+                : "PART OF THE UNIQE WORLD"}
+            </span>
+
+            <h2>
+              {isPersian
+                ? "محصولات بیشتری را کشف کنید."
+                : "Discover more from Uniqe."}
+            </h2>
+          </div>
+
+          <Link
+            href="/ushop"
+            className="product-bottom-cta-button"
+          >
+            <span>
+              {isPersian
+                ? "بازگشت به UShop"
+                : "Explore UShop"}
+            </span>
+
+            <span>
+              {isPersian ? "←" : "→"}
+            </span>
+          </Link>
         </section>
       </div>
     </main>
