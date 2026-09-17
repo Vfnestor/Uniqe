@@ -1,0 +1,500 @@
+.ushop-payment-page {
+  min-height: 100vh;
+  padding: 48px 24px 100px;
+  background:
+    radial-gradient(
+      circle at 15% 10%,
+      rgba(255, 255, 255, 0.08),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 85% 80%,
+      rgba(255, 255, 255, 0.05),
+      transparent 28%
+    ),
+    #090909;
+  color: #ffffff;
+}
+
+.ushop-payment-container {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+}
+
+.ushop-payment-header {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 48px;
+  align-items: end;
+  margin-bottom: 48px;
+}
+
+.ushop-payment-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 0.82rem;
+  transition:
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.ushop-payment-back:hover {
+  color: #ffffff;
+  transform: translateX(-3px);
+}
+
+[dir="rtl"] .ushop-payment-back:hover {
+  transform: translateX(3px);
+}
+
+.ushop-payment-header > div > span {
+  display: block;
+  margin-bottom: 12px;
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+}
+
+.ushop-payment-header h1 {
+  margin: 0;
+  font-size: clamp(2.2rem, 5vw, 4.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+.ushop-payment-header p {
+  margin: 16px 0 0;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.92rem;
+}
+
+.ushop-payment-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.75fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.ushop-payment-main,
+.ushop-payment-summary {
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.045);
+  box-shadow:
+    0 30px 90px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(18px);
+}
+
+.ushop-payment-main {
+  min-height: 560px;
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ushop-payment-placeholder {
+  width: min(620px, 100%);
+  text-align: center;
+}
+
+.ushop-payment-placeholder-icon {
+  width: 92px;
+  height: 92px;
+  margin: 0 auto 28px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  font-size: 2rem;
+  font-weight: 900;
+}
+
+.ushop-payment-placeholder > span {
+  display: block;
+  margin-bottom: 16px;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+}
+
+.ushop-payment-placeholder h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+}
+
+.ushop-payment-placeholder p {
+  max-width: 570px;
+  margin: 20px auto 0;
+  color: rgba(255, 255, 255, 0.57);
+  line-height: 1.9;
+  font-size: 0.9rem;
+}
+
+.ushop-payment-status {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.ushop-payment-status div {
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.035);
+  text-align: left;
+}
+
+[dir="rtl"] .ushop-payment-status div {
+  text-align: right;
+}
+
+.ushop-payment-status span,
+.ushop-payment-status strong {
+  display: block;
+}
+
+.ushop-payment-status span {
+  margin-bottom: 8px;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.7rem;
+}
+
+.ushop-payment-status strong {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.ushop-payment-action {
+  width: 100%;
+  min-height: 58px;
+  margin-top: 26px;
+  border: 1px solid #ffffff;
+  border-radius: 16px;
+  background: #ffffff;
+  color: #090909;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 850;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    opacity 180ms ease;
+}
+
+.ushop-payment-action:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.ushop-payment-action:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.ushop-payment-message {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.055);
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.76rem;
+  line-height: 1.7;
+}
+
+.ushop-payment-summary {
+  position: sticky;
+  top: 24px;
+  padding: 26px;
+}
+
+.ushop-payment-summary > span {
+  display: block;
+  margin-bottom: 20px;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+}
+
+.ushop-payment-order-id,
+.ushop-payment-customer {
+  padding: 18px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.ushop-payment-order-id small,
+.ushop-payment-customer small {
+  display: block;
+  margin-bottom: 8px;
+  color: rgba(255, 255, 255, 0.38);
+  font-size: 0.68rem;
+}
+
+.ushop-payment-order-id strong {
+  display: block;
+  overflow-wrap: anywhere;
+  color: #ffffff;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+}
+
+.ushop-payment-customer strong,
+.ushop-payment-customer span {
+  display: block;
+}
+
+.ushop-payment-customer strong {
+  font-size: 0.9rem;
+}
+
+.ushop-payment-customer span {
+  margin-top: 5px;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.73rem;
+  overflow-wrap: anywhere;
+}
+
+.ushop-payment-products {
+  padding: 18px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.ushop-payment-products div {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  font-size: 0.74rem;
+}
+
+.ushop-payment-products span {
+  color: rgba(255, 255, 255, 0.58);
+  line-height: 1.5;
+}
+
+.ushop-payment-products strong {
+  flex: none;
+  font-size: 0.72rem;
+}
+
+.ushop-payment-total {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.13);
+}
+
+.ushop-payment-total span {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.74rem;
+}
+
+.ushop-payment-total strong {
+  font-size: 1.35rem;
+}
+
+.ushop-payment-shop-link {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 750;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease;
+}
+
+.ushop-payment-shop-link:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.ushop-payment-empty {
+  min-height: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.045);
+  text-align: center;
+}
+
+.ushop-payment-icon {
+  width: 76px;
+  height: 76px;
+  margin-bottom: 24px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 50%;
+  font-size: 1.8rem;
+  font-weight: 900;
+}
+
+.ushop-payment-empty > span {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+}
+
+.ushop-payment-empty h1 {
+  margin: 16px 0 0;
+  font-size: 2rem;
+}
+
+.ushop-payment-empty p {
+  max-width: 500px;
+  margin: 14px auto 28px;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.8;
+}
+
+.ushop-payment-button {
+  display: inline-flex;
+  min-height: 50px;
+  padding: 0 24px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #090909;
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.ushop-payment-loading {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.ushop-payment-loading span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ffffff;
+  animation: uniqe-payment-loading 900ms infinite alternate;
+}
+
+.ushop-payment-loading span:nth-child(2) {
+  animation-delay: 150ms;
+}
+
+.ushop-payment-loading span:nth-child(3) {
+  animation-delay: 300ms;
+}
+
+@keyframes uniqe-payment-loading {
+  from {
+    opacity: 0.2;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(-6px);
+  }
+}
+
+@media (max-width: 900px) {
+  .ushop-payment-header {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .ushop-payment-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .ushop-payment-summary {
+    position: static;
+  }
+}
+
+@media (max-width: 600px) {
+  .ushop-payment-page {
+    padding: 28px 14px 70px;
+  }
+
+  .ushop-payment-header {
+    margin-bottom: 28px;
+  }
+
+  .ushop-payment-header h1 {
+    font-size: 2.6rem;
+  }
+
+  .ushop-payment-main {
+    min-height: auto;
+    padding: 22px;
+  }
+
+  .ushop-payment-placeholder {
+    padding: 14px 0;
+  }
+
+  .ushop-payment-placeholder-icon {
+    width: 72px;
+    height: 72px;
+    margin-bottom: 22px;
+  }
+
+  .ushop-payment-placeholder h2 {
+    font-size: 1.8rem;
+  }
+
+  .ushop-payment-placeholder p {
+    font-size: 0.8rem;
+    line-height: 1.8;
+  }
+
+  .ushop-payment-status {
+    grid-template-columns: 1fr;
+  }
+
+  .ushop-payment-summary {
+    padding: 22px;
+  }
+
+  .ushop-payment-total strong {
+    font-size: 1.15rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ushop-payment-loading span {
+    animation: none;
+  }
+
+  .ushop-payment-action,
+  .ushop-payment-back,
+  .ushop-payment-shop-link {
+    transition: none;
+  }
+}
