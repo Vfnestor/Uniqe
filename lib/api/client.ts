@@ -1,6 +1,4 @@
-import {
-  apiConfig,
-} from "./config";
+import { apiConfig } from "./config";
 
 import type {
   ApiErrorBody,
@@ -27,7 +25,7 @@ export class ApiError extends Error {
   }
 }
 
-function buildUrl(path: string) {
+function buildUrl(path: string): string {
   if (
     path.startsWith("http://") ||
     path.startsWith("https://")
@@ -55,13 +53,23 @@ function serializeBody(
     return undefined;
   }
 
-  if (
-    typeof body === "string" ||
-    body instanceof FormData ||
-    body instanceof Blob ||
-    body instanceof URLSearchParams ||
-    body instanceof ArrayBuffer
-  ) {
+  if (typeof body === "string") {
+    return body;
+  }
+
+  if (body instanceof FormData) {
+    return body;
+  }
+
+  if (body instanceof Blob) {
+    return body;
+  }
+
+  if (body instanceof URLSearchParams) {
+    return body;
+  }
+
+  if (body instanceof ArrayBuffer) {
     return body;
   }
 
@@ -105,17 +113,25 @@ async function request<T>(
     );
   }
 
+  const fetchOptions: RequestInit = {
+    ...options,
+    body: serializedBody,
+    headers,
+    signal: controller.signal,
+  };
+
+  delete (
+    fetchOptions as RequestInit & {
+      timeout?: number;
+    }
+  ).timeout;
+
   let response: Response;
 
   try {
     response = await fetch(
       buildUrl(path),
-      {
-        ...options,
-        body: serializedBody,
-        headers,
-        signal: controller.signal,
-      }
+      fetchOptions
     );
   } catch (error) {
     if (
