@@ -19,6 +19,7 @@ type CartProductItem = {
 };
 
 const CART_KEY = "uniqe-cart";
+
 const DISCOUNT_CODE = "UNIQE10";
 const DISCOUNT_RATE = 0.1;
 
@@ -62,21 +63,29 @@ function readCart(): CartItem[] {
       return [];
     }
 
-    return parsed.filter((item): item is CartItem => {
-      if (!item || typeof item !== "object") {
-        return false;
-      }
+    return parsed
+      .filter((item): item is CartItem => {
+        if (!item || typeof item !== "object") {
+          return false;
+        }
 
-      const candidate =
-        item as Record<string, unknown>;
+        const candidate =
+          item as Record<string, unknown>;
 
-      return (
-        typeof candidate.productId === "string" &&
-        typeof candidate.quantity === "number" &&
-        Number.isFinite(candidate.quantity) &&
-        candidate.quantity > 0
-      );
-    });
+        return (
+          typeof candidate.productId === "string" &&
+          typeof candidate.quantity === "number" &&
+          Number.isFinite(candidate.quantity) &&
+          candidate.quantity > 0
+        );
+      })
+      .map((item) => ({
+        productId: item.productId,
+        quantity: Math.max(
+          1,
+          Math.floor(item.quantity),
+        ),
+      }));
   } catch {
     return [];
   }
@@ -102,19 +111,12 @@ export default function CartPage() {
 
   const isPersian = language === "fa";
 
-  const [cart, setCart] = useState<CartItem[]>(
-    [],
-  );
-
-  const [discountCode, setDiscountCode] =
-    useState("");
-
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [discountCode, setDiscountCode] = useState("");
   const [discountApplied, setDiscountApplied] =
     useState(false);
-
   const [discountError, setDiscountError] =
     useState(false);
-
   const [isLoaded, setIsLoaded] =
     useState(false);
 
@@ -212,7 +214,10 @@ export default function CartPage() {
         item.productId === productId
           ? {
               ...item,
-              quantity,
+              quantity: Math.max(
+                1,
+                Math.floor(quantity),
+              ),
             }
           : item,
       ),
@@ -241,6 +246,7 @@ export default function CartPage() {
     const normalizedCode =
       discountCode
         .trim()
+        .replace(/\s+/g, "")
         .toUpperCase();
 
     setDiscountError(false);
@@ -249,7 +255,12 @@ export default function CartPage() {
       normalizedCode ===
       DISCOUNT_CODE
     ) {
+      setDiscountCode(
+        DISCOUNT_CODE,
+      );
+
       setDiscountApplied(true);
+
       return;
     }
 
@@ -257,18 +268,45 @@ export default function CartPage() {
     setDiscountError(true);
   };
 
+  const handleDiscountKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+
+      if (
+        !discountApplied &&
+        discountCode.trim()
+      ) {
+        applyDiscount();
+      }
+    }
+  };
+
+  if (!isLoaded) {
+    return (
+      <main className="ushop-cart-page">
+        <div className="ushop-cart-loading">
+          <span />
+          <span />
+          <span />
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main
       className="ushop-cart-page"
       dir={isPersian ? "rtl" : "ltr"}
     >
       <div className="ushop-cart-container">
-        <div className="ushop-cart-header">
-          <div>
+        <header className="ushop-cart-header">
+          <div className="ushop-cart-heading-block">
             <span className="ushop-cart-kicker">
               {isPersian
-                ? "فروشگاه Uniqe"
-                : "UNIQE USHOP"}
+                ? "UNIQE / USHOP"
+                : "UNIQE / USHOP"}
             </span>
 
             <h1>
@@ -280,10 +318,10 @@ export default function CartPage() {
             <p>
               {isPersian
                 ? `${itemCount} محصول در سبد خرید شما`
-                : `${itemCount} item${
+                : `${itemCount} ${
                     itemCount === 1
-                      ? ""
-                      : "s"
+                      ? "item"
+                      : "items"
                   } in your cart`}
             </p>
           </div>
@@ -294,20 +332,28 @@ export default function CartPage() {
               className="ushop-cart-clear"
               onClick={clearCart}
             >
-              {isPersian
-                ? "پاک کردن سبد"
-                : "Clear Cart"}
+              <span className="ushop-cart-clear-icon">
+                ×
+              </span>
+
+              <span>
+                {isPersian
+                  ? "پاک کردن سبد"
+                  : "Clear Cart"}
+              </span>
             </button>
           )}
-        </div>
+        </header>
 
         {cartProducts.length === 0 ? (
           <section className="ushop-cart-empty">
-            <div className="ushop-cart-empty-icon">
-              🛒
+            <div className="ushop-cart-empty-orbit">
+              <div className="ushop-cart-empty-icon">
+                🛒
+              </div>
             </div>
 
-            <span>
+            <span className="ushop-cart-empty-label">
               {isPersian
                 ? "سبد خرید خالی است"
                 : "YOUR CART IS EMPTY"}
@@ -315,308 +361,474 @@ export default function CartPage() {
 
             <h2>
               {isPersian
-                ? "هنوز محصولی انتخاب نکرده‌اید."
-                : "Nothing has been added yet."}
+                ? "هنوز چیزی انتخاب نکرده‌اید."
+                : "Nothing is here yet."}
             </h2>
 
             <p>
               {isPersian
-                ? "محصولات UShop را بررسی کنید و موارد موردنظر خود را به سبد خرید اضافه کنید."
-                : "Explore UShop and add the products you want to your cart."}
+                ? "محصولات UShop را بررسی کنید و تجربه بعدی خود را از اکوسیستم Uniqe انتخاب کنید."
+                : "Explore UShop and discover your next experience from the Uniqe ecosystem."}
             </p>
 
             <Link
               href="/ushop"
               className="ushop-cart-primary-button"
             >
-              {isPersian
-                ? "مشاهده محصولات"
-                : "Explore Products"}
-
               <span>
-                {isPersian ? "←" : "→"}
+                {isPersian
+                  ? "مشاهده محصولات"
+                  : "Explore Products"}
+              </span>
+
+              <span className="ushop-cart-button-arrow">
+                {isPersian
+                  ? "←"
+                  : "→"}
               </span>
             </Link>
           </section>
         ) : (
-          <div className="ushop-cart-layout">
-            <section className="ushop-cart-items">
-              {cartProducts.map(
-                ({
-                  product,
-                  quantity,
-                }) => {
-                  const name = isPersian
-                    ? product.nameFa
-                    : product.name;
-
-                  const category =
-                    isPersian
-                      ? product.categoryLabelFa
-                      : product.categoryLabel;
-
-                  return (
-                    <article
-                      className="ushop-cart-item"
-                      key={product.id}
-                    >
-                      <div className="ushop-cart-product-visual">
-                        <span>
-                          {product.icon}
-                        </span>
-                      </div>
-
-                      <div className="ushop-cart-product-main">
-                        <div className="ushop-cart-product-meta">
-                          <span>
-                            {category}
-                          </span>
-
-                          {product.sku && (
-                            <span>
-                              {product.sku}
-                            </span>
-                          )}
-                        </div>
-
-                        <Link
-                          href={`/ushop/products/${product.slug}`}
-                          className="ushop-cart-product-name"
-                        >
-                          {name}
-                        </Link>
-
-                        <div className="ushop-cart-product-bottom">
-                          <div className="ushop-cart-quantity">
-                            <button
-                              type="button"
-                              onClick={() =>
-                                updateQuantity(
-                                  product.id,
-                                  quantity - 1,
-                                )
-                              }
-                              aria-label={
-                                isPersian
-                                  ? "کاهش تعداد"
-                                  : "Decrease quantity"
-                              }
-                            >
-                              −
-                            </button>
-
-                            <span>
-                              {quantity}
-                            </span>
-
-                            <button
-                              type="button"
-                              onClick={() =>
-                                updateQuantity(
-                                  product.id,
-                                  quantity + 1,
-                                )
-                              }
-                              aria-label={
-                                isPersian
-                                  ? "افزایش تعداد"
-                                  : "Increase quantity"
-                              }
-                            >
-                              +
-                            </button>
-                          </div>
-
-                          <strong>
-                            {formatPrice(
-                              product.price *
-                                quantity,
-                              product.currency,
-                              isPersian,
-                            )}
-                          </strong>
-                        </div>
-                      </div>
-
-                      <button
-                        type="button"
-                        className="ushop-cart-remove"
-                        onClick={() =>
-                          removeItem(
-                            product.id,
-                          )
-                        }
-                      >
-                        {isPersian
-                          ? "حذف"
-                          : "Remove"}
-                      </button>
-                    </article>
-                  );
-                },
-              )}
-            </section>
-
-            <aside className="ushop-cart-summary">
-              <div className="ushop-cart-summary-header">
-                <span>
-                  {isPersian
-                    ? "خلاصه سفارش"
-                    : "ORDER SUMMARY"}
-                </span>
-
-                <strong>
-                  {itemCount}
-                </strong>
-              </div>
-
-              <div className="ushop-cart-summary-lines">
-                <div>
-                  <span>
-                    {isPersian
-                      ? "جمع محصولات"
-                      : "Subtotal"}
-                  </span>
-
-                  <strong>
-                    {formatPrice(
-                      subtotal,
-                      "USD",
-                      isPersian,
-                    )}
-                  </strong>
-                </div>
-
-                {discountApplied && (
-                  <div className="ushop-cart-discount-line">
+          <>
+            <div className="ushop-cart-layout">
+              <section className="ushop-cart-items-section">
+                <div className="ushop-cart-section-header">
+                  <div>
                     <span>
                       {isPersian
-                        ? "تخفیف ۱۰٪"
-                        : "10% Discount"}
+                        ? "محصولات انتخاب‌شده"
+                        : "SELECTED PRODUCTS"}
                     </span>
 
+                    <h2>
+                      {isPersian
+                        ? "آماده برای مرحله بعد"
+                        : "Ready for the next step"}
+                    </h2>
+                  </div>
+
+                  <div className="ushop-cart-count-badge">
+                    {String(itemCount).padStart(
+                      2,
+                      "0",
+                    )}
+                  </div>
+                </div>
+
+                <div className="ushop-cart-items">
+                  {cartProducts.map(
+                    ({
+                      product,
+                      quantity,
+                    }) => {
+                      const name =
+                        isPersian
+                          ? product.nameFa
+                          : product.name;
+
+                      const category =
+                        isPersian
+                          ? product.categoryLabelFa
+                          : product.categoryLabel;
+
+                      const unitPrice =
+                        formatPrice(
+                          product.price,
+                          product.currency,
+                          isPersian,
+                        );
+
+                      const lineTotal =
+                        formatPrice(
+                          product.price *
+                            quantity,
+                          product.currency,
+                          isPersian,
+                        );
+
+                      return (
+                        <article
+                          className="ushop-cart-item"
+                          key={product.id}
+                        >
+                          <Link
+                            href={`/ushop/products/${product.slug}`}
+                            className="ushop-cart-product-visual"
+                            aria-label={name}
+                          >
+                            <div className="ushop-cart-product-grid" />
+
+                            <span className="ushop-cart-product-icon">
+                              {product.icon}
+                            </span>
+
+                            <span className="ushop-cart-product-number">
+                              {product.number}
+                            </span>
+                          </Link>
+
+                          <div className="ushop-cart-product-main">
+                            <div className="ushop-cart-product-top">
+                              <div className="ushop-cart-product-info">
+                                <div className="ushop-cart-product-meta">
+                                  <span>
+                                    {category}
+                                  </span>
+
+                                  {product.sku && (
+                                    <>
+                                      <i />
+
+                                      <span>
+                                        {product.sku}
+                                      </span>
+                                    </>
+                                  )}
+                                </div>
+
+                                <Link
+                                  href={`/ushop/products/${product.slug}`}
+                                  className="ushop-cart-product-name"
+                                >
+                                  {name}
+                                </Link>
+
+                                <span className="ushop-cart-product-unit-price">
+                                  {isPersian
+                                    ? `قیمت واحد: ${unitPrice}`
+                                    : `Unit price: ${unitPrice}`}
+                                </span>
+                              </div>
+
+                              <button
+                                type="button"
+                                className="ushop-cart-remove"
+                                onClick={() =>
+                                  removeItem(
+                                    product.id,
+                                  )
+                                }
+                                aria-label={
+                                  isPersian
+                                    ? `حذف ${name}`
+                                    : `Remove ${name}`
+                                }
+                              >
+                                <span>
+                                  ×
+                                </span>
+
+                                <small>
+                                  {isPersian
+                                    ? "حذف"
+                                    : "Remove"}
+                                </small>
+                              </button>
+                            </div>
+
+                            <div className="ushop-cart-product-bottom">
+                              <div className="ushop-cart-quantity">
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    updateQuantity(
+                                      product.id,
+                                      quantity -
+                                        1,
+                                    )
+                                  }
+                                  aria-label={
+                                    isPersian
+                                      ? "کاهش تعداد"
+                                      : "Decrease quantity"
+                                  }
+                                >
+                                  −
+                                </button>
+
+                                <span>
+                                  {quantity}
+                                </span>
+
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    updateQuantity(
+                                      product.id,
+                                      quantity +
+                                        1,
+                                    )
+                                  }
+                                  aria-label={
+                                    isPersian
+                                      ? "افزایش تعداد"
+                                      : "Increase quantity"
+                                  }
+                                >
+                                  +
+                                </button>
+                              </div>
+
+                              <div className="ushop-cart-line-total">
+                                <small>
+                                  {isPersian
+                                    ? "جمع"
+                                    : "Line total"}
+                                </small>
+
+                                <strong>
+                                  {lineTotal}
+                                </strong>
+                              </div>
+                            </div>
+                          </div>
+                        </article>
+                      );
+                    },
+                  )}
+                </div>
+              </section>
+
+              <aside className="ushop-cart-summary">
+                <div className="ushop-cart-summary-glow" />
+
+                <div className="ushop-cart-summary-inner">
+                  <div className="ushop-cart-summary-header">
+                    <div>
+                      <span>
+                        {isPersian
+                          ? "خلاصه سفارش"
+                          : "ORDER SUMMARY"}
+                      </span>
+
+                      <h2>
+                        {isPersian
+                          ? "جزئیات پرداخت"
+                          : "Payment Details"}
+                      </h2>
+                    </div>
+
+                    <div className="ushop-cart-summary-mark">
+                      U
+                    </div>
+                  </div>
+
+                  <div className="ushop-cart-summary-lines">
+                    <div>
+                      <span>
+                        {isPersian
+                          ? "تعداد محصولات"
+                          : "Items"}
+                      </span>
+
+                      <strong>
+                        {itemCount}
+                      </strong>
+                    </div>
+
+                    <div>
+                      <span>
+                        {isPersian
+                          ? "جمع محصولات"
+                          : "Subtotal"}
+                      </span>
+
+                      <strong>
+                        {formatPrice(
+                          subtotal,
+                          "USD",
+                          isPersian,
+                        )}
+                      </strong>
+                    </div>
+
+                    {discountApplied && (
+                      <div className="ushop-cart-discount-line">
+                        <span>
+                          <i>−</i>
+
+                          {isPersian
+                            ? "تخفیف ۱۰٪"
+                            : "10% Discount"}
+                        </span>
+
+                        <strong>
+                          −
+                          {formatPrice(
+                            discount,
+                            "USD",
+                            isPersian,
+                          )}
+                        </strong>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="ushop-cart-divider" />
+
+                  <div className="ushop-cart-total">
+                    <div>
+                      <span>
+                        {isPersian
+                          ? "مبلغ نهایی"
+                          : "TOTAL"}
+                      </span>
+
+                      <small>
+                        {isPersian
+                          ? "قبل از پرداخت نهایی"
+                          : "Before final payment"}
+                      </small>
+                    </div>
+
                     <strong>
-                      −
                       {formatPrice(
-                        discount,
+                        total,
                         "USD",
                         isPersian,
                       )}
                     </strong>
                   </div>
-                )}
 
-                <div className="ushop-cart-total">
-                  <span>
-                    {isPersian
-                      ? "مبلغ نهایی"
-                      : "Total"}
-                  </span>
+                  <div className="ushop-cart-discount">
+                    <label htmlFor="discount-code">
+                      {isPersian
+                        ? "کد تخفیف"
+                        : "PROMO CODE"}
+                    </label>
 
-                  <strong>
-                    {formatPrice(
-                      total,
-                      "USD",
-                      isPersian,
+                    <div className="ushop-cart-discount-input">
+                      <input
+                        id="discount-code"
+                        type="text"
+                        value={discountCode}
+                        onChange={(event) => {
+                          setDiscountCode(
+                            event.target.value,
+                          );
+
+                          setDiscountError(
+                            false,
+                          );
+
+                          if (
+                            discountApplied
+                          ) {
+                            setDiscountApplied(
+                              false,
+                            );
+                          }
+                        }}
+                        onKeyDown={
+                          handleDiscountKeyDown
+                        }
+                        placeholder={
+                          isPersian
+                            ? "UNIQE10"
+                            : "UNIQE10"
+                        }
+                        autoComplete="off"
+                        spellCheck={false}
+                        disabled={
+                          false
+                        }
+                      />
+
+                      <button
+                        type="button"
+                        onClick={
+                          applyDiscount
+                        }
+                        disabled={
+                          !discountCode.trim()
+                        }
+                      >
+                        {discountApplied
+                          ? "✓"
+                          : isPersian
+                            ? "اعمال"
+                            : "Apply"}
+                      </button>
+                    </div>
+
+                    {discountApplied && (
+                      <p className="ushop-cart-discount-success">
+                        <span>✓</span>
+
+                        {isPersian
+                          ? "کد UNIQE10 اعمال شد — ۱۰٪ تخفیف"
+                          : "UNIQE10 applied — 10% off"}
+                      </p>
                     )}
-                  </strong>
-                </div>
-              </div>
 
-              <div className="ushop-cart-discount">
-                <label htmlFor="discount-code">
-                  {isPersian
-                    ? "کد تخفیف"
-                    : "Discount Code"}
-                </label>
+                    {discountError && (
+                      <p className="ushop-cart-discount-error">
+                        <span>!</span>
 
-                <div>
-                  <input
-                    id="discount-code"
-                    type="text"
-                    value={discountCode}
-                    onChange={(event) => {
-                      setDiscountCode(
-                        event.target.value,
-                      );
+                        {isPersian
+                          ? "کد تخفیف معتبر نیست."
+                          : "This promo code is not valid."}
+                      </p>
+                    )}
+                  </div>
 
-                      setDiscountError(
-                        false,
-                      );
-                    }}
-                    placeholder={
-                      isPersian
-                        ? "مثلاً UNIQE10"
-                        : "e.g. UNIQE10"
-                    }
-                    disabled={
-                      discountApplied
-                    }
-                  />
-
-                  <button
-                    type="button"
-                    onClick={
-                      applyDiscount
-                    }
-                    disabled={
-                      discountApplied ||
-                      !discountCode.trim()
-                    }
+                  <Link
+                    href="/ushop/checkout"
+                    className="ushop-cart-checkout"
                   >
-                    {discountApplied
-                      ? isPersian
-                        ? "اعمال شد"
-                        : "Applied"
-                      : isPersian
-                        ? "اعمال"
-                        : "Apply"}
-                  </button>
+                    <span>
+                      {isPersian
+                        ? "ادامه و تسویه حساب"
+                        : "Continue to Checkout"}
+                    </span>
+
+                    <span className="ushop-cart-button-arrow">
+                      {isPersian
+                        ? "←"
+                        : "→"}
+                    </span>
+                  </Link>
+
+                  <Link
+                    href="/ushop"
+                    className="ushop-cart-continue"
+                  >
+                    <span>
+                      {isPersian
+                        ? "ادامه خرید"
+                        : "Continue Shopping"}
+                    </span>
+
+                    <span>
+                      {isPersian
+                        ? "↗"
+                        : "↗"}
+                    </span>
+                  </Link>
+
+                  <div className="ushop-cart-trust">
+                    <span>✓</span>
+
+                    <p>
+                      {isPersian
+                        ? "پرداخت امن • تجربه یکپارچه Uniqe"
+                        : "Secure checkout • Uniqe experience"}
+                    </p>
+                  </div>
                 </div>
+              </aside>
+            </div>
 
-                {discountApplied && (
-                  <p className="ushop-cart-discount-success">
-                    ✓{" "}
-                    {isPersian
-                      ? "کد UNIQE10 با موفقیت اعمال شد — ۱۰٪ تخفیف"
-                      : "UNIQE10 applied successfully — 10% off"}
-                  </p>
-                )}
+            <div className="ushop-cart-bottom-note">
+              <span>UNIQE</span>
 
-                {discountError && (
-                  <p className="ushop-cart-discount-error">
-                    {isPersian
-                      ? "کد تخفیف معتبر نیست."
-                      : "Invalid discount code."}
-                  </p>
-                )}
-              </div>
-
-              <Link
-                href="/ushop/checkout"
-                className="ushop-cart-checkout"
-              >
-                <span>
-                  {isPersian
-                    ? "ادامه و تسویه حساب"
-                    : "Continue to Checkout"}
-                </span>
-
-                <span>
-                  {isPersian ? "←" : "→"}
-                </span>
-              </Link>
-
-              <Link
-                href="/ushop"
-                className="ushop-cart-continue"
-              >
+              <p>
                 {isPersian
-                  ? "ادامه خرید"
-                  : "Continue Shopping"}
-              </Link>
-            </aside>
-          </div>
+                  ? "سبد خرید شما بخشی از تجربه یکپارچه UShop است."
+                  : "Your cart is part of the unified UShop experience."}
+              </p>
+            </div>
+          </>
         )}
       </div>
     </main>
