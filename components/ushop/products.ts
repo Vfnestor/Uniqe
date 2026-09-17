@@ -64,7 +64,7 @@ export type UShopProduct = {
 
 export const ushopProducts: UShopProduct[] = [
   {
-    id: "uniqe-digital-kit",
+    id: "product-001",
     slug: "uniqe-digital-kit",
 
     name: "Uniqe Digital Kit",
@@ -75,29 +75,31 @@ export const ushopProducts: UShopProduct[] = [
     categoryLabelFa: "دیجیتال",
 
     shortDescription:
-      "A curated digital toolkit for creators and builders inside the Uniqe ecosystem.",
+      "A digital toolkit designed for modern creators and builders.",
 
     shortDescriptionFa:
-      "یک مجموعه ابزار دیجیتال برای سازندگان و توسعه‌دهندگان اکوسیستم Uniqe.",
+      "یک مجموعه ابزار دیجیتال برای سازندگان و توسعه‌دهندگان مدرن.",
 
     description:
-      "Uniqe Digital Kit is a demo digital product designed to demonstrate how downloadable products can be sold through UShop.",
+      "Uniqe Digital Kit is a practical digital package designed to help creators, developers, and digital builders start faster and organize their workflow inside the Uniqe ecosystem.",
 
     descriptionFa:
-      "Uniqe Digital Kit یک محصول دیجیتال آزمایشی است که ساختار فروش محصولات قابل دانلود در UShop را نمایش می‌دهد.",
+      "کیت دیجیتال Uniqe یک بسته کاربردی برای سازندگان، توسعه‌دهندگان و فعالان حوزه دیجیتال است که به شما کمک می‌کند سریع‌تر شروع کنید و فرآیند کاری خود را در اکوسیستم Uniqe سازمان‌دهی کنید.",
 
     features: [
-      "Digital delivery",
-      "Instant access",
-      "Reusable resources",
-      "Uniqe ecosystem compatible",
+      "Digital resources",
+      "Creator-focused workflow",
+      "Reusable components",
+      "Uniqe ecosystem compatibility",
+      "Instant digital delivery",
     ],
 
     featuresFa: [
-      "تحویل دیجیتال",
-      "دسترسی فوری",
-      "منابع قابل استفاده مجدد",
+      "منابع دیجیتال",
+      "Workflow مخصوص سازندگان",
+      "کامپوننت‌های قابل استفاده مجدد",
       "سازگار با اکوسیستم Uniqe",
+      "تحویل فوری دیجیتال",
     ],
 
     status: "available",
@@ -109,19 +111,19 @@ export const ushopProducts: UShopProduct[] = [
 
     fulfillment: "instant",
 
-    sku: "U-DIGITAL-001",
+    sku: "U-DIG-001",
 
-    href: "/ushop",
+    href: "/ushop/products/uniqe-digital-kit",
 
     number: "01",
-    icon: "◇",
+    icon: "✦",
 
     featured: true,
     demo: true,
   },
 
   {
-    id: "uniqe-smart-device",
+    id: "product-002",
     slug: "uniqe-smart-device",
 
     name: "Uniqe Smart Device",
@@ -132,29 +134,31 @@ export const ushopProducts: UShopProduct[] = [
     categoryLabelFa: "فیزیکی",
 
     shortDescription:
-      "A conceptual smart device representing the future physical product layer of Uniqe.",
+      "A conceptual smart device designed around the Uniqe ecosystem.",
 
     shortDescriptionFa:
-      "یک محصول مفهومی برای نمایش بخش محصولات فیزیکی آینده Uniqe.",
+      "یک دستگاه هوشمند مفهومی که بر پایه اکوسیستم Uniqe طراحی شده است.",
 
     description:
-      "Uniqe Smart Device is a demo physical product used to model inventory, shipping and physical commerce inside UShop.",
+      "Uniqe Smart Device is a physical product concept designed to connect the digital world of Uniqe with real-world interaction and smart experiences.",
 
     descriptionFa:
-      "Uniqe Smart Device یک محصول فیزیکی آزمایشی برای مدل‌سازی موجودی، ارسال و فروش محصولات فیزیکی در UShop است.",
+      "دستگاه هوشمند Uniqe یک محصول فیزیکی مفهومی است که برای ایجاد ارتباط میان دنیای دیجیتال Uniqe و تجربه‌های هوشمند در دنیای واقعی طراحی شده است.",
 
     features: [
-      "Physical product",
-      "Inventory tracking",
-      "Shipping supported",
-      "Product SKU",
+      "Smart interaction",
+      "Modern hardware concept",
+      "Uniqe ecosystem integration",
+      "Physical delivery",
+      "Designed for future expansion",
     ],
 
     featuresFa: [
-      "محصول فیزیکی",
-      "مدیریت موجودی",
-      "قابل ارسال",
-      "دارای SKU",
+      "تعامل هوشمند",
+      "طراحی سخت‌افزاری مدرن",
+      "یکپارچگی با اکوسیستم Uniqe",
+      "تحویل فیزیکی",
+      "طراحی‌شده برای توسعه در آینده",
     ],
 
     status: "available",
@@ -167,52 +171,54 @@ export const ushopProducts: UShopProduct[] = [
     fulfillment: "shipping",
 
     stock: 24,
-    sku: "U-HARDWARE-001",
+    sku: "U-PHY-001",
 
-    href: "/ushop",
+    href: "/ushop/products/uniqe-smart-device",
 
     number: "02",
-    icon: "□",
+    icon: "◈",
 
     featured: true,
     demo: true,
   },
 
   {
-    id: "uniqe-pro-service",
+    id: "product-003",
     slug: "uniqe-pro-service",
 
     name: "Uniqe Pro Service",
     nameFa: "سرویس حرفه‌ای Uniqe",
 
     category: "service",
-    categoryLabel: "Services",
+    categoryLabel: "Service",
     categoryLabelFa: "خدمات",
 
     shortDescription:
-      "A professional service package designed around the Uniqe digital ecosystem.",
+      "Professional digital services for projects that need an expert layer.",
 
     shortDescriptionFa:
-      "یک بسته خدمات حرفه‌ای برای استفاده در اکوسیستم دیجیتال Uniqe.",
+      "خدمات حرفه‌ای دیجیتال برای پروژه‌هایی که به یک لایه تخصصی نیاز دارند.",
 
     description:
-      "Uniqe Pro Service is a demo service product showing how non-physical services can be offered and purchased through UShop.",
+      "Uniqe Pro Service provides professional support for digital projects, product development, automation, and selected technical workflows within the Uniqe ecosystem.",
 
     descriptionFa:
-      "Uniqe Pro Service یک محصول خدماتی آزمایشی است که نحوه ارائه و خرید خدمات غیر فیزیکی را در UShop نمایش می‌دهد.",
+      "Uniqe Pro Service مجموعه‌ای از خدمات حرفه‌ای برای پروژه‌های دیجیتال، توسعه محصول، اتوماسیون و برخی فرآیندهای فنی در اکوسیستم Uniqe ارائه می‌کند.",
 
     features: [
-      "Professional service",
-      "Scheduled delivery",
-      "Customer support",
-      "Service-based fulfillment",
+      "Professional consultation",
+      "Project support",
+      "Technical workflow review",
+      "Digital product assistance",
+      "Flexible service delivery",
     ],
 
     featuresFa: [
-      "خدمات حرفه‌ای",
-      "ارائه زمان‌بندی‌شده",
-      "پشتیبانی مشتری",
-      "تحویل مبتنی بر خدمات",
+      "مشاوره حرفه‌ای",
+      "پشتیبانی پروژه",
+      "بررسی فرآیندهای فنی",
+      "کمک در توسعه محصول دیجیتال",
+      "ارائه خدمات انعطاف‌پذیر",
     ],
 
     status: "available",
@@ -224,19 +230,18 @@ export const ushopProducts: UShopProduct[] = [
 
     fulfillment: "service",
 
-    sku: "U-SERVICE-001",
+    sku: "U-SRV-001",
 
-    href: "/ushop",
+    href: "/ushop/products/uniqe-pro-service",
 
     number: "03",
-    icon: "↗",
+    icon: "◎",
 
-    featured: true,
     demo: true,
   },
 
   {
-    id: "uniqe-lab-x",
+    id: "product-004",
     slug: "uniqe-lab-x",
 
     name: "Uniqe LAB X",
@@ -247,29 +252,31 @@ export const ushopProducts: UShopProduct[] = [
     categoryLabelFa: "آزمایشی",
 
     shortDescription:
-      "An experimental product concept exploring new commerce experiences.",
+      "An experimental product from the Uniqe LAB.",
 
     shortDescriptionFa:
-      "یک محصول آزمایشی برای بررسی تجربه‌های جدید در تجارت دیجیتال.",
+      "یک محصول آزمایشی از آزمایشگاه Uniqe.",
 
     description:
-      "Uniqe LAB X is an experimental product concept. It is included in the demo catalog to establish a foundation for future experimental products.",
+      "Uniqe LAB X represents an experimental product line where new concepts, technologies, and unconventional ideas can be explored before becoming part of the wider Uniqe ecosystem.",
 
     descriptionFa:
-      "Uniqe LAB X یک محصول آزمایشی است که برای ایجاد زیرساخت محصولات تجربی آینده در کاتالوگ UShop قرار گرفته است.",
+      "Uniqe LAB X نماینده یک خط محصول آزمایشی است که در آن ایده‌ها، فناوری‌ها و مفاهیم جدید پیش از ورود به اکوسیستم اصلی Uniqe مورد بررسی و آزمایش قرار می‌گیرند.",
 
     features: [
-      "Experimental product",
+      "Experimental technology",
+      "LAB research concept",
+      "Early-stage product",
+      "Future ecosystem integration",
       "Limited availability",
-      "Future-ready structure",
-      "LAB ecosystem integration",
     ],
 
     featuresFa: [
-      "محصول آزمایشی",
+      "فناوری آزمایشی",
+      "مفهوم پژوهشی LAB",
+      "محصول در مراحل اولیه",
+      "امکان یکپارچه‌سازی با اکوسیستم آینده",
       "موجودی محدود",
-      "ساختار آماده برای آینده",
-      "اتصال به اکوسیستم LAB",
     ],
 
     status: "coming-soon",
@@ -282,14 +289,13 @@ export const ushopProducts: UShopProduct[] = [
     fulfillment: "experimental",
 
     stock: 10,
-    sku: "U-LAB-001",
+    sku: "U-LAB-X01",
 
-    href: "/ushop",
+    href: "/ushop/products/uniqe-lab-x",
 
     number: "04",
-    icon: "✦",
+    icon: "△",
 
-    featured: false,
     demo: true,
   },
 ];
