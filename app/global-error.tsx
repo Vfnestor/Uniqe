@@ -1,12 +1,8 @@
 "use client";
 
-import {
-  useEffect,
-} from "react";
+import { useEffect } from "react";
 
 import StateShell from "@/components/states/StateShell";
-
-import StateActions from "@/components/states/StateActions";
 
 type GlobalErrorProps = {
   error: Error & {
@@ -33,10 +29,15 @@ export default function GlobalError({
           title="Uniqe needs a restart"
           description="A critical application error occurred. Please try again."
           actions={
-            <StateActions
-              primaryLabel="Restart"
-              primaryAction={reset}
-            />
+            <div className="state-actions">
+              <button
+                type="button"
+                className="button button-primary"
+                onClick={reset}
+              >
+                Restart
+              </button>
+            </div>
           }
         />
       </body>
