@@ -1,0 +1,1188 @@
+.ushop-checkout-page {
+  position: relative;
+  min-height: 100vh;
+  padding: 7rem 0 5rem;
+  overflow: hidden;
+}
+
+.ushop-checkout-page::before {
+  content: "";
+  position: fixed;
+  top: -14rem;
+  left: -12rem;
+  width: 34rem;
+  height: 34rem;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(128, 128, 128, 0.1),
+    transparent 68%
+  );
+  pointer-events: none;
+}
+
+.ushop-checkout-page::after {
+  content: "";
+  position: fixed;
+  right: -15rem;
+  bottom: -13rem;
+  width: 38rem;
+  height: 38rem;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(128, 128, 128, 0.08),
+    transparent 68%
+  );
+  pointer-events: none;
+}
+
+.ushop-checkout-container {
+  position: relative;
+  z-index: 1;
+  width: min(
+    1240px,
+    calc(100% - 48px)
+  );
+  margin: 0 auto;
+}
+
+.ushop-checkout-header {
+  margin-bottom: 3.2rem;
+}
+
+.ushop-checkout-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 2.2rem;
+  color: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-decoration: none;
+  opacity: 0.55;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.ushop-checkout-back:hover {
+  opacity: 1;
+  transform: translateX(-3px);
+}
+
+[dir="rtl"]
+.ushop-checkout-back:hover {
+  transform: translateX(3px);
+}
+
+.ushop-checkout-back span {
+  font-size: 1rem;
+}
+
+.ushop-checkout-heading > span {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.18em;
+  opacity: 0.4;
+}
+
+.ushop-checkout-heading h1 {
+  margin: 0;
+  font-size: clamp(
+    3rem,
+    7vw,
+    6.2rem
+  );
+  line-height: 0.9;
+  letter-spacing: -0.065em;
+  font-weight: 900;
+}
+
+[dir="rtl"]
+.ushop-checkout-heading h1 {
+  letter-spacing: 0;
+}
+
+.ushop-checkout-heading p {
+  max-width: 650px;
+  margin: 1.25rem 0 0;
+  font-size: 0.9rem;
+  line-height: 1.85;
+  opacity: 0.5;
+}
+
+.ushop-checkout-steps {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 13px;
+  margin-top: -45px;
+}
+
+.ushop-checkout-steps > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.35;
+}
+
+.ushop-checkout-steps > div.active {
+  opacity: 1;
+}
+
+.ushop-checkout-steps strong {
+  display: grid;
+  place-items: center;
+  width: 33px;
+  height: 33px;
+  border: 1px solid
+    rgba(128, 128, 128, 0.25);
+  border-radius: 50%;
+  font-size: 0.62rem;
+  font-weight: 850;
+}
+
+.ushop-checkout-steps .active strong {
+  background: currentColor;
+  color: var(--background, #111111);
+}
+
+.ushop-checkout-steps span {
+  font-size: 0.63rem;
+  font-weight: 750;
+}
+
+.ushop-checkout-steps i {
+  width: 30px;
+  height: 1px;
+  background: rgba(
+    128,
+    128,
+    128,
+    0.2
+  );
+}
+
+.ushop-checkout-layout {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1.5fr)
+    minmax(350px, 0.72fr);
+  align-items: start;
+  gap: 42px;
+}
+
+.ushop-checkout-form-area {
+  min-width: 0;
+}
+
+.ushop-checkout-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 17px;
+}
+
+.ushop-checkout-section-heading.shipping-heading {
+  margin-top: 38px;
+}
+
+.ushop-checkout-section-heading.discount-heading {
+  margin-top: 38px;
+}
+
+.ushop-checkout-section-number {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  border: 1px solid
+    rgba(128, 128, 128, 0.2);
+  border-radius: 13px;
+  background: rgba(
+    128,
+    128,
+    128,
+    0.045
+  );
+  font-size: 0.7rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+}
+
+.ushop-checkout-section-heading span {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.63rem;
+  font-weight: 850;
+  letter-spacing: 0.15em;
+  opacity: 0.4;
+}
+
+.ushop-checkout-section-heading h2 {
+  margin: 0;
+  font-size: 1.45rem;
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+}
+
+.ushop-checkout-card {
+  border: 1px solid
+    rgba(128, 128, 128, 0.17);
+  border-radius: 25px;
+  background: linear-gradient(
+    145deg,
+    rgba(128, 128, 128, 0.075),
+    rgba(128, 128, 128, 0.025)
+  );
+  backdrop-filter: blur(22px);
+  overflow: hidden;
+}
+
+.ushop-checkout-form-grid {
+  display: grid;
+  gap: 17px;
+  padding: 24px;
+}
+
+.ushop-checkout-form-grid.two {
+  grid-template-columns: repeat(
+    2,
+    minmax(0, 1fr)
+  );
+}
+
+.ushop-checkout-form-grid label {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 8px;
+}
+
+.ushop-checkout-form-grid label.full {
+  grid-column: 1 / -1;
+}
+
+.ushop-checkout-form-grid label > span {
+  font-size: 0.7rem;
+  font-weight: 750;
+  opacity: 0.55;
+}
+
+.ushop-checkout-form-grid input,
+.ushop-checkout-form-grid textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid
+    rgba(128, 128, 128, 0.18);
+  border-radius: 13px;
+  outline: none;
+  background: rgba(
+    128,
+    128,
+    128,
+    0.035
+  );
+  color: inherit;
+  font: inherit;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.ushop-checkout-form-grid input {
+  height: 50px;
+  padding: 0 14px;
+}
+
+.ushop-checkout-form-grid textarea {
+  min-height: 105px;
+  padding: 13px 14px;
+  resize: vertical;
+}
+
+.ushop-checkout-form-grid input::placeholder,
+.ushop-checkout-form-grid textarea::placeholder {
+  color: currentColor;
+  opacity: 0.27;
+}
+
+.ushop-checkout-form-grid input:focus,
+.ushop-checkout-form-grid textarea:focus {
+  border-color: rgba(
+    128,
+    128,
+    128,
+    0.45
+  );
+  background: rgba(
+    128,
+    128,
+    128,
+    0.07
+  );
+  box-shadow:
+    0 0 0 3px
+      rgba(128, 128, 128, 0.055);
+}
+
+.ushop-checkout-form-grid
+  label.has-error
+  input,
+.ushop-checkout-form-grid
+  label.has-error
+  textarea {
+  border-color: rgba(
+    205,
+    75,
+    75,
+    0.65
+  );
+}
+
+.ushop-checkout-form-grid label small {
+  margin-top: -2px;
+  color: inherit;
+  font-size: 0.65rem;
+  opacity: 0.65;
+}
+
+.ushop-checkout-delivery-banner {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 19px 23px;
+  border-bottom: 1px solid
+    rgba(128, 128, 128, 0.13);
+  background: rgba(
+    128,
+    128,
+    128,
+    0.035
+  );
+}
+
+.ushop-checkout-delivery-icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid
+    rgba(128, 128, 128, 0.2);
+  border-radius: 14px;
+  font-size: 1.15rem;
+}
+
+.ushop-checkout-delivery-banner
+  strong {
+  display: block;
+  font-size: 0.83rem;
+  font-weight: 800;
+}
+
+.ushop-checkout-delivery-banner p {
+  margin: 5px 0 0;
+  font-size: 0.68rem;
+  line-height: 1.6;
+  opacity: 0.45;
+}
+
+.ushop-checkout-delivery-price {
+  white-space: nowrap;
+  font-size: 0.75rem !important;
+  opacity: 0.75;
+}
+
+.ushop-checkout-promo {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(270px, 0.85fr);
+  align-items: center;
+  gap: 25px;
+  padding: 22px 24px;
+}
+
+.ushop-checkout-promo strong {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.ushop-checkout-promo p {
+  margin: 6px 0 0;
+  font-size: 0.7rem;
+  line-height: 1.65;
+  opacity: 0.45;
+}
+
+.ushop-checkout-promo-input {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+.ushop-checkout-promo-input input {
+  min-width: 0;
+  width: 100%;
+  height: 47px;
+  box-sizing: border-box;
+  padding: 0 13px;
+  border: 1px solid
+    rgba(128, 128, 128, 0.2);
+  border-radius: 12px;
+  outline: none;
+  background: rgba(
+    128,
+    128,
+    128,
+    0.04
+  );
+  color: inherit;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 750;
+  letter-spacing: 0.05em;
+}
+
+.ushop-checkout-promo-input button {
+  min-width: 70px;
+  height: 47px;
+  padding: 0 14px;
+  border: 1px solid
+    rgba(128, 128, 128, 0.22);
+  border-radius: 12px;
+  background: rgba(
+    128,
+    128,
+    128,
+    0.1
+  );
+  color: inherit;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    background 180ms ease;
+}
+
+.ushop-checkout-promo-input button:hover:not(
+    :disabled
+  ) {
+  transform: translateY(-1px);
+  background: rgba(
+    128,
+    128,
+    128,
+    0.17
+  );
+}
+
+.ushop-checkout-promo-input button:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.ushop-checkout-promo-success,
+.ushop-checkout-promo-error {
+  margin: 0;
+  padding: 0 24px 20px;
+  font-size: 0.7rem;
+  opacity: 0.72;
+}
+
+.ushop-checkout-promo-error {
+  opacity: 0.7;
+}
+
+.ushop-checkout-summary {
+  position: sticky;
+  top: 105px;
+  min-width: 0;
+  border: 1px solid
+    rgba(128, 128, 128, 0.2);
+  border-radius: 28px;
+  background: linear-gradient(
+    145deg,
+    rgba(128, 128, 128, 0.095),
+    rgba(128, 128, 128, 0.035)
+  );
+  backdrop-filter: blur(28px);
+  overflow: hidden;
+  box-shadow:
+    0 24px 70px
+      rgba(0, 0, 0, 0.065);
+}
+
+.ushop-checkout-summary-glow {
+  position: absolute;
+  top: -12rem;
+  right: -10rem;
+  width: 25rem;
+  height: 25rem;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(128, 128, 128, 0.15),
+    transparent 68%
+  );
+  pointer-events: none;
+}
+
+.ushop-checkout-summary-inner {
+  position: relative;
+  z-index: 1;
+  padding: 26px;
+}
+
+.ushop-checkout-summary-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.ushop-checkout-summary-heading span {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 0.64rem;
+  font-weight: 850;
+  letter-spacing: 0.15em;
+  opacity: 0.4;
+}
+
+.ushop-checkout-summary-heading h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  letter-spacing: -0.04em;
+}
+
+.ushop-checkout-summary-logo {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid
+    rgba(128, 128, 128, 0.22);
+  border-radius: 13px;
+  background: rgba(
+    128,
+    128,
+    128,
+    0.07
+  );
+  font-size: 0.9rem;
+  font-weight: 900;
+}
+
+.ushop-checkout-summary-products {
+  display: grid;
+  gap: 13px;
+  margin-top: 27px;
+}
+
+.ushop-checkout-summary-product {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 11px;
+}
+
+.ushop-checkout-summary-product-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid
+    rgba(128, 128, 128, 0.15);
+  border-radius: 12px;
+  background: rgba(
+    128,
+    128,
+    128,
+    0.045
+  );
+  font-size: 1.15rem;
+}
+
+.ushop-checkout-summary-product-info {
+  min-width: 0;
+}
+
+.ushop-checkout-summary-product-info strong {
+  display: block;
+  overflow: hidden;
+  font-size: 0.74rem;
+  font-weight: 780;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ushop-checkout-summary-product-info span {
+  display: block;
+  margin-top: 3px;
+  font-size: 0.63rem;
+  opacity: 0.4;
+}
+
+.ushop-checkout-summary-product
+  > strong {
+  font-size: 0.74rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.ushop-checkout-summary-divider {
+  height: 1px;
+  margin: 23px 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(128, 128, 128, 0.24),
+    transparent
+  );
+}
+
+.ushop-checkout-summary-lines {
+  display: grid;
+  gap: 13px;
+}
+
+.ushop-checkout-summary-lines > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.ushop-checkout-summary-lines span {
+  font-size: 0.77rem;
+  opacity: 0.53;
+}
+
+.ushop-checkout-summary-lines strong {
+  font-size: 0.77rem;
+  font-weight: 800;
+}
+
+.ushop-checkout-summary-lines
+  .discount
+  span,
+.ushop-checkout-summary-lines
+  .discount
+  strong {
+  opacity: 0.75;
+}
+
+.ushop-checkout-summary-total {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.ushop-checkout-summary-total span {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.65rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  opacity: 0.43;
+}
+
+.ushop-checkout-summary-total small {
+  display: block;
+  font-size: 0.64rem;
+  opacity: 0.36;
+}
+
+.ushop-checkout-summary-total strong {
+  font-size: clamp(
+    1.5rem,
+    3vw,
+    2rem
+  );
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+}
+
+.ushop-checkout-submit {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  width: 100%;
+  min-height: 58px;
+  margin-top: 25px;
+  padding: 0 18px 0 21px;
+  border: 1px solid currentColor;
+  border-radius: 16px;
+  background: currentColor;
+  color: var(--background, #111111);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 850;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    transform 180ms ease,
+    opacity 180ms ease;
+}
+
+.ushop-checkout-submit:hover {
+  transform: translateY(-2px);
+}
+
+.ushop-checkout-submit-arrow {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+
+.ushop-checkout-edit-cart {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 47px;
+  margin-top: 9px;
+  padding: 0 15px;
+  border: 1px solid
+    rgba(128, 128, 128, 0.18);
+  border-radius: 13px;
+  color: inherit;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    background 180ms ease,
+    transform 180ms ease;
+}
+
+.ushop-checkout-edit-cart:hover {
+  transform: translateY(-1px);
+  background: rgba(
+    128,
+    128,
+    128,
+    0.06
+  );
+}
+
+.ushop-checkout-security {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 17px;
+  padding-top: 16px;
+  border-top: 1px solid
+    rgba(128, 128, 128, 0.12);
+}
+
+.ushop-checkout-security > span {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid
+    rgba(128, 128, 128, 0.2);
+  border-radius: 50%;
+  font-size: 0.6rem;
+}
+
+.ushop-checkout-security p {
+  margin: 0;
+  font-size: 0.61rem;
+  line-height: 1.5;
+  opacity: 0.4;
+}
+
+.ushop-checkout-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid
+    rgba(128, 128, 128, 0.11);
+}
+
+.ushop-checkout-footer span {
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  opacity: 0.38;
+}
+
+.ushop-checkout-footer p {
+  margin: 0;
+  font-size: 0.64rem;
+  opacity: 0.33;
+}
+
+.ushop-checkout-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 650px;
+  padding: 50px 25px;
+  border: 1px solid
+    rgba(128, 128, 128, 0.17);
+  border-radius: 30px;
+  background: rgba(
+    128,
+    128,
+    128,
+    0.045
+  );
+  text-align: center;
+}
+
+.ushop-checkout-empty-icon {
+  display: grid;
+  place-items: center;
+  width: 92px;
+  height: 92px;
+  margin-bottom: 25px;
+  border: 1px solid
+    rgba(128, 128, 128, 0.2);
+  border-radius: 27px;
+  background: rgba(
+    128,
+    128,
+    128,
+    0.07
+  );
+  font-size: 2.2rem;
+}
+
+.ushop-checkout-empty > span {
+  margin-bottom: 9px;
+  font-size: 0.65rem;
+  font-weight: 850;
+  letter-spacing: 0.17em;
+  opacity: 0.4;
+}
+
+.ushop-checkout-empty h1 {
+  margin: 0;
+  font-size: clamp(
+    2rem,
+    5vw,
+    3.8rem
+  );
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.ushop-checkout-empty p {
+  max-width: 520px;
+  margin: 17px auto 0;
+  font-size: 0.84rem;
+  line-height: 1.8;
+  opacity: 0.5;
+}
+
+.ushop-checkout-empty-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  min-width: 210px;
+  min-height: 54px;
+  margin-top: 27px;
+  padding: 0 17px 0 21px;
+  border-radius: 15px;
+  background: currentColor;
+  color: var(--background, #111111);
+  font-size: 0.78rem;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.ushop-checkout-empty-button span:last-child {
+  display: grid;
+  place-items: center;
+  width: 29px;
+  height: 29px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+
+.ushop-checkout-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 65vh;
+  gap: 7px;
+}
+
+.ushop-checkout-loading span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.3;
+  animation:
+    checkout-loading
+    900ms
+    infinite
+    ease-in-out;
+}
+
+.ushop-checkout-loading span:nth-child(2) {
+  animation-delay: 120ms;
+}
+
+.ushop-checkout-loading span:nth-child(3) {
+  animation-delay: 240ms;
+}
+
+@keyframes checkout-loading {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.25;
+  }
+
+  50% {
+    transform: translateY(-5px);
+    opacity: 0.8;
+  }
+}
+
+@media (max-width: 1050px) {
+  .ushop-checkout-layout {
+    grid-template-columns:
+      minmax(0, 1.3fr)
+      minmax(320px, 0.7fr);
+    gap: 25px;
+  }
+
+  .ushop-checkout-summary-inner {
+    padding: 22px;
+  }
+
+  .ushop-checkout-promo {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .ushop-checkout-page {
+    padding-top: 6rem;
+  }
+
+  .ushop-checkout-steps {
+    justify-content: flex-start;
+    margin-top: 28px;
+  }
+
+  .ushop-checkout-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .ushop-checkout-summary {
+    position: relative;
+    top: auto;
+  }
+}
+
+@media (max-width: 680px) {
+  .ushop-checkout-page {
+    padding: 5rem 0 3rem;
+  }
+
+  .ushop-checkout-container {
+    width: calc(100% - 24px);
+  }
+
+  .ushop-checkout-header {
+    margin-bottom: 2.3rem;
+  }
+
+  .ushop-checkout-heading h1 {
+    font-size: 3.2rem;
+  }
+
+  .ushop-checkout-heading p {
+    font-size: 0.8rem;
+  }
+
+  .ushop-checkout-steps {
+    gap: 8px;
+  }
+
+  .ushop-checkout-steps i {
+    width: 18px;
+  }
+
+  .ushop-checkout-steps span {
+    display: none;
+  }
+
+  .ushop-checkout-section-heading.shipping-heading,
+  .ushop-checkout-section-heading.discount-heading {
+    margin-top: 29px;
+  }
+
+  .ushop-checkout-card {
+    border-radius: 21px;
+  }
+
+  .ushop-checkout-form-grid.two {
+    grid-template-columns: 1fr;
+  }
+
+  .ushop-checkout-form-grid {
+    padding: 18px;
+    gap: 15px;
+  }
+
+  .ushop-checkout-form-grid label.full {
+    grid-column: auto;
+  }
+
+  .ushop-checkout-delivery-banner {
+    grid-template-columns: 43px minmax(0, 1fr);
+    padding: 17px 18px;
+  }
+
+  .ushop-checkout-delivery-icon {
+    width: 43px;
+    height: 43px;
+  }
+
+  .ushop-checkout-delivery-price {
+    grid-column: 2;
+    justify-self: start;
+    margin-top: -5px;
+  }
+
+  .ushop-checkout-promo {
+    padding: 19px 18px;
+  }
+
+  .ushop-checkout-promo-input {
+    grid-template-columns: 1fr;
+  }
+
+  .ushop-checkout-promo-input button {
+    width: 100%;
+  }
+
+  .ushop-checkout-promo-success,
+  .ushop-checkout-promo-error {
+    padding: 0 18px 17px;
+  }
+
+  .ushop-checkout-summary {
+    border-radius: 22px;
+  }
+
+  .ushop-checkout-summary-inner {
+    padding: 19px;
+  }
+
+  .ushop-checkout-footer {
+    align-items: center;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 430px) {
+  .ushop-checkout-container {
+    width: calc(100% - 16px);
+  }
+
+  .ushop-checkout-heading h1 {
+    font-size: 2.85rem;
+  }
+
+  .ushop-checkout-section-heading h2 {
+    font-size: 1.25rem;
+  }
+
+  .ushop-checkout-section-number {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+  }
+
+  .ushop-checkout-form-grid {
+    padding: 15px;
+  }
+
+  .ushop-checkout-summary-product {
+    grid-template-columns:
+      38px minmax(0, 1fr)
+      auto;
+    gap: 8px;
+  }
+
+  .ushop-checkout-summary-product-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .ushop-checkout-summary-product-info
+    strong {
+    font-size: 0.68rem;
+  }
+
+  .ushop-checkout-summary-total
+    strong {
+    font-size: 1.55rem;
+  }
+
+  .ushop-checkout-steps strong {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media (max-width: 350px) {
+  .ushop-checkout-heading h1 {
+    font-size: 2.55rem;
+  }
+
+  .ushop-checkout-summary-inner {
+    padding: 15px;
+  }
+
+  .ushop-checkout-section-heading {
+    gap: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ushop-checkout-back,
+  .ushop-checkout-submit,
+  .ushop-checkout-edit-cart,
+  .ushop-checkout-loading span {
+    transition: none;
+  }
+
+  .ushop-checkout-loading span {
+    animation: none;
+  }
+}
