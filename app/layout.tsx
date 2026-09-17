@@ -1,49 +1,16 @@
 import type { Metadata } from "next";
 
 import "./globals.css";
-import "./placeholder.css";
 import "./responsive.css";
 import "./animations.css";
 
-import "@/components/ui/ui.css";
-import "@/components/theme/theme.css";
-
-import {
-  ThemeProvider,
-} from "@/components/theme/ThemeProvider";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
+import CommandPaletteGlobal from "@/components/command/CommandPaletteGlobal";
 
 export const metadata: Metadata = {
-  title: {
-    default: "Uniqe",
-    template: "%s | Uniqe",
-  },
-
+  title: "Uniqe",
   description:
-    "Uniqe — a digital ecosystem for apps, web, commerce, education, technology and innovation.",
-
-  keywords: [
-    "Uniqe",
-    "UApps",
-    "UWeb",
-    "UShop",
-    "USchool",
-    "UCore",
-    "LAB",
-    "My U",
-  ],
-
-  applicationName: "Uniqe",
-
-  authors: [
-    {
-      name: "Uniqe",
-    },
-  ],
-
-  robots: {
-    index: true,
-    follow: true,
-  },
+    "Uniqe — A connected digital ecosystem.",
 };
 
 export default function RootLayout({
@@ -52,14 +19,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      data-theme="dark"
-      suppressHydrationWarning
-    >
+    <html lang="en" suppressHydrationWarning>
       <body>
         <ThemeProvider>
           {children}
+          <CommandPaletteGlobal />
         </ThemeProvider>
       </body>
     </html>
