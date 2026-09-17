@@ -126,32 +126,23 @@ export default function AdminShell({
     setMobileOpen,
   ] = useState(false);
 
-  const activePath = useMemo(() => {
-    return pathname || "/admin";
-  }, [pathname]);
+  const activePath = useMemo(
+    () => pathname || "/admin",
+    [pathname],
+  );
 
-  /*
-   * Close the mobile drawer whenever
-   * the route changes.
-   */
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
 
-  /*
-   * Prevent the page behind the drawer
-   * from scrolling on mobile.
-   */
   useEffect(() => {
-    if (!mobileOpen) {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
       document.body.style.removeProperty(
         "overflow",
       );
-
-      return;
     }
-
-    document.body.style.overflow = "hidden";
 
     return () => {
       document.body.style.removeProperty(
@@ -160,9 +151,6 @@ export default function AdminShell({
     };
   }, [mobileOpen]);
 
-  /*
-   * Close drawer with Escape.
-   */
   useEffect(() => {
     if (!mobileOpen) {
       return;
@@ -176,22 +164,18 @@ export default function AdminShell({
       }
     };
 
-    document.addEventListener(
+    window.addEventListener(
       "keydown",
       handleKeyDown,
     );
 
     return () => {
-      document.removeEventListener(
+      window.removeEventListener(
         "keydown",
         handleKeyDown,
       );
     };
   }, [mobileOpen]);
-
-  const closeMobileMenu = () => {
-    setMobileOpen(false);
-  };
 
   const renderNavigation = (
     items: AdminNavItem[],
@@ -208,12 +192,14 @@ export default function AdminShell({
         <Link
           key={item.href}
           href={item.href}
+          onClick={() =>
+            setMobileOpen(false)
+          }
           className={
             isActive
               ? "admin-nav-item admin-nav-item-active"
               : "admin-nav-item"
           }
-          onClick={closeMobileMenu}
         >
           <span className="admin-nav-icon">
             {item.icon}
@@ -225,9 +211,9 @@ export default function AdminShell({
               : item.labelEn}
           </span>
 
-          {isActive ? (
+          {isActive && (
             <span className="admin-nav-active-dot" />
-          ) : null}
+          )}
         </Link>
       );
     });
@@ -242,26 +228,20 @@ export default function AdminShell({
       }
       dir={isRtl ? "rtl" : "ltr"}
     >
-      {/* =====================================================
-          MOBILE OVERLAY
-         ===================================================== */}
-
-      {mobileOpen ? (
+      {mobileOpen && (
         <button
           type="button"
           className="admin-mobile-overlay"
           aria-label={
             isRtl
-              ? "بستن منوی مدیریت"
-              : "Close admin menu"
+              ? "بستن منو"
+              : "Close menu"
           }
-          onClick={closeMobileMenu}
+          onClick={() =>
+            setMobileOpen(false)
+          }
         />
-      ) : null}
-
-      {/* =====================================================
-          SIDEBAR
-         ===================================================== */}
+      )}
 
       <aside
         className={
@@ -269,15 +249,14 @@ export default function AdminShell({
             ? "admin-sidebar admin-sidebar-open"
             : "admin-sidebar"
         }
-        aria-hidden={
-          mobileOpen ? "false" : undefined
-        }
       >
         <div className="admin-sidebar-brand">
           <Link
             href="/admin"
             className="admin-brand"
-            onClick={closeMobileMenu}
+            onClick={() =>
+              setMobileOpen(false)
+            }
           >
             <span className="admin-brand-mark">
               U
@@ -296,7 +275,6 @@ export default function AdminShell({
             </span>
           </Link>
 
-          {/* Mobile close button */}
           <button
             type="button"
             className="admin-sidebar-close"
@@ -305,14 +283,16 @@ export default function AdminShell({
                 ? "بستن منو"
                 : "Close menu"
             }
-            onClick={closeMobileMenu}
+            onClick={() =>
+              setMobileOpen(false)
+            }
           >
             ×
           </button>
         </div>
 
         <div className="admin-sidebar-scroll">
-          <div className="admin-nav-section">
+          <section className="admin-nav-section">
             <span className="admin-nav-heading">
               {isRtl
                 ? "اکوسیستم"
@@ -324,9 +304,9 @@ export default function AdminShell({
                 primaryNavigation,
               )}
             </nav>
-          </div>
+          </section>
 
-          <div className="admin-nav-section">
+          <section className="admin-nav-section">
             <span className="admin-nav-heading">
               {isRtl
                 ? "مدیریت"
@@ -338,9 +318,9 @@ export default function AdminShell({
                 managementNavigation,
               )}
             </nav>
-          </div>
+          </section>
 
-          <div className="admin-nav-section">
+          <section className="admin-nav-section">
             <span className="admin-nav-heading">
               {isRtl
                 ? "سیستم"
@@ -352,7 +332,7 @@ export default function AdminShell({
                 systemNavigation,
               )}
             </nav>
-          </div>
+          </section>
         </div>
 
         <div className="admin-sidebar-footer">
@@ -372,14 +352,11 @@ export default function AdminShell({
         </div>
       </aside>
 
-      {/* =====================================================
-          MAIN
-         ===================================================== */}
-
       <section className="admin-main">
         <header className="admin-topbar">
-          <div className="admin-topbar-start">
-            {/* Mobile hamburger */}
+
+          {/* MOBILE RIGHT SIDE */}
+          <div className="admin-mobile-header">
             <button
               type="button"
               className="admin-mobile-menu"
@@ -400,6 +377,21 @@ export default function AdminShell({
               <span />
             </button>
 
+            <div className="admin-mobile-title">
+              <strong>
+                Uniqe
+              </strong>
+
+              <small>
+                {isRtl
+                  ? "پنل مدیریت"
+                  : "Admin Panel"}
+              </small>
+            </div>
+          </div>
+
+          {/* DESKTOP */}
+          <div className="admin-topbar-start">
             <div className="admin-breadcrumb">
               <span>
                 Uniqe
