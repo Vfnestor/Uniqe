@@ -45,6 +45,29 @@ function buildUrl(path: string) {
   return `${baseUrl}${normalizedPath}`;
 }
 
+function serializeBody(
+  body: unknown
+): BodyInit | undefined {
+  if (
+    body === undefined ||
+    body === null
+  ) {
+    return undefined;
+  }
+
+  if (
+    typeof body === "string" ||
+    body instanceof FormData ||
+    body instanceof Blob ||
+    body instanceof URLSearchParams ||
+    body instanceof ArrayBuffer
+  ) {
+    return body;
+  }
+
+  return JSON.stringify(body);
+}
+
 async function request<T>(
   path: string,
   options: ApiRequestOptions = {}
@@ -55,10 +78,9 @@ async function request<T>(
   const timeout =
     options.timeout ?? apiConfig.timeout;
 
-  const timeoutId =
-    window.setTimeout(() => {
-      controller.abort();
-    }, timeout);
+  const timeoutId = setTimeout(() => {
+    controller.abort();
+  }, timeout);
 
   const headers = new Headers(
     options.headers
@@ -69,12 +91,12 @@ async function request<T>(
     "application/json"
   );
 
-  const body = options.body;
+  const serializedBody =
+    serializeBody(options.body);
 
   if (
-    body !== undefined &&
-    body !== null &&
-    !(body instanceof FormData) &&
+    serializedBody !== undefined &&
+    !(options.body instanceof FormData) &&
     !headers.has("Content-Type")
   ) {
     headers.set(
@@ -90,14 +112,9 @@ async function request<T>(
       buildUrl(path),
       {
         ...options,
+        body: serializedBody,
         headers,
         signal: controller.signal,
-        body:
-          body &&
-          !(body instanceof FormData) &&
-          typeof body !== "string"
-            ? JSON.stringify(body)
-            : body,
       }
     );
   } catch (error) {
@@ -114,7 +131,7 @@ async function request<T>(
       "Unable to connect to the API."
     );
   } finally {
-    window.clearTimeout(timeoutId);
+    clearTimeout(timeoutId);
   }
 
   const contentType =
