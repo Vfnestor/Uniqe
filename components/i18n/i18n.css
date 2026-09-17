@@ -1,0 +1,67 @@
+.language-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+
+  padding: 3px;
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+
+  background: var(--surface);
+
+  box-shadow: var(--shadow-sm);
+}
+
+.language-option {
+  min-width: 34px;
+  height: 28px;
+
+  padding: 0 8px;
+
+  border: 0;
+  border-radius: var(--radius-pill);
+
+  background: transparent;
+
+  color: var(--text-muted);
+
+  font-family: inherit;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+
+  cursor: pointer;
+
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.language-option:hover {
+  color: var(--text-primary);
+}
+
+.language-option.active {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+html[dir="rtl"] {
+  text-align: right;
+}
+
+html[dir="rtl"] body {
+  font-family:
+    "Vazirmatn",
+    "Tahoma",
+    "Segoe UI",
+    sans-serif;
+}
+
+@media (max-width: 640px) {
+  .language-option {
+    min-width: 30px;
+    height: 26px;
+    padding: 0 7px;
+  }
+}
