@@ -551,4 +551,328 @@ export default function PaymentPage() {
                         {shortAddress(
                           selectedOption.address,
                         )}
-                      </strong
+                      </strong>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={copyAddress}
+                    >
+                      {copied
+                        ? isPersian
+                          ? "کپی شد"
+                          : "Copied"
+                        : isPersian
+                          ? "کپی"
+                          : "Copy"}
+                    </button>
+
+                  </div>
+
+                  <div className="ushop-payment-status">
+
+                    <div>
+                      <span>
+                        {isPersian
+                          ? "وضعیت پرداخت"
+                          : "Payment Status"}
+                      </span>
+
+                      <strong>
+                        {statusLabel(
+                          paymentStatus,
+                          isPersian,
+                        )}
+                      </strong>
+                    </div>
+
+                    <div>
+                      <span>
+                        {isPersian
+                          ? "زمان باقی‌مانده"
+                          : "Time Remaining"}
+                      </span>
+
+                      <strong>
+                        {timerText}
+                      </strong>
+                    </div>
+
+                  </div>
+
+                  <button
+                    type="button"
+                    className="ushop-payment-action"
+                    onClick={
+                      simulatePayment
+                    }
+                  >
+                    {isPersian
+                      ? "شبیه‌سازی پرداخت موفق"
+                      : "Simulate Successful Payment"}
+                  </button>
+
+                  <button
+                    type="button"
+                    className="ushop-payment-failure-action"
+                    onClick={
+                      simulateFailure
+                    }
+                  >
+                    {isPersian
+                      ? "شبیه‌سازی پرداخت ناموفق"
+                      : "Simulate Failed Payment"}
+                  </button>
+                </>
+              )}
+
+              {paymentStatus ===
+                "confirming" && (
+                <div className="ushop-payment-status">
+
+                  <div>
+                    <span>
+                      {isPersian
+                        ? "وضعیت"
+                        : "Status"}
+                    </span>
+
+                    <strong>
+                      {statusLabel(
+                        paymentStatus,
+                        isPersian,
+                      )}
+                    </strong>
+                  </div>
+
+                  <div>
+                    <span>
+                      {isPersian
+                        ? "شناسه سفارش"
+                        : "Order ID"}
+                    </span>
+
+                    <strong>
+                      {order.id}
+                    </strong>
+                  </div>
+
+                </div>
+              )}
+
+              {paymentStatus ===
+                "confirmed" && (
+                <div className="ushop-payment-success">
+
+                  <div className="ushop-payment-success-icon">
+                    ✓
+                  </div>
+
+                  <span>
+                    PAYMENT CONFIRMED
+                  </span>
+
+                  <h2>
+                    {isPersian
+                      ? "پرداخت با موفقیت انجام شد"
+                      : "Payment confirmed successfully"}
+                  </h2>
+
+                  <p>
+                    {isPersian
+                      ? "این تراکنش کاملاً آزمایشی بود و هیچ مبلغ واقعی منتقل نشده است."
+                      : "This was a fully simulated transaction. No real funds were transferred."}
+                  </p>
+
+                  <strong>
+                    {order.id}
+                  </strong>
+
+                  <button
+                    type="button"
+                    className="ushop-payment-action"
+                    onClick={resetDemo}
+                  >
+                    {isPersian
+                      ? "اجرای دوباره دمو"
+                      : "Run Demo Again"}
+                  </button>
+
+                </div>
+              )}
+
+              {paymentStatus ===
+                "failed" && (
+                <div className="ushop-payment-success">
+
+                  <div className="ushop-payment-success-icon">
+                    ×
+                  </div>
+
+                  <span>
+                    PAYMENT FAILED
+                  </span>
+
+                  <h2>
+                    {isPersian
+                      ? "پرداخت ناموفق بود"
+                      : "Payment failed"}
+                  </h2>
+
+                  <p>
+                    {isPersian
+                      ? "این فقط شبیه‌سازی است. می‌توانید دوباره تلاش کنید."
+                      : "This is only a simulation. You can try again."}
+                  </p>
+
+                  <button
+                    type="button"
+                    className="ushop-payment-action"
+                    onClick={resetDemo}
+                  >
+                    {isPersian
+                      ? "تلاش دوباره"
+                      : "Try Again"}
+                  </button>
+
+                </div>
+              )}
+
+              {paymentStatus ===
+                "expired" && (
+                <div className="ushop-payment-success">
+
+                  <div className="ushop-payment-success-icon">
+                    !
+                  </div>
+
+                  <span>
+                    PAYMENT EXPIRED
+                  </span>
+
+                  <h2>
+                    {isPersian
+                      ? "مهلت پرداخت تمام شد"
+                      : "Payment expired"}
+                  </h2>
+
+                  <p>
+                    {isPersian
+                      ? "برای ایجاد یک پرداخت آزمایشی جدید، دمو را دوباره اجرا کنید."
+                      : "Run the demo again to create a new simulated payment."}
+                  </p>
+
+                  <button
+                    type="button"
+                    className="ushop-payment-action"
+                    onClick={resetDemo}
+                  >
+                    {isPersian
+                      ? "ایجاد پرداخت جدید"
+                      : "Create New Payment"}
+                  </button>
+
+                </div>
+              )}
+
+            </div>
+          </section>
+
+          <aside className="ushop-payment-summary">
+
+            <span>
+              ORDER SUMMARY
+            </span>
+
+            <div className="ushop-payment-order-id">
+              <small>
+                {isPersian
+                  ? "شناسه سفارش"
+                  : "Order ID"}
+              </small>
+
+              <strong>
+                {order.id}
+              </strong>
+            </div>
+
+            <div className="ushop-payment-products">
+
+              {order.items.map(
+                (item) => (
+                  <div
+                    key={item.productId}
+                  >
+                    <span>
+                      {isPersian
+                        ? item.nameFa
+                        : item.name}
+                      {" × "}
+                      {item.quantity}
+                    </span>
+
+                    <strong>
+                      {formatPrice(
+                        item.unitPrice *
+                          item.quantity,
+                        item.currency,
+                      )}
+                    </strong>
+                  </div>
+                ),
+              )}
+
+            </div>
+
+            <div className="ushop-payment-total">
+
+              <span>
+                {isPersian
+                  ? "مبلغ نهایی"
+                  : "Final Total"}
+              </span>
+
+              <strong>
+                {formatPrice(
+                  order.total,
+                  order.currency,
+                )}
+              </strong>
+
+            </div>
+
+            <div className="ushop-payment-customer">
+
+              <small>
+                {isPersian
+                  ? "مشتری"
+                  : "Customer"}
+              </small>
+
+              <strong>
+                {order.customer.firstName}{" "}
+                {order.customer.lastName}
+              </strong>
+
+              <span>
+                {order.customer.email}
+              </span>
+
+            </div>
+
+            <Link
+              href="/ushop"
+              className="ushop-payment-shop-link"
+            >
+              {isPersian
+                ? "ادامه خرید"
+                : "Continue Shopping"}
+            </Link>
+
+          </aside>
+
+        </div>
+      </div>
+    </main>
+  );
+}
