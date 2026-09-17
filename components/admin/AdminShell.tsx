@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -118,20 +119,79 @@ export default function AdminShell({
     language,
   } = useLanguage();
 
+  const isRtl = language === "fa";
+
   const [
     mobileOpen,
     setMobileOpen,
   ] = useState(false);
 
-  const isRtl = language === "fa";
-
   const activePath = useMemo(() => {
-    if (pathname === "/admin") {
-      return "/admin";
+    return pathname || "/admin";
+  }, [pathname]);
+
+  /*
+   * Close the mobile drawer whenever
+   * the route changes.
+   */
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
+
+  /*
+   * Prevent the page behind the drawer
+   * from scrolling on mobile.
+   */
+  useEffect(() => {
+    if (!mobileOpen) {
+      document.body.style.removeProperty(
+        "overflow",
+      );
+
+      return;
     }
 
-    return pathname;
-  }, [pathname]);
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.removeProperty(
+        "overflow",
+      );
+    };
+  }, [mobileOpen]);
+
+  /*
+   * Close drawer with Escape.
+   */
+  useEffect(() => {
+    if (!mobileOpen) {
+      return;
+    }
+
+    const handleKeyDown = (
+      event: KeyboardEvent,
+    ) => {
+      if (event.key === "Escape") {
+        setMobileOpen(false);
+      }
+    };
+
+    document.addEventListener(
+      "keydown",
+      handleKeyDown,
+    );
+
+    return () => {
+      document.removeEventListener(
+        "keydown",
+        handleKeyDown,
+      );
+    };
+  }, [mobileOpen]);
+
+  const closeMobileMenu = () => {
+    setMobileOpen(false);
+  };
 
   const renderNavigation = (
     items: AdminNavItem[],
@@ -153,9 +213,7 @@ export default function AdminShell({
               ? "admin-nav-item admin-nav-item-active"
               : "admin-nav-item"
           }
-          onClick={() =>
-            setMobileOpen(false)
-          }
+          onClick={closeMobileMenu}
         >
           <span className="admin-nav-icon">
             {item.icon}
@@ -177,30 +235,59 @@ export default function AdminShell({
 
   return (
     <div
-      className="admin-shell"
+      className={
+        isRtl
+          ? "admin-shell admin-shell-rtl"
+          : "admin-shell admin-shell-ltr"
+      }
       dir={isRtl ? "rtl" : "ltr"}
     >
+      {/* =====================================================
+          MOBILE OVERLAY
+         ===================================================== */}
+
+      {mobileOpen ? (
+        <button
+          type="button"
+          className="admin-mobile-overlay"
+          aria-label={
+            isRtl
+              ? "بستن منوی مدیریت"
+              : "Close admin menu"
+          }
+          onClick={closeMobileMenu}
+        />
+      ) : null}
+
+      {/* =====================================================
+          SIDEBAR
+         ===================================================== */}
+
       <aside
         className={
           mobileOpen
             ? "admin-sidebar admin-sidebar-open"
             : "admin-sidebar"
         }
+        aria-hidden={
+          mobileOpen ? "false" : undefined
+        }
       >
         <div className="admin-sidebar-brand">
           <Link
             href="/admin"
             className="admin-brand"
-            onClick={() =>
-              setMobileOpen(false)
-            }
+            onClick={closeMobileMenu}
           >
             <span className="admin-brand-mark">
               U
             </span>
 
             <span className="admin-brand-copy">
-              <strong>Uniqe</strong>
+              <strong>
+                Uniqe
+              </strong>
+
               <small>
                 {isRtl
                   ? "پنل مدیریت"
@@ -208,6 +295,20 @@ export default function AdminShell({
               </small>
             </span>
           </Link>
+
+          {/* Mobile close button */}
+          <button
+            type="button"
+            className="admin-sidebar-close"
+            aria-label={
+              isRtl
+                ? "بستن منو"
+                : "Close menu"
+            }
+            onClick={closeMobileMenu}
+          >
+            ×
+          </button>
         </div>
 
         <div className="admin-sidebar-scroll">
@@ -271,24 +372,14 @@ export default function AdminShell({
         </div>
       </aside>
 
-      {mobileOpen ? (
-        <button
-          type="button"
-          className="admin-sidebar-backdrop"
-          aria-label={
-            isRtl
-              ? "بستن منو"
-              : "Close menu"
-          }
-          onClick={() =>
-            setMobileOpen(false)
-          }
-        />
-      ) : null}
+      {/* =====================================================
+          MAIN
+         ===================================================== */}
 
       <section className="admin-main">
         <header className="admin-topbar">
           <div className="admin-topbar-start">
+            {/* Mobile hamburger */}
             <button
               type="button"
               className="admin-mobile-menu"
@@ -297,6 +388,7 @@ export default function AdminShell({
                   ? "باز کردن منو"
                   : "Open menu"
               }
+              aria-expanded={mobileOpen}
               onClick={() =>
                 setMobileOpen(
                   (value) => !value,
@@ -330,7 +422,9 @@ export default function AdminShell({
               href="/"
               className="admin-view-site"
             >
-              <span>↗</span>
+              <span>
+                ↗
+              </span>
 
               {isRtl
                 ? "مشاهده سایت"
