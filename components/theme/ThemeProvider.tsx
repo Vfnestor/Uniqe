@@ -19,11 +19,12 @@ type ThemeContextType = {
 };
 
 const ThemeContext =
-  createContext<ThemeContextType | undefined>(
-    undefined,
-  );
+  createContext<
+    ThemeContextType | undefined
+  >(undefined);
 
-const STORAGE_KEY = "uniqe-theme";
+const STORAGE_KEY =
+  "uniqe-theme";
 
 export function ThemeProvider({
   children,
@@ -31,7 +32,7 @@ export function ThemeProvider({
   children: ReactNode;
 }) {
   const [theme, setThemeState] =
-    useState<Theme>("system");
+    useState<Theme>("dark");
 
   useEffect(() => {
     const savedTheme =
@@ -55,7 +56,9 @@ export function ThemeProvider({
     root.dataset.theme = theme;
   }, [theme]);
 
-  const setTheme = (nextTheme: Theme) => {
+  const setTheme = (
+    nextTheme: Theme,
+  ) => {
     setThemeState(nextTheme);
 
     window.localStorage.setItem(
