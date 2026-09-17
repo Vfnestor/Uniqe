@@ -5,7 +5,6 @@ import {
 } from "react";
 
 import StateShell from "@/components/states/StateShell";
-import StateActions from "@/components/states/StateActions";
 
 type ErrorPageProps = {
   error: Error & {
@@ -30,12 +29,25 @@ export default function ErrorPage({
       title="We couldn't load this experience"
       description="An unexpected error occurred. You can try again or return to the Uniqe home page."
       actions={
-        <StateActions
-          primaryLabel="Try again"
-          primaryReload
-          secondaryLabel="Go home"
-          secondaryHref="/"
-        />
+        <div className="state-actions">
+          <button
+            type="button"
+            className="button button-primary"
+            onClick={reset}
+          >
+            Try again
+          </button>
+
+          <button
+            type="button"
+            className="button button-secondary"
+            onClick={() => {
+              window.location.href = "/";
+            }}
+          >
+            Go home
+          </button>
+        </div>
       }
     />
   );
