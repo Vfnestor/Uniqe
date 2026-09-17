@@ -4,14 +4,18 @@ import "./globals.css";
 import "./responsive.css";
 import "./animations.css";
 
+import "@/components/theme/theme.css";
+import "@/components/i18n/i18n.css";
+import "@/components/navigation/global-header.css";
+
 import "@/components/notifications/notifications.css";
 import "@/components/favorites/favorites.css";
 import "@/components/states/states.css";
 
-import "@/components/i18n/i18n.css";
-import "@/components/navigation/global-header.css";
+import {
+  ThemeProvider,
+} from "@/components/theme/ThemeProvider";
 
-import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import {
   LanguageProvider,
 } from "@/components/i18n/LanguageProvider";
