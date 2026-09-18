@@ -723,3 +723,110 @@
   }
 }
 
+/* =========================================================
+   STAGGER SYSTEM
+   ========================================================= */
+
+.stagger-group {
+  --stagger-delay: 60ms;
+  --stagger-step: 60ms;
+}
+
+.stagger-group > * {
+  animation-delay: var(--stagger-delay);
+}
+
+.stagger-group > :nth-child(1) {
+  animation-delay: calc(var(--stagger-delay) + var(--stagger-step) * 0);
+}
+
+.stagger-group > :nth-child(2) {
+  animation-delay: calc(var(--stagger-delay) + var(--stagger-step) * 1);
+}
+
+.stagger-group > :nth-child(3) {
+  animation-delay: calc(var(--stagger-delay) + var(--stagger-step) * 2);
+}
+
+.stagger-group > :nth-child(4) {
+  animation-delay: calc(var(--stagger-delay) + var(--stagger-step) * 3);
+}
+
+.stagger-group > :nth-child(5) {
+  animation-delay: calc(var(--stagger-delay) + var(--stagger-step) * 4);
+}
+
+.stagger-group > :nth-child(6) {
+  animation-delay: calc(var(--stagger-delay) + var(--stagger-step) * 5);
+}
+
+.stagger-group > :nth-child(7) {
+  animation-delay: calc(var(--stagger-delay) + var(--stagger-step) * 6);
+}
+
+.stagger-group > :nth-child(8) {
+  animation-delay: calc(var(--stagger-delay) + var(--stagger-step) * 7);
+}
+
+.stagger-group > :nth-child(9) {
+  animation-delay: calc(var(--stagger-delay) + var(--stagger-step) * 8);
+}
+
+.stagger-group > :nth-child(10) {
+  animation-delay: calc(var(--stagger-delay) + var(--stagger-step) * 9);
+}
+
+
+/* =========================================================
+   STAGGER PRESETS
+   ========================================================= */
+
+.stagger-delay-0 {
+  --stagger-delay: 0ms;
+}
+
+.stagger-delay-40 {
+  --stagger-delay: 40ms;
+}
+
+.stagger-delay-60 {
+  --stagger-delay: 60ms;
+}
+
+.stagger-delay-80 {
+  --stagger-delay: 80ms;
+}
+
+.stagger-delay-100 {
+  --stagger-delay: 100ms;
+}
+
+.stagger-step-40 {
+  --stagger-step: 40ms;
+}
+
+.stagger-step-60 {
+  --stagger-step: 60ms;
+}
+
+.stagger-step-80 {
+  --stagger-step: 80ms;
+}
+
+.stagger-step-100 {
+  --stagger-step: 100ms;
+}
+
+
+/* =========================================================
+   STAGGER ACCESSIBILITY
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .stagger-group > * {
+    animation-delay: 0ms !important;
+  }
+}
+
+
+
