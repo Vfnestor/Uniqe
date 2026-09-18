@@ -21,9 +21,7 @@
   background: var(--admin-bg);
   color: var(--admin-text);
 
-  transition:
-    background-color 220ms ease,
-    color 220ms ease;
+  
 }
 
 /* =========================================================
