@@ -121,7 +121,8 @@ export const translations = {
       oneEcosystem: "یک اکوسیستم",
       multiplePossibilities:
         "امکانات متعدد",
-      scroll: "برای کشف بیشتر اسکرول کنید",
+      scroll:
+        "برای کشف بیشتر اسکرول کنید",
     },
 
     common: {
@@ -143,18 +144,10 @@ export const translations = {
       save: "ذخیره",
       search: "جستجو",
       clear: "پاک کردن",
-      noResults: "نتیجه‌ای پیدا نشد",
+      noResults:
+        "نتیجه‌ای پیدا نشد",
     },
 
-    /*
-     * Central translation dictionary.
-     *
-     * Existing pages currently contain many English
-     * strings directly inside their components.
-     *
-     * Keeping them here lets the whole existing UI
-     * switch language without rewriting every page.
-     */
     text: {
       "Digital Ecosystem":
         "اکوسیستم دیجیتال",
@@ -254,7 +247,6 @@ export const translations = {
 
       "Experimental":
         "آزمایشی",
-
 
       "Websites":
         "وب‌سایت‌ها",
@@ -617,15 +609,13 @@ export const translations = {
         "Backend متصل نیست",
 
       "One space. Your Uniqe.":
-        "یک فضا. Uniqe شما.", 
-            "Users":
+        "یک فضا. Uniqe شما.",
+
+      "Users":
         "کاربران",
 
       "Registered users":
         "کاربران ثبت‌نام‌شده",
-
-      "Products":
-        "محصولات",
 
       "Courses":
         "دوره‌ها",
