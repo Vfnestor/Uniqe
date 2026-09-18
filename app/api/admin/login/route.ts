@@ -10,6 +10,18 @@ import {
 
 export const runtime = "nodejs";
 
+function cleanEnvironmentValue(
+  value: string | undefined,
+) {
+  if (!value) {
+    return "";
+  }
+
+  return value
+    .trim()
+    .replace(/^["']|["']$/g, "");
+}
+
 export async function POST(
   request: NextRequest,
 ) {
@@ -19,7 +31,7 @@ export async function POST(
 
     const email =
       typeof body?.email === "string"
-        ? body.email.trim()
+        ? body.email.trim().toLowerCase()
         : "";
 
     const password =
@@ -28,15 +40,42 @@ export async function POST(
         : "";
 
     const adminEmail =
-      process.env.UNIQE_ADMIN_EMAIL;
+      cleanEnvironmentValue(
+        process.env.UNIQE_ADMIN_EMAIL,
+      ).toLowerCase();
 
     const adminPassword =
-      process.env.UNIQE_ADMIN_PASSWORD;
+      cleanEnvironmentValue(
+        process.env.UNIQE_ADMIN_PASSWORD,
+      );
+
+    const authSecret =
+      cleanEnvironmentValue(
+        process.env.UNIQE_AUTH_SECRET,
+      );
+
+    /*
+     * Never expose the actual environment
+     * values in logs or responses.
+     */
 
     if (
       !adminEmail ||
-      !adminPassword
+      !adminPassword ||
+      !authSecret
     ) {
+      console.error(
+        "[UNIQE AUTH] Authentication environment variables are incomplete.",
+        {
+          hasEmail:
+            Boolean(adminEmail),
+          hasPassword:
+            Boolean(adminPassword),
+          hasAuthSecret:
+            Boolean(authSecret),
+        },
+      );
+
       return NextResponse.json(
         {
           success: false,
@@ -49,10 +88,24 @@ export async function POST(
       );
     }
 
+    const emailMatches =
+      email === adminEmail;
+
+    const passwordMatches =
+      password === adminPassword;
+
     if (
-      email !== adminEmail ||
-      password !== adminPassword
+      !emailMatches ||
+      !passwordMatches
     ) {
+      console.warn(
+        "[UNIQE AUTH] Login rejected.",
+        {
+          emailMatches,
+          passwordMatches,
+        },
+      );
+
       return NextResponse.json(
         {
           success: false,
@@ -86,8 +139,17 @@ export async function POST(
         60 * 60 * 24,
     });
 
+    console.log(
+      "[UNIQE AUTH] Admin login successful.",
+    );
+
     return response;
-  } catch {
+  } catch (error) {
+    console.error(
+      "[UNIQE AUTH] Login request failed.",
+      error,
+    );
+
     return NextResponse.json(
       {
         success: false,
