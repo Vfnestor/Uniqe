@@ -231,17 +231,17 @@
   gap: 3px;
 }
 
-.admin-nav-item {
-  min-height: 45px;
+..admin-nav-item {
+  min-height: 42px;
 
   display: flex;
   align-items: center;
 
-  gap: 11px;
+  gap: 9px;
 
-  padding: 0 12px;
+  padding: 0 9px;
 
-  border-radius: 12px;
+  border-radius: 10px;
 
   color:
     rgba(255, 255, 255, 0.64);
