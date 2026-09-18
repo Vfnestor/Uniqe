@@ -1389,3 +1389,151 @@
     font-size: 0.67rem;
   }
 }
+
+/* =========================================================
+   ADMIN SESSION / ROLE
+   ========================================================= */
+
+.admin-loading-screen {
+  min-height: 100vh;
+
+  display: grid;
+  place-items: center;
+
+  padding: 24px;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(255, 255, 255, 0.055),
+      transparent 34%
+    ),
+    #090909;
+
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.admin-loading-card {
+  min-width: 190px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 11px;
+
+  padding: 18px 20px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  border-radius: 14px;
+
+  background:
+    rgba(255, 255, 255, 0.045);
+
+  backdrop-filter:
+    blur(18px);
+
+  font-size: 0.72rem;
+}
+
+.admin-loading-spinner {
+  width: 16px;
+  height: 16px;
+
+  border:
+    2px solid
+    rgba(255, 255, 255, 0.14);
+
+  border-top-color:
+    rgba(255, 255, 255, 0.78);
+
+  border-radius: 50%;
+
+  animation:
+    admin-spin 700ms linear
+    infinite;
+}
+
+@keyframes admin-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   ADMIN ROLE
+   ========================================================= */
+
+.admin-sidebar-role {
+  margin:
+    0 14px 12px;
+
+  padding:
+    11px 12px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+
+  border-radius: 11px;
+
+  background:
+    rgba(255, 255, 255, 0.035);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+}
+
+.admin-sidebar-role-label {
+  color:
+    rgba(255, 255, 255, 0.38);
+
+  font-size: 0.59rem;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    0.04em;
+}
+
+.admin-sidebar-role strong {
+  color:
+    rgba(255, 255, 255, 0.82);
+
+  font-size: 0.65rem;
+
+  font-weight: 700;
+}
+
+.admin-topbar-role {
+  color:
+    rgba(255, 255, 255, 0.45);
+
+  font-size: 0.63rem;
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 600px) {
+  .admin-sidebar-role {
+    margin:
+      0 12px 10px;
+  }
+
+  .admin-topbar-role {
+    display: none;
+  }
+}
