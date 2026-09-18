@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   useEffect,
   useMemo,
@@ -115,15 +115,23 @@ export default function AdminShell({
 }: AdminShellProps) {
   const pathname = usePathname();
 
+  const router = useRouter();
+
   const {
     language,
   } = useLanguage();
 
-  const isRtl = language === "fa";
+  const isRtl =
+    language === "fa";
 
   const [
     mobileOpen,
     setMobileOpen,
+  ] = useState(false);
+
+  const [
+    loggingOut,
+    setLoggingOut,
   ] = useState(false);
 
   const activePath = useMemo(
@@ -177,6 +185,40 @@ export default function AdminShell({
     };
   }, [mobileOpen]);
 
+  async function handleLogout() {
+    if (loggingOut) {
+      return;
+    }
+
+    setLoggingOut(true);
+
+    try {
+      await fetch(
+        "/api/admin/logout",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+        },
+      );
+    } catch {
+      /*
+       * Even if the request fails,
+       * we still redirect to the login page.
+       */
+    } finally {
+      setMobileOpen(false);
+
+      router.replace(
+        "/admin/login",
+      );
+
+      router.refresh();
+    }
+  }
+
   const renderNavigation = (
     items: AdminNavItem[],
   ) => {
@@ -226,7 +268,11 @@ export default function AdminShell({
           ? "admin-shell admin-shell-rtl"
           : "admin-shell admin-shell-ltr"
       }
-      dir={isRtl ? "rtl" : "ltr"}
+      dir={
+        isRtl
+          ? "rtl"
+          : "ltr"
+      }
     >
       {mobileOpen && (
         <button
@@ -336,26 +382,48 @@ export default function AdminShell({
         </div>
 
         <div className="admin-sidebar-footer">
-          <div className="admin-status">
-            <span className="admin-status-dot" />
+          <div className="admin-sidebar-footer-top">
+            <div className="admin-status">
+              <span className="admin-status-dot" />
 
-            <span>
-              {isRtl
-                ? "سیستم آنلاین"
-                : "System Online"}
+              <span>
+                {isRtl
+                  ? "سیستم آنلاین"
+                  : "System Online"}
+              </span>
+            </div>
+
+            <span className="admin-version">
+              v0.1
             </span>
           </div>
 
-          <span className="admin-version">
-            v0.1
-          </span>
+          <button
+            type="button"
+            className="admin-logout-button"
+            onClick={handleLogout}
+            disabled={loggingOut}
+          >
+            <span className="admin-logout-icon">
+              ↪
+            </span>
+
+            <span className="admin-logout-label">
+              {loggingOut
+                ? isRtl
+                  ? "در حال خروج..."
+                  : "Signing out..."
+                : isRtl
+                  ? "خروج از پنل"
+                  : "Sign Out"}
+            </span>
+          </button>
         </div>
       </aside>
 
       <section className="admin-main">
         <header className="admin-topbar">
 
-          {/* MOBILE RIGHT SIDE */}
           <div className="admin-mobile-header">
             <button
               type="button"
@@ -390,7 +458,6 @@ export default function AdminShell({
             </div>
           </div>
 
-          {/* DESKTOP */}
           <div className="admin-topbar-start">
             <div className="admin-breadcrumb">
               <span>
