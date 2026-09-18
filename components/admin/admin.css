@@ -25,7 +25,7 @@
 
 
 /* =========================================================
-   SIDEBAR DESKTOP
+   SIDEBAR
    ========================================================= */
 
 .admin-sidebar {
@@ -66,9 +66,6 @@
       1
     );
 }
-
-
-/* RTL desktop */
 
 .admin-shell-rtl .admin-sidebar {
   left: auto;
@@ -112,13 +109,13 @@
 }
 
 .admin-brand-mark {
-  display: grid;
-  place-items: center;
-
   width: 42px;
   height: 42px;
 
   flex: 0 0 42px;
+
+  display: grid;
+  place-items: center;
 
   border-radius: 13px;
 
@@ -214,6 +211,12 @@
    NAVIGATION
    ========================================================= */
 
+.admin-nav {
+  display: grid;
+
+  gap: 3px;
+}
+
 .admin-nav-section {
   margin-bottom: 25px;
 }
@@ -233,12 +236,6 @@
   text-transform: uppercase;
 }
 
-.admin-nav {
-  display: grid;
-
-  gap: 3px;
-}
-
 .admin-nav-item {
   min-height: 42px;
 
@@ -249,15 +246,23 @@
 
   padding: 0 9px;
 
+  border: 0;
   border-radius: 10px;
+
+  background: transparent;
 
   color:
     rgba(255, 255, 255, 0.64);
 
   text-decoration: none;
 
+  font-family: inherit;
   font-size: 0.82rem;
   font-weight: 650;
+
+  text-align: start;
+
+  cursor: pointer;
 
   transition:
     background 180ms ease,
@@ -347,6 +352,8 @@
 .admin-status-dot {
   width: 7px;
   height: 7px;
+
+  flex: 0 0 7px;
 
   border-radius: 50%;
 
@@ -467,7 +474,8 @@
    ========================================================= */
 
 .admin-main {
-  width: calc(100% - 270px);
+  width:
+    calc(100% - 270px);
 
   min-height: 100vh;
 
@@ -475,7 +483,8 @@
 }
 
 .admin-shell-rtl .admin-main {
-  width: calc(100% - 270px);
+  width:
+    calc(100% - 270px);
 
   margin-left: 0;
   margin-right: 270px;
@@ -578,11 +587,11 @@
 }
 
 .admin-user-avatar {
-  display: grid;
-  place-items: center;
-
   width: 38px;
   height: 38px;
+
+  display: grid;
+  place-items: center;
 
   border-radius: 11px;
 
@@ -724,7 +733,7 @@
 
 
 /* =========================================================
-   DASHBOARD
+   OLD DASHBOARD SUPPORT
    ========================================================= */
 
 .admin-dashboard {
@@ -825,13 +834,13 @@
 }
 
 .admin-hero-mark {
-  display: grid;
-  place-items: center;
-
   width: 82px;
   height: 82px;
 
   flex: 0 0 auto;
+
+  display: grid;
+  place-items: center;
 
   border-radius: 24px;
 
@@ -844,11 +853,6 @@
   font-weight: 900;
 }
 
-
-/* =========================================================
-   DASHBOARD STATS
-   ========================================================= */
-
 .admin-stats-grid {
   display: grid;
 
@@ -858,26 +862,26 @@
   gap: 16px;
 }
 
-.admin-stat-card,
-.admin-panel,
-.admin-system-banner {
-  border:
-    1px solid var(--admin-border);
-
-  background:
-    var(--admin-surface);
-
-  box-shadow:
-    0 16px 45px
-    rgba(0, 0, 0, 0.035);
-}
-
 .admin-stat-card {
   min-width: 0;
 
   padding: 21px;
 
+  border:
+    1px solid var(--admin-border);
+
   border-radius: 18px;
+
+  background:
+    var(--admin-surface);
+
+  color:
+    var(--admin-text);
+
+  text-decoration: none;
+
+  box-shadow:
+    var(--shadow-sm);
 }
 
 .admin-stat-top {
@@ -887,11 +891,11 @@
 }
 
 .admin-stat-icon {
-  display: grid;
-  place-items: center;
-
   width: 38px;
   height: 38px;
+
+  display: grid;
+  place-items: center;
 
   border-radius: 11px;
 
@@ -923,11 +927,6 @@
   font-size: 0.62rem;
 }
 
-
-/* =========================================================
-   DASHBOARD PANELS
-   ========================================================= */
-
 .admin-dashboard-grid {
   display: grid;
 
@@ -938,30 +937,24 @@
   gap: 18px;
 }
 
-.admin-panel {
+.admin-dashboard-panel {
   min-width: 0;
 
-  overflow: hidden;
+  padding: 25px;
+
+  border:
+    1px solid var(--admin-border);
 
   border-radius: 20px;
-}
 
-.admin-panel-heading {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  background:
+    var(--admin-surface);
 
-  margin-bottom: 21px;
-}
+  color:
+    var(--admin-text);
 
-.admin-panel-kicker {
-  color: var(--admin-muted);
-}
-
-.admin-panel h2 {
-  margin: 0;
-
-  font-size: 1.15rem;
+  box-shadow:
+    var(--shadow-sm);
 }
 
 .admin-actions-grid {
@@ -998,11 +991,11 @@
 }
 
 .admin-action-icon {
-  display: grid;
-  place-items: center;
-
   width: 32px;
   height: 32px;
+
+  display: grid;
+  place-items: center;
 
   border-radius: 9px;
 
@@ -1021,178 +1014,32 @@
   color: var(--admin-muted);
 }
 
-.admin-empty-activity {
-  min-height: 240px;
 
-  display: flex;
-  flex-direction: column;
+/* =========================================================
+   ADMIN FOUNDATION
+   IMPORTANT:
+   SCOPED TO .admin-panel ONLY
+   TO AVOID DASHBOARD COLLISIONS
+   ========================================================= */
 
-  align-items: center;
-  justify-content: center;
+.admin-panel {
+  min-width: 0;
 
-  padding: 30px;
-
-  text-align: center;
-
-  border:
-    1px dashed var(--admin-border);
-
-  border-radius: 15px;
-}
-
-.admin-empty-icon {
-  display: grid;
-  place-items: center;
-
-  width: 48px;
-  height: 48px;
-
-  margin-bottom: 13px;
-
-  border-radius: 50%;
-
-  background:
-    var(--admin-surface-soft);
-
-  color: var(--admin-muted);
-}
-
-.admin-empty-activity p {
-  max-width: 300px;
-
-  margin: 8px 0 0;
-
-  color: var(--admin-muted);
-
-  font-size: 0.67rem;
-
-  line-height: 1.8;
-}
-
-.admin-system-banner {
-  display: flex;
-  align-items: center;
-
-  gap: 14px;
-
-  padding: 18px 20px;
-
-  border-radius: 17px;
-}
-
-.admin-system-banner-icon {
-  display: grid;
-  place-items: center;
-
-  width: 38px;
-  height: 38px;
-
-  flex: 0 0 auto;
-
-  border-radius: 11px;
-
-  background: var(--admin-text);
-
-  color: var(--admin-surface);
-}
-
-.admin-system-banner p {
-  margin: 4px 0 0;
-
-  color: var(--admin-muted);
-
-  font-size: 0.62rem;
-}
-
-.admin-system-badge {
-  margin-inline-start: auto;
-
-  padding: 7px 10px;
+  overflow: hidden;
 
   border:
     1px solid var(--admin-border);
 
-  border-radius: 8px;
+  border-radius: 16px;
 
-  color: var(--admin-muted);
+  background:
+    var(--admin-surface);
 
-  font-size: 0.55rem;
+  box-shadow:
+    var(--shadow-sm);
 }
 
-
-/* =========================================================
-   ADMIN PAGE FOUNDATION
-   ========================================================= */
-
-.admin-page-header {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-
-  gap: 24px;
-
-  margin-bottom: 24px;
-}
-
-.admin-page-header-content {
-  min-width: 0;
-}
-
-.admin-page-header-eyebrow {
-  display: block;
-
-  margin-bottom: 8px;
-
-  color: var(--admin-muted);
-
-  font-size: 0.7rem;
-  font-weight: 750;
-
-  letter-spacing: 0.12em;
-
-  text-transform: uppercase;
-}
-
-.admin-page-header h1 {
-  margin: 0;
-
-  color: var(--admin-text);
-
-  font-size:
-    clamp(1.7rem, 3vw, 2.35rem);
-
-  line-height: 1.1;
-
-  letter-spacing: -0.03em;
-}
-
-.admin-page-header p {
-  max-width: 680px;
-
-  margin: 9px 0 0;
-
-  color: var(--admin-muted);
-
-  font-size: 0.9rem;
-
-  line-height: 1.7;
-}
-
-.admin-page-header-actions {
-  display: flex;
-  align-items: center;
-
-  gap: 8px;
-
-  flex-shrink: 0;
-}
-
-
-/* =========================================================
-   ADMIN PANEL FOUNDATION
-   ========================================================= */
-
-.admin-panel-header {
+.admin-panel > .admin-panel-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1205,28 +1052,31 @@
     1px solid var(--admin-border);
 }
 
-.admin-panel-header h2 {
+.admin-panel > .admin-panel-header h2 {
   margin: 0;
 
-  color: var(--admin-text);
+  color:
+    var(--admin-text);
 
   font-size: 1rem;
 
   font-weight: 750;
 }
 
-.admin-panel-header p {
+.admin-panel > .admin-panel-header p {
   margin: 5px 0 0;
 
-  color: var(--admin-muted);
+  color:
+    var(--admin-muted);
 
   font-size: 0.78rem;
 
   line-height: 1.5;
 }
 
-.admin-panel-actions {
+.admin-panel > .admin-panel-header .admin-panel-actions {
   display: flex;
+
   align-items: center;
 
   gap: 8px;
@@ -1238,7 +1088,7 @@
 
 
 /* =========================================================
-   ADMIN BUTTONS
+   BUTTONS
    ========================================================= */
 
 .admin-button {
@@ -1275,7 +1125,8 @@
 }
 
 .admin-button:active {
-  transform: scale(0.98);
+  transform:
+    scale(0.98);
 }
 
 .admin-button-primary {
@@ -1308,7 +1159,7 @@
 
 
 /* =========================================================
-   ADMIN EMPTY STATE
+   EMPTY STATE
    ========================================================= */
 
 .admin-empty-state {
@@ -1376,7 +1227,7 @@
 
 
 /* =========================================================
-   ADMIN LOADING
+   LOADING
    ========================================================= */
 
 .admin-loading {
@@ -1447,7 +1298,7 @@
 
 
 /* =========================================================
-   ADMIN ERROR
+   ERROR
    ========================================================= */
 
 .admin-error-state {
@@ -1508,7 +1359,7 @@
 
 
 /* =========================================================
-   ADMIN SEARCH
+   SEARCH
    ========================================================= */
 
 .admin-search {
@@ -1620,7 +1471,7 @@
 
 
 /* =========================================================
-   UADMIN MODULE SYSTEM
+   USHOP / MODULE PAGES
    ========================================================= */
 
 .admin-module-page {
@@ -1630,11 +1481,6 @@
 
   min-width: 0;
 }
-
-
-/* =========================================================
-   MODULE STATS
-   ========================================================= */
 
 .admin-module-stat-grid {
   display: grid;
@@ -1724,11 +1570,6 @@
   font-size: 0.62rem;
 }
 
-
-/* =========================================================
-   MODULE GRID
-   ========================================================= */
-
 .admin-module-grid {
   display: grid;
 
@@ -1740,11 +1581,6 @@
 
   min-width: 0;
 }
-
-
-/* =========================================================
-   MODULE NAVIGATION
-   ========================================================= */
 
 .admin-module-navigation {
   display: grid;
@@ -1854,28 +1690,7 @@
     var(--admin-muted);
 
   font-size: 0.95rem;
-
-  transition:
-    transform 160ms ease;
 }
-
-.admin-module-navigation-item:hover
-.admin-module-navigation-arrow {
-  transform:
-    translateX(-2px);
-}
-
-[dir="rtl"]
-.admin-module-navigation-item:hover
-.admin-module-navigation-arrow {
-  transform:
-    translateX(2px);
-}
-
-
-/* =========================================================
-   MODULE LIVE LABEL
-   ========================================================= */
 
 .admin-live-label {
   display: inline-flex;
@@ -1904,19 +1719,52 @@
 
 
 /* =========================================================
-   UShop SPECIFIC
+   ROLE
    ========================================================= */
 
-.admin-module-page
-.admin-panel {
+.admin-sidebar-role {
+  margin:
+    0 14px 12px;
+
+  padding:
+    11px 12px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+
+  border-radius: 11px;
+
   background:
-    var(--admin-surface);
+    rgba(255, 255, 255, 0.035);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
 }
 
-.admin-module-page
-.admin-panel-body {
-  background:
-    transparent;
+.admin-sidebar-role-label {
+  color:
+    rgba(255, 255, 255, 0.38);
+
+  font-size: 0.59rem;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    0.04em;
+}
+
+.admin-sidebar-role strong {
+  color:
+    rgba(255, 255, 255, 0.82);
+
+  font-size: 0.65rem;
+
+  font-weight: 700;
 }
 
 
@@ -1981,9 +1829,6 @@
     margin-right: 0;
   }
 
-
-  /* LTR DRAWER */
-
   .admin-shell-ltr .admin-sidebar {
     width: 60vw;
 
@@ -2006,9 +1851,6 @@
       translateX(0);
   }
 
-
-  /* RTL DRAWER */
-
   .admin-shell-rtl .admin-sidebar {
     width: 60vw;
 
@@ -2030,9 +1872,6 @@
     transform:
       translateX(0);
   }
-
-
-  /* MOBILE HEADER */
 
   .admin-topbar {
     min-height: 64px;
@@ -2081,6 +1920,36 @@
   .admin-module-stat-grid {
     grid-template-columns:
       repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-page-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 16px;
+  }
+
+  .admin-page-header-actions {
+    width: 100%;
+  }
+
+  .admin-page-header-actions .admin-button {
+    flex: 1;
+  }
+
+  .admin-panel > .admin-panel-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .admin-panel > .admin-panel-header .admin-panel-actions {
+    width: 100%;
+  }
+
+  .admin-search {
+    width: 100%;
   }
 }
 
@@ -2164,28 +2033,13 @@
     font-size: 1.4rem;
   }
 
-  .admin-panel {
-    border-radius: 15px;
-  }
-
-  .admin-panel-header {
-    padding:
-      15px 16px;
+  .admin-dashboard-panel {
+    padding: 15px;
   }
 
   .admin-actions-grid {
     grid-template-columns:
       1fr;
-  }
-
-  .admin-system-banner {
-    align-items: flex-start;
-
-    padding: 15px;
-  }
-
-  .admin-system-badge {
-    display: none;
   }
 
   .admin-module-stat-grid {
@@ -2251,24 +2105,9 @@
     font-size: 0.61rem;
   }
 
-  .admin-page-header {
-    gap: 14px;
-  }
-
-  .admin-page-header-actions {
-    width: 100%;
-  }
-
-  .admin-page-header-actions .admin-button {
-    flex: 1;
-  }
-
-  .admin-panel-actions {
-    width: 100%;
-  }
-
-  .admin-search {
-    width: 100%;
+  .admin-panel > .admin-panel-header {
+    padding:
+      15px 16px;
   }
 
   .admin-sidebar-footer {
@@ -2280,6 +2119,15 @@
     min-height: 45px;
 
     font-size: 0.67rem;
+  }
+
+  .admin-sidebar-role {
+    margin:
+      0 12px 10px;
+  }
+
+  .admin-topbar-role {
+    display: none;
   }
 }
 
@@ -2322,7 +2170,7 @@
 
 
 /* =========================================================
-   SESSION / ROLE
+   SESSION LOADING
    ========================================================= */
 
 .admin-loading-screen {
@@ -2395,51 +2243,6 @@
     transform:
       rotate(360deg);
   }
-}
-
-.admin-sidebar-role {
-  margin:
-    0 14px 12px;
-
-  padding:
-    11px 12px;
-
-  border:
-    1px solid
-    rgba(255, 255, 255, 0.07);
-
-  border-radius: 11px;
-
-  background:
-    rgba(255, 255, 255, 0.035);
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  gap: 12px;
-}
-
-.admin-sidebar-role-label {
-  color:
-    rgba(255, 255, 255, 0.38);
-
-  font-size: 0.59rem;
-
-  text-transform:
-    uppercase;
-
-  letter-spacing:
-    0.04em;
-}
-
-.admin-sidebar-role strong {
-  color:
-    rgba(255, 255, 255, 0.82);
-
-  font-size: 0.65rem;
-
-  font-weight: 700;
 }
 
 
