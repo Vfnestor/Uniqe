@@ -1,88 +1,133 @@
+"use client";
+
 import Link from "next/link";
-
-const stats = [
-  {
-    icon: "👥",
-    label: "Users",
-    value: "0",
-    description: "Registered users",
-    href: "/admin/users",
-  },
-  {
-    icon: "🛍️",
-    label: "UShop",
-    value: "0",
-    description: "Products",
-    href: "/admin/ushop",
-  },
-  {
-    icon: "🎓",
-    label: "USchool",
-    value: "0",
-    description: "Courses",
-    href: "/admin/uschool",
-  },
-  {
-    icon: "🌐",
-    label: "UWeb",
-    value: "0",
-    description: "Projects",
-    href: "/admin/uweb",
-  },
-];
-
-const modules = [
-  {
-    icon: "📱",
-    title: "UApps",
-    description: "Applications and app projects",
-    status: "Ready",
-    href: "/admin/uapps",
-  },
-  {
-    icon: "🧠",
-    title: "UCore",
-    description: "Core services and infrastructure",
-    status: "Ready",
-    href: "/admin/ucore",
-  },
-  {
-    icon: "🧪",
-    title: "LAB",
-    description: "Experiments and research",
-    status: "Ready",
-    href: "/admin/lab",
-  },
-];
-
-const quickActions = [
-  {
-    icon: "➕",
-    title: "Add Product",
-    description: "Create a new UShop product",
-    href: "/admin/ushop",
-  },
-  {
-    icon: "📚",
-    title: "Manage Courses",
-    description: "Open USchool management",
-    href: "/admin/uschool",
-  },
-  {
-    icon: "👤",
-    title: "Manage Users",
-    description: "View and manage users",
-    href: "/admin/users",
-  },
-  {
-    icon: "⚙️",
-    title: "Settings",
-    description: "System configuration",
-    href: "/admin/settings",
-  },
-];
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 
 export default function AdminDashboardPage() {
+  const { language, t } = useLanguage();
+
+  const text = t.text as Record<string, string>;
+
+  const tr = (key: string, fallback: string) =>
+    language === "fa"
+      ? text[key] || fallback
+      : fallback;
+
+  const stats = [
+    {
+      icon: "👥",
+      label: tr("Users", "Users"),
+      value: "0",
+      description: tr(
+        "Registered users",
+        "Registered users",
+      ),
+      href: "/admin/users",
+    },
+    {
+      icon: "🛍️",
+      label: "UShop",
+      value: "0",
+      description: tr(
+        "Products",
+        "Products",
+      ),
+      href: "/admin/ushop",
+    },
+    {
+      icon: "🎓",
+      label: "USchool",
+      value: "0",
+      description: tr(
+        "Courses",
+        "Courses",
+      ),
+      href: "/admin/uschool",
+    },
+    {
+      icon: "🌐",
+      label: "UWeb",
+      value: "0",
+      description: tr(
+        "Projects",
+        "Projects",
+      ),
+      href: "/admin/uweb",
+    },
+  ];
+
+  const modules = [
+    {
+      icon: "📱",
+      title: "UApps",
+      description: tr(
+        "Applications and app projects",
+        "Applications and app projects",
+      ),
+      status: tr("Ready", "Ready"),
+      href: "/admin/uapps",
+    },
+    {
+      icon: "🧠",
+      title: "UCore",
+      description: tr(
+        "Core services and infrastructure",
+        "Core services and infrastructure",
+      ),
+      status: tr("Ready", "Ready"),
+      href: "/admin/ucore",
+    },
+    {
+      icon: "🧪",
+      title: "LAB",
+      description: tr(
+        "Experiments and research",
+        "Experiments and research",
+      ),
+      status: tr("Ready", "Ready"),
+      href: "/admin/lab",
+    },
+  ];
+
+  const quickActions = [
+    {
+      icon: "➕",
+      title: tr("Add Product", "Add Product"),
+      description: tr(
+        "Create a new UShop product",
+        "Create a new UShop product",
+      ),
+      href: "/admin/ushop",
+    },
+    {
+      icon: "📚",
+      title: tr("Manage Courses", "Manage Courses"),
+      description: tr(
+        "Open USchool management",
+        "Open USchool management",
+      ),
+      href: "/admin/uschool",
+    },
+    {
+      icon: "👤",
+      title: tr("Manage Users", "Manage Users"),
+      description: tr(
+        "View and manage users",
+        "View and manage users",
+      ),
+      href: "/admin/users",
+    },
+    {
+      icon: "⚙️",
+      title: tr("Settings", "Settings"),
+      description: tr(
+        "System configuration",
+        "System configuration",
+      ),
+      href: "/admin/settings",
+    },
+  ];
+
   return (
     <div className="admin-dashboard">
       <section className="admin-dashboard-header">
@@ -91,16 +136,21 @@ export default function AdminDashboardPage() {
             UNIQE CONTROL CENTER
           </span>
 
-          <h1>Dashboard</h1>
+          <h1>
+            {tr("Dashboard", "Dashboard")}
+          </h1>
 
           <p>
-            Welcome to the central administration panel of Uniqe.
+            {tr(
+              "Welcome to the central administration panel of Uniqe.",
+              "Welcome to the central administration panel of Uniqe.",
+            )}
           </p>
         </div>
 
         <div className="admin-dashboard-status">
           <span className="admin-status-dot" />
-          System Online
+          {tr("System Online", "System Online")}
         </div>
       </section>
 
@@ -129,10 +179,12 @@ export default function AdminDashboardPage() {
           <div className="admin-panel-header">
             <div>
               <span className="admin-panel-eyebrow">
-                ECOSYSTEM
+                {tr("ECOSYSTEM", "ECOSYSTEM")}
               </span>
 
-              <h2>Uniqe Modules</h2>
+              <h2>
+                {tr("Uniqe Modules", "Uniqe Modules")}
+              </h2>
             </div>
           </div>
 
@@ -149,7 +201,10 @@ export default function AdminDashboardPage() {
 
                 <div className="admin-module-info">
                   <strong>{module.title}</strong>
-                  <span>{module.description}</span>
+
+                  <span>
+                    {module.description}
+                  </span>
                 </div>
 
                 <span className="admin-module-status">
@@ -168,10 +223,12 @@ export default function AdminDashboardPage() {
           <div className="admin-panel-header">
             <div>
               <span className="admin-panel-eyebrow">
-                QUICK ACCESS
+                {tr("QUICK ACCESS", "QUICK ACCESS")}
               </span>
 
-              <h2>Quick Actions</h2>
+              <h2>
+                {tr("Quick Actions", "Quick Actions")}
+              </h2>
             </div>
           </div>
 
@@ -188,7 +245,10 @@ export default function AdminDashboardPage() {
 
                 <div>
                   <strong>{action.title}</strong>
-                  <span>{action.description}</span>
+
+                  <span>
+                    {action.description}
+                  </span>
                 </div>
 
                 <span className="admin-quick-action-arrow">
@@ -204,14 +264,22 @@ export default function AdminDashboardPage() {
         <div className="admin-panel-header">
           <div>
             <span className="admin-panel-eyebrow">
-              SYSTEM ACTIVITY
+              {tr(
+                "SYSTEM ACTIVITY",
+                "SYSTEM ACTIVITY",
+              )}
             </span>
 
-            <h2>Recent Activity</h2>
+            <h2>
+              {tr(
+                "Recent Activity",
+                "Recent Activity",
+              )}
+            </h2>
           </div>
 
           <span className="admin-live-label">
-            LIVE
+            {tr("LIVE", "LIVE")}
           </span>
         </div>
 
@@ -220,11 +288,18 @@ export default function AdminDashboardPage() {
             ◌
           </div>
 
-          <strong>No activity yet</strong>
+          <strong>
+            {tr(
+              "No activity yet",
+              "No activity yet",
+            )}
+          </strong>
 
           <span>
-            System activity will appear here once users and
-            modules start generating events.
+            {tr(
+              "System activity will appear here once users and modules start generating events.",
+              "System activity will appear here once users and modules start generating events.",
+            )}
           </span>
         </div>
       </section>
