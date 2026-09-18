@@ -1,189 +1,351 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
 import {
   useEffect,
-  useMemo,
   useState,
 } from "react";
+
+import {
+  usePathname,
+  useRouter,
+} from "next/navigation";
 
 import {
   useLanguage,
 } from "@/components/i18n/LanguageProvider";
 
+import type {
+  AdminPermission,
+  AdminRole,
+} from "@/lib/auth/permissions";
+
+type AdminSessionResponse = {
+  authenticated: boolean;
+  role?: AdminRole;
+};
+
 type AdminNavItem = {
   href: string;
   icon: string;
-  labelEn: string;
-  labelFa: string;
+  label: string;
+  permission?: AdminPermission;
 };
 
-const primaryNavigation: AdminNavItem[] = [
+const NAV_ITEMS: AdminNavItem[] = [
   {
     href: "/admin",
     icon: "⌂",
-    labelEn: "Dashboard",
-    labelFa: "داشبورد",
+    label: "Dashboard",
+    permission: "admin.access",
   },
+
   {
     href: "/admin/ushop",
-    icon: "◈",
-    labelEn: "UShop",
-    labelFa: "فروشگاه",
+    icon: "🛒",
+    label: "UShop",
+    permission: "ushop.view",
   },
+
   {
     href: "/admin/uschool",
-    icon: "▣",
-    labelEn: "USchool",
-    labelFa: "آموزش",
+    icon: "🎓",
+    label: "USchool",
+    permission: "uschool.view",
   },
+
   {
     href: "/admin/uweb",
     icon: "◉",
-    labelEn: "UWeb",
-    labelFa: "وب",
+    label: "UWeb",
+    permission: "uweb.view",
   },
+
   {
     href: "/admin/uapps",
-    icon: "▦",
-    labelEn: "UApps",
-    labelFa: "اپلیکیشن‌ها",
+    icon: "▣",
+    label: "UApps",
+    permission: "uapps.view",
   },
+
   {
     href: "/admin/ucore",
     icon: "◆",
-    labelEn: "UCore",
-    labelFa: "هسته",
+    label: "UCore",
+    permission: "ucore.view",
   },
+
   {
     href: "/admin/lab",
     icon: "⌬",
-    labelEn: "LAB",
-    labelFa: "آزمایشگاه",
+    label: "LAB",
+    permission: "lab.view",
   },
-];
 
-const managementNavigation: AdminNavItem[] = [
   {
     href: "/admin/users",
-    icon: "◎",
-    labelEn: "Users",
-    labelFa: "کاربران",
+    icon: "♙",
+    label: "Users",
+    permission: "users.view",
   },
+
   {
     href: "/admin/content",
-    icon: "≡",
-    labelEn: "Content",
-    labelFa: "محتوا",
+    icon: "▤",
+    label: "Content",
+    permission: "content.view",
   },
+
   {
     href: "/admin/media",
     icon: "▧",
-    labelEn: "Media",
-    labelFa: "رسانه",
+    label: "Media",
+    permission: "media.view",
   },
+
   {
     href: "/admin/notifications",
-    icon: "◌",
-    labelEn: "Notifications",
-    labelFa: "اعلان‌ها",
+    icon: "♢",
+    label: "Notifications",
+    permission:
+      "notifications.view",
   },
-  {
-    href: "/admin/analytics",
-    icon: "⌁",
-    labelEn: "Analytics",
-    labelFa: "آمار",
-  },
-];
 
-const systemNavigation: AdminNavItem[] = [
   {
     href: "/admin/settings",
     icon: "⚙",
-    labelEn: "Settings",
-    labelFa: "تنظیمات",
+    label: "Settings",
+    permission:
+      "settings.view",
   },
 ];
 
-type AdminShellProps = {
-  children: React.ReactNode;
+const ROLE_LABELS: Record<
+  AdminRole,
+  {
+    en: string;
+    fa: string;
+  }
+> = {
+  owner: {
+    en: "Owner",
+    fa: "مالک",
+  },
+
+  staff: {
+    en: "Staff",
+    fa: "کارمند",
+  },
+
+  customer: {
+    en: "Customer",
+    fa: "کاربر",
+  },
 };
 
 export default function AdminShell({
   children,
-}: AdminShellProps) {
-  const pathname = usePathname();
+}: {
+  children: React.ReactNode;
+}) {
+  const pathname =
+    usePathname();
 
-  const router = useRouter();
+  const router =
+    useRouter();
 
-  const {
-    language,
-  } = useLanguage();
+  const { language } =
+    useLanguage();
 
-  const isRtl =
-    language === "fa";
+  const [mobileOpen, setMobileOpen] =
+    useState(false);
 
-  const [
-    mobileOpen,
-    setMobileOpen,
-  ] = useState(false);
+  const [loggingOut, setLoggingOut] =
+    useState(false);
 
-  const [
-    loggingOut,
-    setLoggingOut,
-  ] = useState(false);
+  const [role, setRole] =
+    useState<AdminRole | null>(null);
 
-  const activePath = useMemo(
-    () => pathname || "/admin",
-    [pathname],
-  );
+  const [loadingSession, setLoadingSession] =
+    useState(true);
 
   useEffect(() => {
-    setMobileOpen(false);
-  }, [pathname]);
+    let mounted = true;
 
-  useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.removeProperty(
-        "overflow",
-      );
+    async function loadSession() {
+      try {
+        const response =
+          await fetch(
+            "/api/admin/session",
+            {
+              method: "GET",
+              cache: "no-store",
+            },
+          );
+
+        if (!response.ok) {
+          throw new Error(
+            "Session request failed.",
+          );
+        }
+
+        const data =
+          (await response.json()) as AdminSessionResponse;
+
+        if (!mounted) {
+          return;
+        }
+
+        if (
+          !data.authenticated ||
+          !data.role
+        ) {
+          router.replace(
+            "/admin/login",
+          );
+
+          return;
+        }
+
+        setRole(data.role);
+      } catch {
+        if (!mounted) {
+          return;
+        }
+
+        router.replace(
+          "/admin/login",
+        );
+      } finally {
+        if (mounted) {
+          setLoadingSession(false);
+        }
+      }
     }
 
+    loadSession();
+
     return () => {
-      document.body.style.removeProperty(
-        "overflow",
-      );
+      mounted = false;
+    };
+  }, [router]);
+
+  useEffect(() => {
+    document.body.style.overflow =
+      mobileOpen
+        ? "hidden"
+        : "";
+
+    return () => {
+      document.body.style.overflow =
+        "";
     };
   }, [mobileOpen]);
 
   useEffect(() => {
-    if (!mobileOpen) {
-      return;
-    }
-
-    const handleKeyDown = (
+    function handleEscape(
       event: KeyboardEvent,
-    ) => {
-      if (event.key === "Escape") {
+    ) {
+      if (
+        event.key === "Escape"
+      ) {
         setMobileOpen(false);
       }
-    };
+    }
 
     window.addEventListener(
       "keydown",
-      handleKeyDown,
+      handleEscape,
     );
 
     return () => {
       window.removeEventListener(
         "keydown",
-        handleKeyDown,
+        handleEscape,
       );
     };
-  }, [mobileOpen]);
+  }, []);
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
+
+  function hasPermission(
+    permission?: AdminPermission,
+  ) {
+    if (!permission) {
+      return true;
+    }
+
+    if (!role) {
+      return false;
+    }
+
+    /*
+     * Owner currently has full access.
+     * Staff permissions will be enforced
+     * by the server authorization layer.
+     *
+     * The UI uses the same permission names
+     * so it is ready for the next role phase.
+     */
+
+    if (role === "owner") {
+      return true;
+    }
+
+    if (role === "customer") {
+      return false;
+    }
+
+    const staffPermissions: AdminPermission[] =
+      [
+        "admin.access",
+
+        "ushop.view",
+        "ushop.manage",
+        "ushop.orders",
+
+        "uschool.view",
+        "uschool.manage",
+
+        "uweb.view",
+        "uweb.manage",
+
+        "uapps.view",
+        "uapps.manage",
+
+        "ucore.view",
+        "ucore.manage",
+
+        "lab.view",
+        "lab.manage",
+
+        "users.view",
+
+        "content.view",
+        "content.manage",
+
+        "media.view",
+        "media.manage",
+
+        "notifications.view",
+        "notifications.manage",
+
+        "analytics.view",
+      ];
+
+    return staffPermissions.includes(
+      permission,
+    );
+  }
+
+  const visibleNavItems =
+    NAV_ITEMS.filter(
+      (item) =>
+        hasPermission(
+          item.permission,
+        ),
+    );
 
   async function handleLogout() {
     if (loggingOut) {
@@ -206,7 +368,7 @@ export default function AdminShell({
     } catch {
       /*
        * Even if the request fails,
-       * we still redirect to the login page.
+       * redirect to login.
        */
     } finally {
       setMobileOpen(false);
@@ -219,190 +381,141 @@ export default function AdminShell({
     }
   }
 
-  const renderNavigation = (
-    items: AdminNavItem[],
-  ) => {
-    return items.map((item) => {
-      const isActive =
-        item.href === "/admin"
-          ? activePath === "/admin"
-          : activePath.startsWith(
-              item.href,
-            );
+  const roleLabel =
+    role
+      ? ROLE_LABELS[role][
+          language === "fa"
+            ? "fa"
+            : "en"
+        ]
+      : "";
 
-      return (
-        <Link
-          key={item.href}
-          href={item.href}
-          onClick={() =>
-            setMobileOpen(false)
-          }
-          className={
-            isActive
-              ? "admin-nav-item admin-nav-item-active"
-              : "admin-nav-item"
-          }
-        >
-          <span className="admin-nav-icon">
-            {item.icon}
+  if (loadingSession) {
+    return (
+      <div className="admin-loading-screen">
+        <div className="admin-loading-card">
+          <div className="admin-loading-spinner" />
+
+          <span>
+            Loading Admin Panel...
           </span>
-
-          <span className="admin-nav-label">
-            {isRtl
-              ? item.labelFa
-              : item.labelEn}
-          </span>
-
-          {isActive && (
-            <span className="admin-nav-active-dot" />
-          )}
-        </Link>
-      );
-    });
-  };
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div
-      className={
-        isRtl
-          ? "admin-shell admin-shell-rtl"
-          : "admin-shell admin-shell-ltr"
-      }
-      dir={
-        isRtl
-          ? "rtl"
-          : "ltr"
-      }
-    >
-      {mobileOpen && (
-        <button
-          type="button"
-          className="admin-mobile-overlay"
-          aria-label={
-            isRtl
-              ? "بستن منو"
-              : "Close menu"
-          }
-          onClick={() =>
-            setMobileOpen(false)
-          }
-        />
-      )}
-
+    <div className="admin-shell">
       <aside
-        className={
+        className={`admin-sidebar ${
           mobileOpen
-            ? "admin-sidebar admin-sidebar-open"
-            : "admin-sidebar"
-        }
+            ? "is-open"
+            : ""
+        }`}
       >
-        <div className="admin-sidebar-brand">
-          <Link
-            href="/admin"
-            className="admin-brand"
-            onClick={() =>
-              setMobileOpen(false)
-            }
-          >
-            <span className="admin-brand-mark">
+        <div className="admin-sidebar-header">
+          <div className="admin-brand">
+            <div className="admin-brand-mark">
               U
-            </span>
+            </div>
 
-            <span className="admin-brand-copy">
+            <div className="admin-brand-copy">
               <strong>
                 Uniqe
               </strong>
 
-              <small>
-                {isRtl
-                  ? "پنل مدیریت"
-                  : "Admin Panel"}
-              </small>
-            </span>
-          </Link>
+              <span>
+                Admin Panel
+              </span>
+            </div>
+          </div>
 
           <button
             type="button"
-            className="admin-sidebar-close"
-            aria-label={
-              isRtl
-                ? "بستن منو"
-                : "Close menu"
-            }
+            className="admin-mobile-close"
             onClick={() =>
               setMobileOpen(false)
             }
+            aria-label="Close menu"
           >
             ×
           </button>
         </div>
 
-        <div className="admin-sidebar-scroll">
-          <section className="admin-nav-section">
-            <span className="admin-nav-heading">
-              {isRtl
-                ? "اکوسیستم"
-                : "Ecosystem"}
-            </span>
+        <div className="admin-sidebar-role">
+          <span className="admin-sidebar-role-label">
+            {language === "fa"
+              ? "سطح دسترسی"
+              : "Access Level"}
+          </span>
 
-            <nav className="admin-nav">
-              {renderNavigation(
-                primaryNavigation,
-              )}
-            </nav>
-          </section>
-
-          <section className="admin-nav-section">
-            <span className="admin-nav-heading">
-              {isRtl
-                ? "مدیریت"
-                : "Management"}
-            </span>
-
-            <nav className="admin-nav">
-              {renderNavigation(
-                managementNavigation,
-              )}
-            </nav>
-          </section>
-
-          <section className="admin-nav-section">
-            <span className="admin-nav-heading">
-              {isRtl
-                ? "سیستم"
-                : "System"}
-            </span>
-
-            <nav className="admin-nav">
-              {renderNavigation(
-                systemNavigation,
-              )}
-            </nav>
-          </section>
+          <strong>
+            {roleLabel}
+          </strong>
         </div>
+
+        <nav className="admin-sidebar-nav">
+          {visibleNavItems.map(
+            (item) => {
+              const active =
+                item.href ===
+                "/admin"
+                  ? pathname ===
+                    "/admin"
+                  : pathname ===
+                      item.href ||
+                    pathname.startsWith(
+                      `${item.href}/`,
+                    );
+
+              return (
+                <button
+                  key={item.href}
+                  type="button"
+                  className={`admin-nav-item ${
+                    active
+                      ? "is-active"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    router.push(
+                      item.href,
+                    );
+
+                    setMobileOpen(
+                      false,
+                    );
+                  }}
+                >
+                  <span className="admin-nav-icon">
+                    {item.icon}
+                  </span>
+
+                  <span className="admin-nav-label">
+                    {item.label}
+                  </span>
+                </button>
+              );
+            },
+          )}
+        </nav>
 
         <div className="admin-sidebar-footer">
           <div className="admin-sidebar-footer-top">
-            <div className="admin-status">
-              <span className="admin-status-dot" />
-
-              <span>
-                {isRtl
-                  ? "سیستم آنلاین"
-                  : "System Online"}
-              </span>
-            </div>
-
-            <span className="admin-version">
-              v0.1
+            <span className="admin-owner-badge">
+              {roleLabel}
             </span>
           </div>
 
           <button
             type="button"
             className="admin-logout-button"
-            onClick={handleLogout}
-            disabled={loggingOut}
+            onClick={
+              handleLogout
+            }
+            disabled={
+              loggingOut
+            }
           >
             <span className="admin-logout-icon">
               ↪
@@ -410,112 +523,74 @@ export default function AdminShell({
 
             <span className="admin-logout-label">
               {loggingOut
-                ? isRtl
+                ? language ===
+                  "fa"
                   ? "در حال خروج..."
-                  : "Signing out..."
-                : isRtl
-                  ? "خروج از پنل"
-                  : "Sign Out"}
+                  : "Logging out..."
+                : language ===
+                    "fa"
+                  ? "خروج"
+                  : "Logout"}
             </span>
           </button>
         </div>
       </aside>
 
-      <section className="admin-main">
-        <header className="admin-topbar">
+      {mobileOpen && (
+        <button
+          type="button"
+          className="admin-sidebar-overlay"
+          onClick={() =>
+            setMobileOpen(false)
+          }
+          aria-label="Close menu"
+        />
+      )}
 
-          <div className="admin-mobile-header">
+      <main className="admin-main">
+        <header className="admin-topbar">
+          <div className="admin-topbar-left">
             <button
               type="button"
               className="admin-mobile-menu"
-              aria-label={
-                isRtl
-                  ? "باز کردن منو"
-                  : "Open menu"
-              }
-              aria-expanded={mobileOpen}
               onClick={() =>
-                setMobileOpen(
-                  (value) => !value,
-                )
+                setMobileOpen(true)
               }
+              aria-label="Open menu"
             >
-              <span />
-              <span />
-              <span />
+              ☰
             </button>
 
-            <div className="admin-mobile-title">
-              <strong>
-                Uniqe
-              </strong>
+            <div>
+              <span className="admin-topbar-eyebrow">
+                UNIQE
+              </span>
 
-              <small>
-                {isRtl
-                  ? "پنل مدیریت"
-                  : "Admin Panel"}
-              </small>
+              <h1>
+                Admin Panel
+              </h1>
             </div>
           </div>
 
-          <div className="admin-topbar-start">
-            <div className="admin-breadcrumb">
-              <span>
-                Uniqe
-              </span>
+          <div className="admin-topbar-right">
+            <span className="admin-topbar-role">
+              {roleLabel}
+            </span>
 
-              <span className="admin-breadcrumb-separator">
-                /
-              </span>
-
-              <strong>
-                {isRtl
-                  ? "پنل مدیریت"
-                  : "Admin"}
-              </strong>
-            </div>
-          </div>
-
-          <div className="admin-topbar-actions">
-            <Link
-              href="/"
-              className="admin-view-site"
-            >
-              <span>
-                ↗
-              </span>
-
-              {isRtl
-                ? "مشاهده سایت"
-                : "View Site"}
-            </Link>
-
-            <div className="admin-user">
-              <span className="admin-user-avatar">
-                U
-              </span>
-
-              <span className="admin-user-copy">
-                <strong>
-                  {isRtl
-                    ? "مالک"
-                    : "Owner"}
-                </strong>
-
-                <small>
-                  {isRtl
-                    ? "دسترسی کامل"
-                    : "Full Access"}
-                </small>
-              </span>
-            </div>
+            <span className="admin-owner-badge">
+              {role === "owner"
+                ? "OWNER"
+                : role === "staff"
+                  ? "STAFF"
+                  : "CUSTOMER"}
+            </span>
           </div>
         </header>
 
-        <main className="admin-content">
+        <section className="admin-content">
           {children}
-        </main>
-      </section>
+        </section>
+      </main>
     </div>
   );
 }
