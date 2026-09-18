@@ -1,4 +1,5 @@
 import {
+  NextRequest,
   NextResponse,
 } from "next/server";
 
@@ -12,28 +13,47 @@ import {
 
 export const runtime = "nodejs";
 
-export async function GET() {
+export async function GET(
+  request: NextRequest,
+) {
   try {
-    const response =
-      NextResponse.json({
-        authenticated: false,
-      });
+    const token =
+      request.cookies.get(
+        ADMIN_SESSION_COOKIE,
+      )?.value;
 
-    /*
-     * We cannot read the request cookie
-     * directly from NextResponse.
-     *
-     * Use Next.js cookies API below.
-     */
+    const session =
+      readAdminSession(token);
 
-    return response;
-  } catch {
+    if (!session) {
+      return NextResponse.json(
+        {
+          authenticated: false,
+        },
+        {
+          status: 401,
+        },
+      );
+    }
+
+    return NextResponse.json({
+      authenticated: true,
+      role: session.role,
+      expiresAt:
+        session.expiresAt,
+    });
+  } catch (error) {
+    console.error(
+      "[UNIQE AUTH] Session check failed.",
+      error,
+    );
+
     return NextResponse.json(
       {
         authenticated: false,
       },
       {
-        status: 500,
+        status: 401,
       },
     );
   }
