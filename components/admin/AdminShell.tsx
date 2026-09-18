@@ -142,16 +142,50 @@ const ROLE_LABELS: Record<
   },
 };
 
+const STAFF_PERMISSIONS: AdminPermission[] = [
+  "admin.access",
+
+  "ushop.view",
+  "ushop.manage",
+  "ushop.orders",
+
+  "uschool.view",
+  "uschool.manage",
+
+  "uweb.view",
+  "uweb.manage",
+
+  "uapps.view",
+  "uapps.manage",
+
+  "ucore.view",
+  "ucore.manage",
+
+  "lab.view",
+  "lab.manage",
+
+  "users.view",
+
+  "content.view",
+  "content.manage",
+
+  "media.view",
+  "media.manage",
+
+  "notifications.view",
+  "notifications.manage",
+
+  "analytics.view",
+];
+
 export default function AdminShell({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const pathname =
-    usePathname();
+  const pathname = usePathname();
 
-  const router =
-    useRouter();
+  const router = useRouter();
 
   const { language } =
     useLanguage();
@@ -167,6 +201,12 @@ export default function AdminShell({
 
   const [loadingSession, setLoadingSession] =
     useState(true);
+
+  /*
+   * =========================================================
+   * SESSION
+   * =========================================================
+   */
 
   useEffect(() => {
     let mounted = true;
@@ -229,17 +269,32 @@ export default function AdminShell({
     };
   }, [router]);
 
+  /*
+   * =========================================================
+   * MOBILE BODY LOCK
+   * =========================================================
+   */
+
   useEffect(() => {
-    document.body.style.overflow =
-      mobileOpen
-        ? "hidden"
-        : "";
+    if (mobileOpen) {
+      document.body.style.overflow =
+        "hidden";
+    } else {
+      document.body.style.overflow =
+        "";
+    }
 
     return () => {
       document.body.style.overflow =
         "";
     };
   }, [mobileOpen]);
+
+  /*
+   * =========================================================
+   * ESCAPE
+   * =========================================================
+   */
 
   useEffect(() => {
     function handleEscape(
@@ -265,9 +320,21 @@ export default function AdminShell({
     };
   }, []);
 
+  /*
+   * =========================================================
+   * CLOSE DRAWER AFTER NAVIGATION
+   * =========================================================
+   */
+
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
+
+  /*
+   * =========================================================
+   * PERMISSION
+   * =========================================================
+   */
 
   function hasPermission(
     permission?: AdminPermission,
@@ -281,60 +348,26 @@ export default function AdminShell({
     }
 
     /*
-     * Owner currently has full access.
-     * Staff permissions will be enforced
-     * by the server authorization layer.
-     *
-     * The UI uses the same permission names
-     * so it is ready for the next role phase.
+     * Owner has complete access.
      */
 
     if (role === "owner") {
       return true;
     }
 
+    /*
+     * Customer has no admin access.
+     */
+
     if (role === "customer") {
       return false;
     }
 
-    const staffPermissions: AdminPermission[] =
-      [
-        "admin.access",
+    /*
+     * Staff permissions.
+     */
 
-        "ushop.view",
-        "ushop.manage",
-        "ushop.orders",
-
-        "uschool.view",
-        "uschool.manage",
-
-        "uweb.view",
-        "uweb.manage",
-
-        "uapps.view",
-        "uapps.manage",
-
-        "ucore.view",
-        "ucore.manage",
-
-        "lab.view",
-        "lab.manage",
-
-        "users.view",
-
-        "content.view",
-        "content.manage",
-
-        "media.view",
-        "media.manage",
-
-        "notifications.view",
-        "notifications.manage",
-
-        "analytics.view",
-      ];
-
-    return staffPermissions.includes(
+    return STAFF_PERMISSIONS.includes(
       permission,
     );
   }
@@ -346,6 +379,27 @@ export default function AdminShell({
           item.permission,
         ),
     );
+
+  /*
+   * =========================================================
+   * ROLE LABEL
+   * =========================================================
+   */
+
+  const roleLabel =
+    role
+      ? ROLE_LABELS[role][
+          language === "fa"
+            ? "fa"
+            : "en"
+        ]
+      : "";
+
+  /*
+   * =========================================================
+   * LOGOUT
+   * =========================================================
+   */
 
   async function handleLogout() {
     if (loggingOut) {
@@ -367,8 +421,7 @@ export default function AdminShell({
       );
     } catch {
       /*
-       * Even if the request fails,
-       * redirect to login.
+       * Redirect anyway.
        */
     } finally {
       setMobileOpen(false);
@@ -381,14 +434,11 @@ export default function AdminShell({
     }
   }
 
-  const roleLabel =
-    role
-      ? ROLE_LABELS[role][
-          language === "fa"
-            ? "fa"
-            : "en"
-        ]
-      : "";
+  /*
+   * =========================================================
+   * LOADING
+   * =========================================================
+   */
 
   if (loadingSession) {
     return (
@@ -404,16 +454,40 @@ export default function AdminShell({
     );
   }
 
+  /*
+   * =========================================================
+   * SHELL
+   * =========================================================
+   */
+
+  const shellDirection =
+    language === "fa"
+      ? "admin-shell-rtl"
+      : "admin-shell-ltr";
+
   return (
-    <div className="admin-shell">
+    <div
+      className={`admin-shell ${shellDirection}`}
+      dir={
+        language === "fa"
+          ? "rtl"
+          : "ltr"
+      }
+    >
+      {/* ===================================================
+          SIDEBAR
+          =================================================== */}
+
       <aside
         className={`admin-sidebar ${
           mobileOpen
-            ? "is-open"
+            ? "admin-sidebar-open"
             : ""
         }`}
       >
-        <div className="admin-sidebar-header">
+        {/* SIDEBAR BRAND */}
+
+        <div className="admin-sidebar-brand">
           <div className="admin-brand">
             <div className="admin-brand-mark">
               U
@@ -424,15 +498,15 @@ export default function AdminShell({
                 Uniqe
               </strong>
 
-              <span>
+              <small>
                 Admin Panel
-              </span>
+              </small>
             </div>
           </div>
 
           <button
             type="button"
-            className="admin-mobile-close"
+            className="admin-sidebar-close"
             onClick={() =>
               setMobileOpen(false)
             }
@@ -441,6 +515,8 @@ export default function AdminShell({
             ×
           </button>
         </div>
+
+        {/* ROLE */}
 
         <div className="admin-sidebar-role">
           <span className="admin-sidebar-role-label">
@@ -454,57 +530,77 @@ export default function AdminShell({
           </strong>
         </div>
 
-        <nav className="admin-sidebar-nav">
-          {visibleNavItems.map(
-            (item) => {
-              const active =
-                item.href ===
-                "/admin"
-                  ? pathname ===
-                    "/admin"
-                  : pathname ===
-                      item.href ||
-                    pathname.startsWith(
-                      `${item.href}/`,
-                    );
+        {/* SIDEBAR SCROLL */}
 
-              return (
-                <button
-                  key={item.href}
-                  type="button"
-                  className={`admin-nav-item ${
-                    active
-                      ? "is-active"
-                      : ""
-                  }`}
-                  onClick={() => {
-                    router.push(
-                      item.href,
-                    );
+        <div className="admin-sidebar-scroll">
+          <nav className="admin-nav">
+            {visibleNavItems.map(
+              (item) => {
+                const active =
+                  item.href ===
+                  "/admin"
+                    ? pathname ===
+                      "/admin"
+                    : pathname ===
+                        item.href ||
+                      pathname.startsWith(
+                        `${item.href}/`,
+                      );
 
-                    setMobileOpen(
-                      false,
-                    );
-                  }}
-                >
-                  <span className="admin-nav-icon">
-                    {item.icon}
-                  </span>
+                return (
+                  <button
+                    key={item.href}
+                    type="button"
+                    className={`admin-nav-item ${
+                      active
+                        ? "admin-nav-item-active"
+                        : ""
+                    }`}
+                    onClick={() => {
+                      setMobileOpen(
+                        false,
+                      );
 
-                  <span className="admin-nav-label">
-                    {item.label}
-                  </span>
-                </button>
-              );
-            },
-          )}
-        </nav>
+                      router.push(
+                        item.href,
+                      );
+                    }}
+                  >
+                    <span className="admin-nav-icon">
+                      {item.icon}
+                    </span>
+
+                    <span className="admin-nav-label">
+                      {item.label}
+                    </span>
+
+                    {active && (
+                      <span className="admin-nav-active-dot" />
+                    )}
+                  </button>
+                );
+              },
+            )}
+          </nav>
+        </div>
+
+        {/* FOOTER */}
 
         <div className="admin-sidebar-footer">
-          <div className="admin-sidebar-footer-top">
-            <span className="admin-owner-badge">
+          <div>
+            <div className="admin-status">
+              <span className="admin-status-dot" />
+
+              <span>
+                {language === "fa"
+                  ? "سیستم فعال"
+                  : "System Online"}
+              </span>
+            </div>
+
+            <div className="admin-version">
               {roleLabel}
-            </span>
+            </div>
           </div>
 
           <button
@@ -536,10 +632,14 @@ export default function AdminShell({
         </div>
       </aside>
 
+      {/* ===================================================
+          MOBILE OVERLAY
+          =================================================== */}
+
       {mobileOpen && (
         <button
           type="button"
-          className="admin-sidebar-overlay"
+          className="admin-mobile-overlay"
           onClick={() =>
             setMobileOpen(false)
           }
@@ -547,9 +647,17 @@ export default function AdminShell({
         />
       )}
 
+      {/* ===================================================
+          MAIN
+          =================================================== */}
+
       <main className="admin-main">
+        {/* TOPBAR */}
+
         <header className="admin-topbar">
-          <div className="admin-topbar-left">
+          {/* MOBILE HEADER */}
+
+          <div className="admin-mobile-header">
             <button
               type="button"
               className="admin-mobile-menu"
@@ -558,34 +666,62 @@ export default function AdminShell({
               }
               aria-label="Open menu"
             >
-              ☰
+              <span />
+              <span />
+              <span />
             </button>
 
-            <div>
-              <span className="admin-topbar-eyebrow">
-                UNIQE
-              </span>
+            <div className="admin-mobile-title">
+              <strong>
+                Uniqe
+              </strong>
 
-              <h1>
+              <small>
                 Admin Panel
-              </h1>
+              </small>
             </div>
           </div>
 
-          <div className="admin-topbar-right">
-            <span className="admin-topbar-role">
-              {roleLabel}
-            </span>
+          {/* DESKTOP START */}
 
-            <span className="admin-owner-badge">
-              {role === "owner"
-                ? "OWNER"
-                : role === "staff"
-                  ? "STAFF"
-                  : "CUSTOMER"}
-            </span>
+          <div className="admin-topbar-start">
+            <div className="admin-breadcrumb">
+              <span>
+                UNIQE
+              </span>
+
+              <span className="admin-breadcrumb-separator">
+                /
+              </span>
+
+              <strong>
+                Admin
+              </strong>
+            </div>
+          </div>
+
+          {/* TOPBAR ACTIONS */}
+
+          <div className="admin-topbar-actions">
+            <div className="admin-user">
+              <div className="admin-user-avatar">
+                U
+              </div>
+
+              <div className="admin-user-copy">
+                <strong>
+                  {roleLabel}
+                </strong>
+
+                <small>
+                  Uniqe Admin
+                </small>
+              </div>
+            </div>
           </div>
         </header>
+
+        {/* CONTENT */}
 
         <section className="admin-content">
           {children}
