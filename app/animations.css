@@ -830,3 +830,110 @@
 
 
 
+/* =========================================================
+   SCROLL REVEAL
+   ========================================================= */
+
+.scroll-reveal {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.scroll-reveal-visible {
+  visibility: visible;
+}
+
+
+/* =========================================================
+   SCROLL REVEAL — ANIMATION STATES
+   ========================================================= */
+
+.scroll-reveal:not(.scroll-reveal-visible) {
+  animation: none !important;
+}
+
+.scroll-reveal-visible.animate-fade-in {
+  animation:
+    uniqe-fade-in
+    var(--motion-duration-normal)
+    var(--motion-ease)
+    both;
+}
+
+.scroll-reveal-visible.animate-fade-up {
+  animation:
+    uniqe-fade-up
+    var(--motion-duration-normal)
+    var(--motion-ease)
+    both;
+}
+
+.scroll-reveal-visible.animate-fade-down {
+  animation:
+    uniqe-fade-down
+    var(--motion-duration-normal)
+    var(--motion-ease)
+    both;
+}
+
+.scroll-reveal-visible.animate-fade-left {
+  animation:
+    uniqe-fade-left
+    var(--motion-duration-normal)
+    var(--motion-ease)
+    both;
+}
+
+.scroll-reveal-visible.animate-fade-right {
+  animation:
+    uniqe-fade-right
+    var(--motion-duration-normal)
+    var(--motion-ease)
+    both;
+}
+
+.scroll-reveal-visible.animate-scale-in {
+  animation:
+    uniqe-scale-in
+    var(--motion-duration-normal)
+    var(--motion-ease)
+    both;
+}
+
+
+/* =========================================================
+   SCROLL REVEAL — MOBILE
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .scroll-reveal-visible.animate-fade-up {
+    animation-duration: 240ms;
+  }
+
+  .scroll-reveal-visible.animate-fade-down {
+    animation-duration: 240ms;
+  }
+
+  .scroll-reveal-visible.animate-fade-left,
+  .scroll-reveal-visible.animate-fade-right {
+    animation-name: uniqe-fade-up;
+    animation-duration: 240ms;
+  }
+}
+
+
+/* =========================================================
+   SCROLL REVEAL — ACCESSIBILITY
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal,
+  .scroll-reveal:not(.scroll-reveal-visible),
+  .scroll-reveal-visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
