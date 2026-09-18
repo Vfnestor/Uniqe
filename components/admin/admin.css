@@ -5,12 +5,13 @@
    ========================================================= */
 
 .admin-shell {
-  --admin-bg: #f4f5f7;
-  --admin-surface: #ffffff;
-  --admin-surface-soft: #f8f9fb;
-  --admin-border: rgba(17, 17, 17, 0.08);
-  --admin-text: #111111;
-  --admin-muted: #70757d;
+  --admin-bg: var(--color-bg);
+  --admin-surface: var(--color-surface);
+  --admin-surface-soft: var(--color-bg-soft);
+  --admin-border: var(--color-border);
+  --admin-text: var(--color-text-primary);
+  --admin-muted: var(--color-text-secondary);
+
   --admin-sidebar: #101114;
   --admin-sidebar-text: #ffffff;
   --admin-sidebar-muted: rgba(255, 255, 255, 0.48);
@@ -19,6 +20,10 @@
 
   background: var(--admin-bg);
   color: var(--admin-text);
+
+  transition:
+    background-color 220ms ease,
+    color 220ms ease;
 }
 
 /* =========================================================
