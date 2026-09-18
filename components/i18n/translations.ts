@@ -617,7 +617,7 @@ export const translations = {
         "Backend متصل نیست",
 
       "One space. Your Uniqe.":
-        "یک فضا. Uniqe شما." 
+        "یک فضا. Uniqe شما.", 
             "Users":
         "کاربران",
 
