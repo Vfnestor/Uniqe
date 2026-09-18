@@ -5,8 +5,11 @@ import {
 
 import {
   ADMIN_SESSION_COOKIE,
-  createAdminSession,
 } from "@/lib/auth/admin-auth";
+
+import {
+  createAdminSession,
+} from "@/lib/auth/admin-session";
 
 export const runtime = "nodejs";
 
@@ -30,34 +33,36 @@ export async function POST(
       await request.json();
 
     const email =
-      typeof body?.email === "string"
-        ? body.email.trim().toLowerCase()
+      typeof body?.email ===
+      "string"
+        ? body.email
+            .trim()
+            .toLowerCase()
         : "";
 
     const password =
-      typeof body?.password === "string"
+      typeof body?.password ===
+      "string"
         ? body.password
         : "";
 
     const adminEmail =
       cleanEnvironmentValue(
-        process.env.UNIQE_ADMIN_EMAIL,
+        process.env
+          .UNIQE_ADMIN_EMAIL,
       ).toLowerCase();
 
     const adminPassword =
       cleanEnvironmentValue(
-        process.env.UNIQE_ADMIN_PASSWORD,
+        process.env
+          .UNIQE_ADMIN_PASSWORD,
       );
 
     const authSecret =
       cleanEnvironmentValue(
-        process.env.UNIQE_AUTH_SECRET,
+        process.env
+          .UNIQE_AUTH_SECRET,
       );
-
-    /*
-     * Never expose the actual environment
-     * values in logs or responses.
-     */
 
     if (
       !adminEmail ||
@@ -69,8 +74,10 @@ export async function POST(
         {
           hasEmail:
             Boolean(adminEmail),
+
           hasPassword:
             Boolean(adminPassword),
+
           hasAuthSecret:
             Boolean(authSecret),
         },
@@ -118,23 +125,42 @@ export async function POST(
       );
     }
 
+    /*
+     * Current admin account is the
+     * ecosystem owner.
+     *
+     * Later this role will come
+     * from the database.
+     */
+
     const session =
-      createAdminSession();
+      createAdminSession(
+        "owner",
+      );
 
     const response =
       NextResponse.json({
         success: true,
+
+        role: "owner",
       });
 
     response.cookies.set({
-      name: ADMIN_SESSION_COOKIE,
+      name:
+        ADMIN_SESSION_COOKIE,
+
       value: session,
+
       httpOnly: true,
+
       secure:
         process.env.NODE_ENV ===
         "production",
+
       sameSite: "lax",
+
       path: "/",
+
       maxAge:
         60 * 60 * 24,
     });
