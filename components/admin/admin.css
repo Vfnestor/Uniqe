@@ -231,7 +231,7 @@
   gap: 3px;
 }
 
-..admin-nav-item {
+.admin-nav-item {
   min-height: 42px;
 
   display: flex;
