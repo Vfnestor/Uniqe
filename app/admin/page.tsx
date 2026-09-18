@@ -1,253 +1,232 @@
-"use client";
-
 import Link from "next/link";
-
-import {
-  useLanguage,
-} from "@/components/i18n/LanguageProvider";
 
 const stats = [
   {
-    key: "users",
-    icon: "◎",
-    value: "—",
-    en: "Users",
-    fa: "کاربران",
-    noteEn: "Ready for database",
-    noteFa: "آماده اتصال به دیتابیس",
+    icon: "👥",
+    label: "Users",
+    value: "0",
+    description: "Registered users",
+    href: "/admin/users",
   },
   {
-    key: "orders",
-    icon: "◈",
-    value: "—",
-    en: "Orders",
-    fa: "سفارش‌ها",
-    noteEn: "UShop",
-    noteFa: "UShop",
+    icon: "🛍️",
+    label: "UShop",
+    value: "0",
+    description: "Products",
+    href: "/admin/ushop",
   },
   {
-    key: "products",
-    icon: "◇",
-    value: "4",
-    en: "Products",
-    fa: "محصولات",
-    noteEn: "Demo products",
-    noteFa: "محصولات آزمایشی",
+    icon: "🎓",
+    label: "USchool",
+    value: "0",
+    description: "Courses",
+    href: "/admin/uschool",
   },
   {
-    key: "modules",
-    icon: "◆",
-    value: "7",
-    en: "Modules",
-    fa: "ماژول‌ها",
-    noteEn: "Ecosystem",
-    noteFa: "اکوسیستم",
+    icon: "🌐",
+    label: "UWeb",
+    value: "0",
+    description: "Projects",
+    href: "/admin/uweb",
+  },
+];
+
+const modules = [
+  {
+    icon: "📱",
+    title: "UApps",
+    description: "Applications and app projects",
+    status: "Ready",
+    href: "/admin/uapps",
+  },
+  {
+    icon: "🧠",
+    title: "UCore",
+    description: "Core services and infrastructure",
+    status: "Ready",
+    href: "/admin/ucore",
+  },
+  {
+    icon: "🧪",
+    title: "LAB",
+    description: "Experiments and research",
+    status: "Ready",
+    href: "/admin/lab",
   },
 ];
 
 const quickActions = [
   {
+    icon: "➕",
+    title: "Add Product",
+    description: "Create a new UShop product",
     href: "/admin/ushop",
-    icon: "◈",
-    en: "Manage UShop",
-    fa: "مدیریت UShop",
   },
   {
+    icon: "📚",
+    title: "Manage Courses",
+    description: "Open USchool management",
+    href: "/admin/uschool",
+  },
+  {
+    icon: "👤",
+    title: "Manage Users",
+    description: "View and manage users",
     href: "/admin/users",
-    icon: "◎",
-    en: "Manage Users",
-    fa: "مدیریت کاربران",
   },
   {
-    href: "/admin/content",
-    icon: "≡",
-    en: "Manage Content",
-    fa: "مدیریت محتوا",
-  },
-  {
+    icon: "⚙️",
+    title: "Settings",
+    description: "System configuration",
     href: "/admin/settings",
-    icon: "⚙",
-    en: "System Settings",
-    fa: "تنظیمات سیستم",
   },
 ];
 
-export default function AdminDashboard() {
-  const {
-    language,
-  } = useLanguage();
-
-  const isRtl = language === "fa";
-
+export default function AdminDashboardPage() {
   return (
     <div className="admin-dashboard">
-      <section className="admin-hero">
+      <section className="admin-dashboard-header">
         <div>
-          <span className="admin-eyebrow">
-            {isRtl
-              ? "CENTRAL CONTROL"
-              : "CENTRAL CONTROL"}
+          <span className="admin-dashboard-eyebrow">
+            UNIQE CONTROL CENTER
           </span>
 
-          <h1>
-            {isRtl
-              ? "به پنل مدیریت Uniqe خوش آمدید"
-              : "Welcome to Uniqe Admin"}
-          </h1>
+          <h1>Dashboard</h1>
 
           <p>
-            {isRtl
-              ? "مرکز کنترل تمام بخش‌های اکوسیستم Uniqe."
-              : "The central control center for the entire Uniqe ecosystem."}
+            Welcome to the central administration panel of Uniqe.
           </p>
         </div>
 
-        <div className="admin-hero-mark">
-          U
+        <div className="admin-dashboard-status">
+          <span className="admin-status-dot" />
+          System Online
         </div>
       </section>
 
-      <section className="admin-stats-grid">
+      <section className="admin-stat-grid">
         {stats.map((stat) => (
-          <article
-            key={stat.key}
+          <Link
+            key={stat.label}
+            href={stat.href}
             className="admin-stat-card"
           >
-            <div className="admin-stat-top">
-              <span className="admin-stat-icon">
-                {stat.icon}
-              </span>
-
-              <span className="admin-stat-live">
-                {isRtl
-                  ? "سیستم"
-                  : "SYSTEM"}
-              </span>
+            <div className="admin-stat-icon">
+              {stat.icon}
             </div>
 
-            <div className="admin-stat-value">
-              {stat.value}
+            <div className="admin-stat-content">
+              <span>{stat.label}</span>
+              <strong>{stat.value}</strong>
+              <small>{stat.description}</small>
             </div>
-
-            <div className="admin-stat-label">
-              {isRtl
-                ? stat.fa
-                : stat.en}
-            </div>
-
-            <div className="admin-stat-note">
-              {isRtl
-                ? stat.noteFa
-                : stat.noteEn}
-            </div>
-          </article>
+          </Link>
         ))}
       </section>
 
       <section className="admin-dashboard-grid">
-        <article className="admin-panel admin-quick-panel">
-          <div className="admin-panel-heading">
+        <div className="admin-dashboard-panel">
+          <div className="admin-panel-header">
             <div>
-              <span className="admin-panel-kicker">
-                {isRtl
-                  ? "دسترسی سریع"
-                  : "QUICK ACCESS"}
+              <span className="admin-panel-eyebrow">
+                ECOSYSTEM
               </span>
 
-              <h2>
-                {isRtl
-                  ? "عملیات سریع"
-                  : "Quick Actions"}
-              </h2>
+              <h2>Uniqe Modules</h2>
             </div>
           </div>
 
-          <div className="admin-actions-grid">
-            {quickActions.map(
-              (action) => (
-                <Link
-                  key={action.href}
-                  href={action.href}
-                  className="admin-action-card"
-                >
-                  <span className="admin-action-icon">
-                    {action.icon}
-                  </span>
+          <div className="admin-module-list">
+            {modules.map((module) => (
+              <Link
+                key={module.title}
+                href={module.href}
+                className="admin-module-item"
+              >
+                <div className="admin-module-icon">
+                  {module.icon}
+                </div>
 
-                  <span>
-                    {isRtl
-                      ? action.fa
-                      : action.en}
-                  </span>
+                <div className="admin-module-info">
+                  <strong>{module.title}</strong>
+                  <span>{module.description}</span>
+                </div>
 
-                  <span className="admin-action-arrow">
-                    ↗
-                  </span>
-                </Link>
-              ),
-            )}
+                <span className="admin-module-status">
+                  {module.status}
+                </span>
+
+                <span className="admin-module-arrow">
+                  →
+                </span>
+              </Link>
+            ))}
           </div>
-        </article>
+        </div>
 
-        <article className="admin-panel admin-activity-panel">
-          <div className="admin-panel-heading">
+        <div className="admin-dashboard-panel">
+          <div className="admin-panel-header">
             <div>
-              <span className="admin-panel-kicker">
-                {isRtl
-                  ? "فعالیت"
-                  : "ACTIVITY"}
+              <span className="admin-panel-eyebrow">
+                QUICK ACCESS
               </span>
 
-              <h2>
-                {isRtl
-                  ? "آخرین فعالیت‌ها"
-                  : "Recent Activity"}
-              </h2>
+              <h2>Quick Actions</h2>
             </div>
           </div>
 
-          <div className="admin-empty-activity">
-            <span className="admin-empty-icon">
-              ◌
-            </span>
+          <div className="admin-quick-actions">
+            {quickActions.map((action) => (
+              <Link
+                key={action.title}
+                href={action.href}
+                className="admin-quick-action"
+              >
+                <div className="admin-quick-action-icon">
+                  {action.icon}
+                </div>
 
-            <strong>
-              {isRtl
-                ? "هنوز فعالیتی ثبت نشده"
-                : "No activity yet"}
-            </strong>
+                <div>
+                  <strong>{action.title}</strong>
+                  <span>{action.description}</span>
+                </div>
 
-            <p>
-              {isRtl
-                ? "با اتصال دیتابیس و سیستم احراز هویت، فعالیت‌ها اینجا نمایش داده می‌شوند."
-                : "Activity will appear here once the database and authentication layer are connected."}
-            </p>
+                <span className="admin-quick-action-arrow">
+                  →
+                </span>
+              </Link>
+            ))}
           </div>
-        </article>
+        </div>
       </section>
 
-      <section className="admin-system-banner">
-        <div className="admin-system-banner-icon">
-          ✓
+      <section className="admin-dashboard-panel admin-activity-panel">
+        <div className="admin-panel-header">
+          <div>
+            <span className="admin-panel-eyebrow">
+              SYSTEM ACTIVITY
+            </span>
+
+            <h2>Recent Activity</h2>
+          </div>
+
+          <span className="admin-live-label">
+            LIVE
+          </span>
         </div>
 
-        <div>
-          <strong>
-            {isRtl
-              ? "Admin Foundation فعال است"
-              : "Admin Foundation is active"}
-          </strong>
+        <div className="admin-empty-activity">
+          <div className="admin-empty-icon">
+            ◌
+          </div>
 
-          <p>
-            {isRtl
-              ? "این نسخه اسکلت اولیه پنل مدیریت است. Authentication، Permission و Database در فازهای بعدی اضافه خواهند شد."
-              : "This is the initial administration foundation. Authentication, permissions and database integration will be added in later phases."}
-          </p>
+          <strong>No activity yet</strong>
+
+          <span>
+            System activity will appear here once users and
+            modules start generating events.
+          </span>
         </div>
-
-        <span className="admin-system-badge">
-          PHASE 1
-        </span>
       </section>
     </div>
   );
