@@ -551,3 +551,39 @@
     transform: none !important;
   }
 }
+/* =========================================================
+   PAGE ENTRANCE
+   ========================================================= */
+
+.page-transition {
+  animation:
+    uniqe-page-enter
+    var(--motion-duration-normal)
+    var(--motion-ease-soft)
+    both;
+}
+
+@keyframes uniqe-page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================================
+   PAGE ENTRANCE — ACCESSIBILITY
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .page-transition {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
