@@ -587,3 +587,39 @@
     opacity: 1 !important;
   }
 }
+/* =========================================================
+   COMPONENT ENTRANCE
+   ========================================================= */
+
+.motion-card,
+.motion-section,
+.motion-list {
+  backface-visibility: hidden;
+}
+
+
+/* =========================================================
+   COMPONENT MOTION OPTIMIZATION
+   ========================================================= */
+
+.motion-card,
+.motion-section {
+  will-change: opacity, transform;
+}
+
+
+/* =========================================================
+   COMPONENT MOTION — ACCESSIBILITY
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-card,
+  .motion-section,
+  .motion-list {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
