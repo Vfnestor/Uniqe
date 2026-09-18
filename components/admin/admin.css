@@ -1540,3 +1540,385 @@
     display: none;
   }
 }
+
+/* =========================================================
+   ADMIN PAGE FOUNDATION
+   ========================================================= */
+
+.admin-page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.admin-page-header-content {
+  min-width: 0;
+}
+
+.admin-page-header-eyebrow {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--admin-muted);
+  font-size: 0.7rem;
+  font-weight: 750;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.admin-page-header h1 {
+  margin: 0;
+  color: var(--admin-text);
+  font-size: clamp(1.7rem, 3vw, 2.35rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.admin-page-header p {
+  max-width: 680px;
+  margin: 9px 0 0;
+  color: var(--admin-muted);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.admin-page-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   ADMIN PANEL
+   ========================================================= */
+
+.admin-panel {
+  overflow: hidden;
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.admin-panel-header h2 {
+  margin: 0;
+  color: var(--admin-text);
+  font-size: 1rem;
+  font-weight: 750;
+}
+
+.admin-panel-header p {
+  margin: 5px 0 0;
+  color: var(--admin-muted);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.admin-panel-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-panel-body {
+  min-width: 0;
+}
+
+
+/* =========================================================
+   ADMIN BUTTONS
+   ========================================================= */
+
+.admin-button {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 13px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.admin-button:active {
+  transform: scale(0.98);
+}
+
+.admin-button-primary {
+  background: var(--color-text-primary);
+  color: var(--color-bg);
+}
+
+.admin-button-primary:hover {
+  opacity: 0.88;
+}
+
+.admin-button-secondary {
+  background: var(--admin-surface);
+  color: var(--admin-text);
+  border-color: var(--admin-border);
+}
+
+.admin-button-secondary:hover {
+  background: var(--color-surface-hover);
+}
+
+
+/* =========================================================
+   ADMIN EMPTY STATE
+   ========================================================= */
+
+.admin-empty-state {
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+  text-align: center;
+}
+
+.admin-empty-state-icon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 13px;
+  border: 1px solid var(--admin-border);
+  border-radius: 13px;
+  background: var(--admin-surface-soft);
+  color: var(--admin-muted);
+  font-size: 1.25rem;
+}
+
+.admin-empty-state h3 {
+  margin: 0;
+  color: var(--admin-text);
+  font-size: 0.95rem;
+}
+
+.admin-empty-state p {
+  max-width: 480px;
+  margin: 7px 0 0;
+  color: var(--admin-muted);
+  font-size: 0.8rem;
+  line-height: 1.7;
+}
+
+.admin-empty-state-action {
+  margin-top: 17px;
+}
+
+
+/* =========================================================
+   ADMIN LOADING
+   ========================================================= */
+
+.admin-loading {
+  display: grid;
+  gap: 10px;
+  padding: 20px;
+}
+
+.admin-loading-row {
+  min-height: 48px;
+  display: grid;
+  grid-template-columns: 44px 1fr 80px;
+  align-items: center;
+  gap: 12px;
+  padding: 0 12px;
+  border: 1px solid var(--admin-border);
+  border-radius: 10px;
+  background: var(--admin-surface-soft);
+}
+
+.admin-loading-row span {
+  display: block;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--admin-border);
+  animation: admin-loading-pulse 1.4s ease-in-out infinite;
+}
+
+.admin-loading-row span:nth-child(2) {
+  width: 70%;
+}
+
+.admin-loading-row span:nth-child(3) {
+  width: 55px;
+}
+
+@keyframes admin-loading-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+
+  50% {
+    opacity: 0.9;
+  }
+}
+
+
+/* =========================================================
+   ADMIN ERROR
+   ========================================================= */
+
+.admin-error-state {
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+  text-align: center;
+}
+
+.admin-error-state-icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 12px;
+  border: 1px solid var(--admin-border);
+  border-radius: 50%;
+  color: var(--admin-text);
+  font-weight: 800;
+}
+
+.admin-error-state h3 {
+  margin: 0;
+  color: var(--admin-text);
+  font-size: 0.95rem;
+}
+
+.admin-error-state p {
+  max-width: 440px;
+  margin: 7px 0 17px;
+  color: var(--admin-muted);
+  font-size: 0.8rem;
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   ADMIN SEARCH
+   ========================================================= */
+
+.admin-search {
+  position: relative;
+  width: min(100%, 340px);
+}
+
+.admin-search input {
+  width: 100%;
+  min-height: 40px;
+  box-sizing: border-box;
+  padding: 0 38px 0 38px;
+  border: 1px solid var(--admin-border);
+  border-radius: 10px;
+  outline: none;
+  background: var(--admin-surface);
+  color: var(--admin-text);
+  font: inherit;
+  font-size: 0.8rem;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.admin-search input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.admin-search input:focus {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-hover);
+}
+
+.admin-search-icon {
+  position: absolute;
+  top: 50%;
+  left: 13px;
+  transform: translateY(-50%);
+  color: var(--admin-muted);
+  pointer-events: none;
+}
+
+.admin-search-clear {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--admin-muted);
+  font: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.admin-search-clear:hover {
+  background: var(--color-surface-hover);
+  color: var(--admin-text);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .admin-page-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .admin-page-header-actions {
+    width: 100%;
+  }
+
+  .admin-page-header-actions .admin-button {
+    flex: 1;
+  }
+
+  .admin-panel-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .admin-panel-actions {
+    width: 100%;
+  }
+
+  .admin-search {
+    width: 100%;
+  }
+}
