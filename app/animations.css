@@ -623,3 +623,103 @@
   }
 }
 
+/* =========================================================
+   INTERACTIVE MOTION SYSTEM
+   ========================================================= */
+
+.motion-interactive {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+
+/* =========================================================
+   INTERACTIVE LIFT
+   ========================================================= */
+
+.motion-interactive.animate-hover-lift {
+  transition:
+    transform var(--motion-duration-fast) var(--motion-ease),
+    box-shadow var(--motion-duration-fast) var(--motion-ease);
+}
+
+.motion-interactive.animate-hover-lift:hover {
+  transform: translateY(-3px);
+}
+
+
+/* =========================================================
+   INTERACTIVE SCALE
+   ========================================================= */
+
+.motion-interactive.animate-hover-scale {
+  transition:
+    transform var(--motion-duration-fast) var(--motion-ease);
+}
+
+.motion-interactive.animate-hover-scale:hover {
+  transform: scale(1.015);
+}
+
+
+/* =========================================================
+   INTERACTIVE PRESS
+   ========================================================= */
+
+.motion-interactive.animate-press {
+  transition:
+    transform var(--motion-duration-fast) var(--motion-ease);
+}
+
+.motion-interactive.animate-press:active {
+  transform: scale(0.975);
+}
+
+
+/* =========================================================
+   INTERACTIVE GLOW
+   ========================================================= */
+
+.motion-interactive.animate-glow {
+  transition:
+    transform var(--motion-duration-fast) var(--motion-ease),
+    box-shadow var(--motion-duration-normal) var(--motion-ease);
+}
+
+.motion-interactive.animate-glow:hover {
+  transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   TOUCH DEVICES
+   ========================================================= */
+
+@media (hover: none) {
+  .motion-interactive.animate-hover-lift:hover,
+  .motion-interactive.animate-hover-scale:hover,
+  .motion-interactive.animate-glow:hover {
+    transform: none;
+  }
+
+  .motion-interactive:active {
+    transform: scale(0.975);
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-interactive,
+  .motion-interactive:hover,
+  .motion-interactive:active {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+}
+
