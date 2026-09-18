@@ -1,4 +1,5 @@
 import "@/components/admin/admin.css";
+import "../../components/admin/admin-dashboard.css";
 
 import AdminShell from "@/components/admin/AdminShell";
 
