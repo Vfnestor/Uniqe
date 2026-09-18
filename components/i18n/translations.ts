@@ -617,7 +617,93 @@ export const translations = {
         "Backend متصل نیست",
 
       "One space. Your Uniqe.":
-        "یک فضا. Uniqe شما.",
+        "یک فضا. Uniqe شما." 
+            "Users":
+        "کاربران",
+
+      "Registered users":
+        "کاربران ثبت‌نام‌شده",
+
+      "Products":
+        "محصولات",
+
+      "Courses":
+        "دوره‌ها",
+
+      "Projects":
+        "پروژه‌ها",
+
+      "Applications and app projects":
+        "اپلیکیشن‌ها و پروژه‌های نرم‌افزاری",
+
+      "Core services and infrastructure":
+        "سرویس‌های مرکزی و زیرساخت",
+
+      "Experiments and research":
+        "آزمایش‌ها و پژوهش‌ها",
+
+      "Ready":
+        "آماده",
+
+      "Add Product":
+        "افزودن محصول",
+
+      "Create a new UShop product":
+        "ایجاد محصول جدید در UShop",
+
+      "Manage Courses":
+        "مدیریت دوره‌ها",
+
+      "Open USchool management":
+        "باز کردن مدیریت USchool",
+
+      "Manage Users":
+        "مدیریت کاربران",
+
+      "View and manage users":
+        "مشاهده و مدیریت کاربران",
+
+      "Settings":
+        "تنظیمات",
+
+      "System configuration":
+        "تنظیمات سیستم",
+
+      "Dashboard":
+        "داشبورد",
+
+      "Welcome to the central administration panel of Uniqe.":
+        "به پنل مدیریت مرکزی Uniqe خوش آمدید.",
+
+      "System Online":
+        "سیستم آنلاین",
+
+      "ECOSYSTEM":
+        "اکوسیستم",
+
+      "Uniqe Modules":
+        "ماژول‌های Uniqe",
+
+      "QUICK ACCESS":
+        "دسترسی سریع",
+
+      "Quick Actions":
+        "عملیات سریع",
+
+      "SYSTEM ACTIVITY":
+        "فعالیت سیستم",
+
+      "Recent Activity":
+        "فعالیت‌های اخیر",
+
+      "LIVE":
+        "زنده",
+
+      "No activity yet":
+        "هنوز فعالیتی ثبت نشده است",
+
+      "System activity will appear here once users and modules start generating events.":
+        "پس از شروع فعالیت کاربران و ماژول‌ها، فعالیت‌های سیستم در اینجا نمایش داده می‌شوند.",
     },
   },
 } as const;
