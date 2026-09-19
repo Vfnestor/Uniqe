@@ -1313,3 +1313,622 @@
   }
 }
 
+/* ============================================================
+   UWEB PROJECTS
+   ============================================================ */
+
+.uweb-projects-page {
+  padding: 120px 0 80px;
+  min-height: calc(100vh - 80px);
+}
+
+.uweb-projects-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  margin-bottom: 42px;
+}
+
+.uweb-projects-header h1 {
+  margin: 14px 0 14px;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.uweb-projects-header p {
+  max-width: 620px;
+  margin: 0;
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+}
+
+.uweb-project-filters {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin-bottom: 30px;
+  padding-bottom: 6px;
+  scrollbar-width: none;
+}
+
+.uweb-project-filters::-webkit-scrollbar {
+  display: none;
+}
+
+.uweb-project-filters button {
+  flex: 0 0 auto;
+  min-height: 42px;
+  padding: 0 15px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font: inherit;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.uweb-project-filters button:hover {
+  border-color: var(--color-border-strong);
+  color: var(--color-text-primary);
+}
+
+.uweb-project-filters button.active {
+  border-color: var(--color-text-primary);
+  background: var(--color-text-primary);
+  color: var(--color-bg);
+}
+
+.uweb-projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.uweb-project-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 320px;
+  padding: 26px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 22px;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.uweb-project-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-hover);
+  box-shadow: var(--shadow-md);
+}
+
+.uweb-project-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.uweb-project-number {
+  color: var(--color-text-muted);
+  font-family: monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+}
+
+.uweb-project-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-text-secondary);
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
+
+.uweb-project-status-matching {
+  border-color: var(--color-text-primary);
+  color: var(--color-text-primary);
+}
+
+.uweb-project-status-completed {
+  border-color: var(--color-border-strong);
+}
+
+.uweb-project-card-content {
+  flex: 1;
+  padding: 42px 0 30px;
+}
+
+.uweb-project-card-content h2 {
+  max-width: 620px;
+  margin: 0 0 12px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+
+.uweb-project-card-content p {
+  max-width: 600px;
+  margin: 0;
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+  font-size: 0.9rem;
+}
+
+.uweb-project-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 18px;
+  border-top: 1px solid var(--color-border);
+}
+
+.uweb-project-card-meta span {
+  padding: 7px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-text-secondary);
+  font-size: 0.68rem;
+}
+
+.uweb-project-card-arrow {
+  position: absolute;
+  right: 25px;
+  bottom: 24px;
+  font-size: 1.25rem;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.uweb-project-card:hover .uweb-project-card-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.uweb-projects-empty {
+  grid-column: 1 / -1;
+  padding: 80px 24px;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: 22px;
+  text-align: center;
+}
+
+.uweb-projects-empty-mark {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 20px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 50%;
+  font-weight: 800;
+}
+
+.uweb-projects-empty h2 {
+  margin: 0 0 8px;
+  font-size: 1.4rem;
+}
+
+.uweb-projects-empty p {
+  margin: 0 0 24px;
+  color: var(--color-text-secondary);
+}
+
+/* ============================================================
+   UWEB PROJECT DETAILS
+   ============================================================ */
+
+.uweb-project-details-page {
+  padding: 110px 0 80px;
+}
+
+.uweb-project-back {
+  display: inline-flex;
+  margin-bottom: 34px;
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.uweb-project-back:hover {
+  color: var(--color-text-primary);
+}
+
+.uweb-project-details-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 290px;
+  gap: 32px;
+  align-items: start;
+}
+
+.uweb-project-details-header {
+  margin-bottom: 30px;
+}
+
+.uweb-project-details-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.uweb-project-details-topline > span:first-child {
+  color: var(--color-text-muted);
+  font-family: monospace;
+  font-size: 0.72rem;
+}
+
+.uweb-project-details-header h1 {
+  max-width: 900px;
+  margin: 0 0 18px;
+  font-size: clamp(2.4rem, 6vw, 5rem);
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.uweb-project-details-header > p {
+  max-width: 780px;
+  margin: 0;
+  color: var(--color-text-secondary);
+  line-height: 1.9;
+}
+
+.uweb-project-panel {
+  margin-bottom: 18px;
+  padding: 28px;
+  border: 1px solid var(--color-border);
+  border-radius: 22px;
+  background: var(--color-surface);
+}
+
+.uweb-project-panel-heading {
+  margin-bottom: 24px;
+}
+
+.uweb-project-panel-heading h2 {
+  margin: 8px 0 0;
+  font-size: 1.45rem;
+  letter-spacing: -0.025em;
+}
+
+.uweb-project-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.uweb-project-summary-grid > div {
+  min-height: 100px;
+  padding: 17px;
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.uweb-project-summary-grid > div:nth-child(3n) {
+  border-right: 0;
+}
+
+.uweb-project-summary-grid > div:nth-last-child(-n + 3) {
+  border-bottom: 0;
+}
+
+.uweb-project-summary-grid span,
+.uweb-project-summary-grid strong {
+  display: block;
+}
+
+.uweb-project-summary-grid span {
+  margin-bottom: 8px;
+  color: var(--color-text-muted);
+  font-size: 0.7rem;
+}
+
+.uweb-project-summary-grid strong {
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.uweb-project-requirements {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.uweb-project-requirements > div > span {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+}
+
+.uweb-project-requirements p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+}
+
+.uweb-project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.uweb-project-tags span {
+  padding: 8px 11px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-text-secondary);
+  font-size: 0.72rem;
+}
+
+.uweb-required-skills {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.uweb-required-skill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.uweb-required-skill:last-child {
+  border-bottom: 0;
+}
+
+.uweb-required-skill > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.uweb-required-skill strong {
+  font-size: 0.88rem;
+}
+
+.uweb-required-skill span {
+  padding: 4px 7px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-text-muted);
+  font-size: 0.62rem;
+}
+
+.uweb-required-skill small {
+  color: var(--color-text-muted);
+}
+
+.uweb-project-timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.uweb-project-timeline-line {
+  position: absolute;
+  top: 20px;
+  bottom: 20px;
+  left: 15px;
+  width: 1px;
+  background: var(--color-border);
+}
+
+.uweb-project-timeline-item {
+  position: relative;
+  display: flex;
+  gap: 18px;
+}
+
+.uweb-project-timeline-item > span {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 31px;
+  height: 31px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 50%;
+  background: var(--color-bg-elevated);
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+.uweb-project-timeline-item strong {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+}
+
+.uweb-project-timeline-item p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.82rem;
+  line-height: 1.7;
+}
+
+.uweb-project-details-sidebar {
+  position: sticky;
+  top: 105px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.uweb-project-action-card,
+.uweb-project-side-card {
+  padding: 22px;
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  background: var(--color-surface);
+}
+
+.uweb-project-action-card > strong {
+  display: block;
+  margin: 12px 0 8px;
+  font-size: 1.15rem;
+}
+
+.uweb-project-action-card > p {
+  margin: 0 0 20px;
+  color: var(--color-text-secondary);
+  font-size: 0.82rem;
+  line-height: 1.8;
+}
+
+.uweb-project-side-card span,
+.uweb-project-side-card strong {
+  display: block;
+}
+
+.uweb-project-side-card span {
+  margin-bottom: 7px;
+  color: var(--color-text-muted);
+  font-size: 0.7rem;
+}
+
+.uweb-project-side-card strong {
+  overflow-wrap: anywhere;
+  font-size: 0.78rem;
+}
+
+/* ============================================================
+   UWEB PROJECTS RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1023px) {
+  .uweb-project-details-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .uweb-project-details-sidebar {
+    position: static;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .uweb-project-action-card {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 767px) {
+  .uweb-projects-page,
+  .uweb-project-details-page {
+    padding: 88px 0 48px;
+  }
+
+  .uweb-projects-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .uweb-projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .uweb-project-card {
+    min-height: 290px;
+  }
+
+  .uweb-project-summary-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .uweb-project-summary-grid > div:nth-child(3n) {
+    border-right: 1px solid var(--color-border);
+  }
+
+  .uweb-project-summary-grid > div:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .uweb-project-summary-grid > div:nth-last-child(-n + 3) {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .uweb-project-summary-grid > div:nth-last-child(-n + 2) {
+    border-bottom: 0;
+  }
+
+  .uweb-project-panel {
+    padding: 21px;
+    border-radius: 18px;
+  }
+
+  .uweb-project-details-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .uweb-project-action-card {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 479px) {
+  .uweb-project-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .uweb-project-summary-grid > div,
+  .uweb-project-summary-grid > div:nth-child(2n),
+  .uweb-project-summary-grid > div:nth-child(3n) {
+    border-right: 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .uweb-project-summary-grid > div:last-child {
+    border-bottom: 0;
+  }
+
+  .uweb-project-card {
+    padding: 20px;
+  }
+
+  .uweb-project-details-topline {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .uweb-project-details-header h1 {
+    font-size: 2.25rem;
+  }
+
+  .uweb-required-skill {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
