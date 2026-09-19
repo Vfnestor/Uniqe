@@ -1,0 +1,300 @@
+.my-u-page {
+  min-height: 100vh;
+  padding: 48px 0 120px;
+}
+
+.my-u-layout {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.my-u-navigation {
+  position: sticky;
+  top: 24px;
+  padding: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 22px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.my-u-navigation-header {
+  padding: 2px 8px 18px;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 10px;
+}
+
+.my-u-navigation-header h2 {
+  margin: 8px 0 0;
+  font-size: 21px;
+}
+
+.my-u-navigation nav {
+  display: grid;
+  gap: 4px;
+}
+
+.my-u-navigation-item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 43px;
+  padding: 10px 11px;
+  border-radius: 11px;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-size: 12px;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.my-u-navigation-item:hover {
+  background: var(--color-bg-soft);
+  color: var(--color-text-primary);
+}
+
+.my-u-navigation-item-active {
+  background: var(--color-bg-soft);
+  color: var(--color-text-primary);
+}
+
+.my-u-navigation-icon {
+  width: 24px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.my-u-main {
+  min-width: 0;
+}
+
+.my-u-hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 28px;
+  margin-bottom: 42px;
+  padding: 10px 0;
+}
+
+.my-u-hero h1 {
+  max-width: 760px;
+  margin: 10px 0 13px;
+  font-size: clamp(36px, 5vw, 62px);
+  line-height: 1.03;
+  letter-spacing: -0.05em;
+}
+
+.my-u-hero p {
+  max-width: 680px;
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+.my-u-primary-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  flex-shrink: 0;
+  padding: 13px 17px;
+  border-radius: 13px;
+  background: var(--color-brand);
+  color: var(--color-brand-dark);
+  text-decoration: none;
+  font-size: 12px;
+  white-space: nowrap;
+  transition: transform 0.2s ease;
+}
+
+.my-u-primary-action:hover {
+  transform: translateY(-2px);
+}
+
+.my-u-products-section {
+  margin-top: 8px;
+}
+
+.my-u-section-header {
+  margin-bottom: 20px;
+}
+
+.my-u-section-header h2 {
+  margin: 8px 0;
+  font-size: 28px;
+  letter-spacing: -0.03em;
+}
+
+.my-u-section-header p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.my-u-product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.my-u-product-card {
+  display: flex;
+  min-height: 260px;
+  flex-direction: column;
+  padding: 23px;
+  border: 1px solid var(--color-border);
+  border-radius: 22px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.my-u-product-card-active:hover {
+  transform: translateY(-3px);
+  background: var(--color-surface-hover);
+}
+
+.my-u-product-card-coming {
+  opacity: 0.72;
+}
+
+.my-u-product-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.my-u-product-icon {
+  display: flex;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  background: var(--color-bg-soft);
+  font-size: 22px;
+}
+
+.my-u-product-status {
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: var(--color-bg-soft);
+  color: var(--color-text-tertiary);
+  font-size: 9px;
+}
+
+.my-u-product-status-active {
+  color: #15803d;
+}
+
+.my-u-product-card-content {
+  flex: 1;
+  padding-top: 24px;
+}
+
+.my-u-product-name {
+  color: var(--color-text-muted);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.my-u-product-card h3 {
+  margin: 8px 0 9px;
+  font-size: 19px;
+}
+
+.my-u-product-card p {
+  max-width: 470px;
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 11px;
+  line-height: 1.85;
+}
+
+.my-u-product-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding: 11px 13px;
+  border-radius: 11px;
+  background: var(--color-bg-soft);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  font-size: 11px;
+}
+
+.my-u-product-action-disabled {
+  color: var(--color-text-muted);
+  cursor: default;
+}
+
+@media (max-width: 950px) {
+  .my-u-layout {
+    grid-template-columns: 210px minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .my-u-product-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .my-u-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .my-u-navigation {
+    position: static;
+  }
+
+  .my-u-navigation nav {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .my-u-hero {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .my-u-primary-action {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 500px) {
+  .my-u-page {
+    padding: 30px 0 80px;
+  }
+
+  .my-u-navigation {
+    padding: 15px;
+    border-radius: 18px;
+  }
+
+  .my-u-navigation nav {
+    grid-template-columns: 1fr;
+  }
+
+  .my-u-hero {
+    margin-bottom: 32px;
+  }
+
+  .my-u-product-card {
+    min-height: 235px;
+    padding: 19px;
+  }
+}
