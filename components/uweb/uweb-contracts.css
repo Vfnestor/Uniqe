@@ -1,0 +1,353 @@
+.uweb-contract-page {
+  padding: 72px 0 120px;
+}
+
+.uweb-contract-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 32px;
+  margin-bottom: 48px;
+}
+
+.uweb-contract-number {
+  margin-top: 18px;
+  color: var(--color-text-tertiary);
+  font-size: 13px;
+}
+
+.uweb-contract-header h1 {
+  max-width: 760px;
+  margin: 10px 0;
+  font-size: clamp(36px, 5vw, 62px);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.uweb-contract-header p {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.uweb-contract-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 13px;
+  border-radius: 999px;
+  background: var(--color-bg-soft);
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.uweb-contract-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.uweb-contract-status-signed {
+  color: #15803d;
+}
+
+.uweb-contract-status-partially_signed {
+  color: #a16207;
+}
+
+.uweb-contract-status-pending_signatures {
+  color: #a16207;
+}
+
+.uweb-contract-status-void {
+  color: #b91c1c;
+}
+
+.uweb-contract-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 28px;
+  align-items: start;
+}
+
+.uweb-contract-layout main {
+  min-width: 0;
+}
+
+.uweb-contract-layout section {
+  margin-bottom: 28px;
+}
+
+.uweb-contract-section-heading {
+  margin-bottom: 20px;
+}
+
+.uweb-contract-section-heading h2 {
+  margin: 8px 0;
+  font-size: 28px;
+  letter-spacing: -0.025em;
+}
+
+.uweb-contract-section-heading p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+}
+
+.uweb-contract-parties,
+.uweb-contract-document,
+.uweb-contract-signature {
+  padding: 28px;
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.uweb-contract-party-list {
+  display: grid;
+  gap: 10px;
+}
+
+.uweb-contract-party {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--color-bg-soft);
+}
+
+.uweb-contract-party-avatar {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: var(--color-brand);
+  color: var(--color-brand-dark);
+  font-weight: 800;
+}
+
+.uweb-contract-party-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.uweb-contract-party-info strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.uweb-contract-party-info span {
+  color: var(--color-text-tertiary);
+  font-size: 12px;
+}
+
+.uweb-contract-party-signed,
+.uweb-contract-party-pending {
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.uweb-contract-party-signed {
+  color: #15803d;
+}
+
+.uweb-contract-party-pending {
+  color: var(--color-text-tertiary);
+}
+
+.uweb-contract-document-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.uweb-contract-document-meta span {
+  padding: 7px 10px;
+  border-radius: 9px;
+  background: var(--color-bg-soft);
+  color: var(--color-text-secondary);
+  font-size: 12px;
+}
+
+.uweb-contract-document-content {
+  padding: 32px;
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  background: var(--color-bg-elevated);
+}
+
+.uweb-contract-document-content h3 {
+  margin: 0 0 28px;
+  font-size: 25px;
+}
+
+.uweb-contract-document-content h4 {
+  margin: 28px 0 10px;
+  font-size: 16px;
+}
+
+.uweb-contract-document-content p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  line-height: 2;
+}
+
+.uweb-contract-document-content ul {
+  margin: 12px 0 0;
+  padding-right: 20px;
+  color: var(--color-text-secondary);
+  line-height: 2;
+}
+
+.uweb-contract-demo-notice {
+  margin-top: 32px;
+  padding: 16px;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: 14px;
+  color: var(--color-text-tertiary);
+  background: var(--color-bg-soft);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.uweb-contract-signature-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  background: var(--color-bg-soft);
+}
+
+.uweb-contract-signature-copy strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.uweb-contract-signature-copy span {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+.uweb-contract-signature-box.signed {
+  justify-content: flex-start;
+}
+
+.uweb-contract-signature-icon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: #dcfce7;
+  color: #15803d;
+  font-weight: 800;
+}
+
+.uweb-contract-signature-box.signed div:last-child strong {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.uweb-contract-signature-box.signed div:last-child span {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+.uweb-contract-sidebar {
+  position: sticky;
+  top: 24px;
+  display: grid;
+  gap: 12px;
+}
+
+.uweb-contract-sidebar-card {
+  padding: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  background: var(--color-surface);
+}
+
+.uweb-contract-sidebar-card > span {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--color-text-tertiary);
+  font-size: 12px;
+}
+
+.uweb-contract-sidebar-card strong {
+  display: block;
+}
+
+.uweb-contract-sidebar-card p {
+  margin: 6px 0 0;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+.uweb-contract-sidebar-card .uweb-contract-status {
+  display: inline-flex;
+}
+
+@media (max-width: 900px) {
+  .uweb-contract-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .uweb-contract-sidebar {
+    position: static;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .uweb-contract-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .uweb-contract-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .uweb-contract-parties,
+  .uweb-contract-document,
+  .uweb-contract-signature {
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .uweb-contract-document-content {
+    padding: 22px;
+  }
+
+  .uweb-contract-signature-box {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .uweb-contract-page {
+    padding: 48px 0 80px;
+  }
+
+  .uweb-contract-party {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .uweb-contract-party-signed,
+  .uweb-contract-party-pending {
+    width: 100%;
+    padding-right: 58px;
+  }
+}
