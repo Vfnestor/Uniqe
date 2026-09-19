@@ -29,33 +29,42 @@ const statusLabels: Record<UWebProject["status"], string> = {
 const projectTypeLabels: Record<UWebProject["projectType"], string> = {
   new_website: "وب‌سایت جدید",
   redesign: "بازطراحی",
-  web_app: "وب‌اپلیکیشن",
-  landing_page: "Landing Page",
+  feature_development: "توسعه قابلیت",
+  bug_fix: "رفع خطا",
+  maintenance: "نگهداری",
+  optimization: "بهینه‌سازی",
   custom: "پروژه سفارشی",
 };
 
 const websiteTypeLabels: Record<UWebProject["websiteType"], string> = {
   corporate: "شرکتی",
   ecommerce: "فروشگاهی",
-  blog: "وبلاگ / مجله",
-  portfolio: "Portfolio",
-  portal: "پرتال / پلتفرم",
+  education: "آموزشی",
+  news: "خبری / مجله",
+  personal: "شخصی",
+  services: "خدماتی",
+  portfolio: "نمونه‌کار",
+  booking: "رزرو",
+  dashboard: "داشبورد",
   custom: "سفارشی",
 };
 
 const platformLabels: Record<UWebProject["platform"], string> = {
   wordpress: "WordPress",
   nextjs: "Next.js",
+  react: "React",
+  laravel: "Laravel",
   custom: "Custom",
+  unknown: "نامشخص",
 };
 
 const experienceLabels: Record<
-  "junior" | "mid" | "senior" | "expert",
+  "beginner" | "intermediate" | "professional" | "expert",
   string
 > = {
-  junior: "Junior",
-  mid: "Mid-level",
-  senior: "Senior",
+  beginner: "مبتدی",
+  intermediate: "متوسط",
+  professional: "حرفه‌ای",
   expert: "Expert",
 };
 
@@ -79,9 +88,7 @@ export default function UWebProjectDetails({
             <Reveal animation="up">
               <header className="uweb-project-details-header">
                 <div className="uweb-project-details-topline">
-                  <span>
-                    {project.projectNumber}
-                  </span>
+                  <span>{project.projectNumber}</span>
 
                   <span
                     className={`uweb-project-status uweb-project-status-${project.status}`}
@@ -109,50 +116,62 @@ export default function UWebProjectDetails({
                 <div className="uweb-project-summary-grid">
                   <div>
                     <span>نوع پروژه</span>
+
                     <strong>
-                      {projectTypeLabels[
-                        project.projectType
-                      ]}
+                      {projectTypeLabels[project.projectType]}
                     </strong>
                   </div>
 
                   <div>
                     <span>نوع وب‌سایت</span>
+
                     <strong>
-                      {websiteTypeLabels[
-                        project.websiteType
-                      ]}
+                      {websiteTypeLabels[project.websiteType]}
                     </strong>
                   </div>
 
                   <div>
                     <span>پلتفرم</span>
+
                     <strong>
-                      {platformLabels[
-                        project.platform
-                      ]}
+                      {platformLabels[project.platform]}
                     </strong>
                   </div>
 
                   <div>
                     <span>هدف</span>
-                    <strong>{project.purpose}</strong>
+
+                    <strong>
+                      {project.purpose.length > 0
+                        ? project.purpose.join("، ")
+                        : "مشخص نشده"}
+                    </strong>
                   </div>
 
                   <div>
                     <span>بودجه</span>
+
                     <strong>
-                      {project.budget.currency}{" "}
-                      {project.budget.min.toLocaleString()}{" "}
-                      —{" "}
-                      {project.budget.max.toLocaleString()}
+                      {project.budget ? (
+                        <>
+                          {project.budget.currency}{" "}
+                          {project.budget.min?.toLocaleString() ?? "—"}
+                          {" — "}
+                          {project.budget.max?.toLocaleString() ?? "—"}
+                        </>
+                      ) : (
+                        "مشخص نشده"
+                      )}
                     </strong>
                   </div>
 
                   <div>
                     <span>مدت زمان</span>
+
                     <strong>
-                      {project.durationDays} روز
+                      {project.expectedDurationDays
+                        ? `${project.expectedDurationDays} روز`
+                        : "مشخص نشده"}
                     </strong>
                   </div>
                 </div>
@@ -174,32 +193,79 @@ export default function UWebProjectDetails({
                     <span>قابلیت‌ها</span>
 
                     <div className="uweb-project-tags">
-                      {project.features.map((feature) => (
-                        <span key={feature}>
-                          {feature}
-                        </span>
-                      ))}
+                      {project.features.length > 0 ? (
+                        project.features.map((feature) => (
+                          <span key={feature}>
+                            {feature}
+                          </span>
+                        ))
+                      ) : (
+                        <span>موردی ثبت نشده</span>
+                      )}
                     </div>
                   </div>
 
                   <div>
-                    <span>طراحی</span>
+                    <span>نیازمندی‌های طراحی</span>
 
                     <div className="uweb-project-tags">
-                      {project.design.map((item) => (
-                        <span key={item}>
-                          {item}
-                        </span>
-                      ))}
+                      {project.designRequirements.length > 0 ? (
+                        project.designRequirements.map((item) => (
+                          <span key={item}>
+                            {item}
+                          </span>
+                        ))
+                      ) : (
+                        <span>موردی ثبت نشده</span>
+                      )}
                     </div>
                   </div>
 
                   <div>
-                    <span>محتوا</span>
-                    <p>
-                      {project.content.status}
-                    </p>
+                    <span>نیازمندی‌های محتوا</span>
+
+                    <div className="uweb-project-tags">
+                      {project.contentRequirements.length > 0 ? (
+                        project.contentRequirements.map((item) => (
+                          <span key={item}>
+                            {item}
+                          </span>
+                        ))
+                      ) : (
+                        <span>موردی ثبت نشده</span>
+                      )}
+                    </div>
                   </div>
+
+                  <div>
+                    <span>زبان‌ها</span>
+
+                    <div className="uweb-project-tags">
+                      {project.languages.length > 0 ? (
+                        project.languages.map((language) => (
+                          <span key={language}>
+                            {language}
+                          </span>
+                        ))
+                      ) : (
+                        <span>موردی ثبت نشده</span>
+                      )}
+                    </div>
+                  </div>
+
+                  {project.referenceLinks.length > 0 && (
+                    <div>
+                      <span>لینک‌های مرجع</span>
+
+                      <div className="uweb-project-tags">
+                        {project.referenceLinks.map((link) => (
+                          <span key={link}>
+                            {link}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </section>
             </Reveal>
@@ -215,30 +281,36 @@ export default function UWebProjectDetails({
                 </div>
 
                 <div className="uweb-required-skills">
-                  {project.requiredSkills.map((skill) => (
-                    <div
-                      key={skill.skillId}
-                      className="uweb-required-skill"
-                    >
-                      <div>
-                        <strong>
-                          {skill.name}
-                        </strong>
+                  {project.requiredSkills.length > 0 ? (
+                    project.requiredSkills.map((skill) => (
+                      <div
+                        key={skill.skillId}
+                        className="uweb-required-skill"
+                      >
+                        <div>
+                          <strong>
+                            {skill.skillId}
+                          </strong>
 
-                        <span>
-                          {skill.required
-                            ? "الزامی"
-                            : "ترجیحی"}
-                        </span>
+                          <span>
+                            {skill.priority === "required"
+                              ? "الزامی"
+                              : "ترجیحی"}
+                          </span>
+                        </div>
+
+                        <small>
+                          {
+                            experienceLabels[
+                              skill.requiredLevel
+                            ]
+                          }
+                        </small>
                       </div>
-
-                      <small>
-                        {experienceLabels[
-                          skill.experienceLevel
-                        ]}
-                      </small>
-                    </div>
-                  ))}
+                    ))
+                  ) : (
+                    <p>هنوز مهارتی ثبت نشده است.</p>
+                  )}
                 </div>
               </section>
             </Reveal>
@@ -261,6 +333,7 @@ export default function UWebProjectDetails({
 
                     <div>
                       <strong>تعریف پروژه</strong>
+
                       <p>
                         نیازمندی‌های اولیه پروژه مشخص شده است.
                       </p>
@@ -272,9 +345,9 @@ export default function UWebProjectDetails({
 
                     <div>
                       <strong>تطبیق متخصص</strong>
+
                       <p>
-                        پروژه آماده بررسی توسط متخصصان
-                        مناسب است.
+                        پروژه آماده بررسی توسط متخصصان مناسب است.
                       </p>
                     </div>
                   </div>
@@ -283,10 +356,37 @@ export default function UWebProjectDetails({
                     <span>03</span>
 
                     <div>
-                      <strong>اجرای پروژه</strong>
+                      <strong>انتخاب متخصص</strong>
+
                       <p>
-                        پس از انتخاب متخصص و تکمیل قرارداد،
-                        پروژه وارد Workspace خواهد شد.
+                        پس از بررسی درخواست‌ها، متخصص مناسب
+                        انتخاب خواهد شد.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="uweb-project-timeline-item">
+                    <span>04</span>
+
+                    <div>
+                      <strong>قرارداد</strong>
+
+                      <p>
+                        پس از توافق طرفین، قرارداد پروژه
+                        ایجاد و امضا خواهد شد.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="uweb-project-timeline-item">
+                    <span>05</span>
+
+                    <div>
+                      <strong>اجرای پروژه</strong>
+
+                      <p>
+                        پروژه وارد Workspace خواهد شد و
+                        فرآیند اجرا آغاز می‌شود.
                       </p>
                     </div>
                   </div>
@@ -319,6 +419,7 @@ export default function UWebProjectDetails({
             <Reveal animation="up" delay={100}>
               <div className="uweb-project-side-card">
                 <span>Project ID</span>
+
                 <strong>{project.id}</strong>
               </div>
             </Reveal>
@@ -326,7 +427,20 @@ export default function UWebProjectDetails({
             <Reveal animation="up" delay={150}>
               <div className="uweb-project-side-card">
                 <span>Client</span>
+
                 <strong>{project.clientId}</strong>
+              </div>
+            </Reveal>
+
+            <Reveal animation="up" delay={200}>
+              <div className="uweb-project-side-card">
+                <span>Created</span>
+
+                <strong>
+                  {new Date(
+                    project.createdAt
+                  ).toLocaleDateString("fa-IR")}
+                </strong>
               </div>
             </Reveal>
           </aside>
