@@ -21,6 +21,11 @@ import {
   getEnrollment,
 } from "@/lib/uschool/enrollment";
 
+import {
+  calculateClassProgress,
+  getSessionProgress,
+} from "@/lib/uschool/progress";
+
 type DemoUser = {
   id: string;
   name: string;
@@ -54,27 +59,14 @@ function formatDuration(
   return `${hours}h ${remainingMinutes}m`;
 }
 
-function getProgress(
-  sessions: USchoolSessionAccess[],
-) {
-  if (sessions.length === 0) {
-    return 0;
-  }
-
-  const available = sessions.filter(
-    (item) =>
-      item.status === "available",
-  ).length;
-
-  return Math.round(
-    (available / sessions.length) *
-      100,
-  );
-}
-
 function getSessionLabel(
   item: USchoolSessionAccess,
+  completed: boolean,
 ) {
+  if (completed) {
+    return "Completed";
+  }
+
   if (item.status === "available") {
     return "Available";
   }
@@ -84,7 +76,12 @@ function getSessionLabel(
 
 function getReleaseLabel(
   item: USchoolSessionAccess,
+  completed: boolean,
 ) {
+  if (completed) {
+    return "Completed";
+  }
+
   if (item.status === "available") {
     return "Available now";
   }
@@ -104,11 +101,21 @@ function getReleaseLabel(
 
 function getContinueSession(
   sessions: USchoolSessionAccess[],
+  userId: string,
+  classId: string,
 ) {
-  return sessions.find(
-    (item) =>
-      item.status === "available",
-  );
+  const incompleteAvailable =
+    sessions.find(
+      (item) =>
+        item.status === "available" &&
+        getSessionProgress(
+          userId,
+          classId,
+          item.session.id,
+        )?.status !== "completed",
+    );
+
+  return incompleteAvailable;
 }
 
 function ClassCard({
@@ -137,11 +144,17 @@ function ClassCard({
     );
 
   const progress =
-    getProgress(sessions);
+    calculateClassProgress(
+      demoUser.id,
+      course.id,
+      course.sessions,
+    );
 
   const continueSession =
     getContinueSession(
       sessions,
+      demoUser.id,
+      course.id,
     );
 
   return (
@@ -192,7 +205,7 @@ function ClassCard({
           </div>
 
           <div className="my-uschool-progress-number">
-            {progress}%
+            {progress.percentage}%
           </div>
         </div>
 
@@ -205,26 +218,20 @@ function ClassCard({
             <div
               className="my-uschool-progress-fill"
               style={{
-                width: `${progress}%`,
+                width: `${progress.percentage}%`,
               }}
             />
           </div>
 
           <div className="my-uschool-progress-meta">
             <span>
-              {
-                sessions.filter(
-                  (item) =>
-                    item.status ===
-                    "available",
-                ).length
-              }{" "}
-              of {sessions.length} sessions
-              available
+              {progress.completed} of{" "}
+              {progress.total} sessions
+              completed
             </span>
 
             <span>
-              {progress}%
+              {progress.percentage}%
             </span>
           </div>
         </div>
@@ -232,29 +239,51 @@ function ClassCard({
         <div className="my-uschool-session-list">
           {sessions.map(
             (item) => {
+              const completed =
+                getSessionProgress(
+                  demoUser.id,
+                  course.id,
+                  item.session.id,
+                )?.status ===
+                "completed";
+
               const available =
                 item.status ===
                 "available";
+
+              const clickable =
+                available;
 
               return (
                 <button
                   key={item.session.id}
                   type="button"
-                  className={
+                  className={[
+                    "my-uschool-session",
                     available
-                      ? "my-uschool-session is-available"
-                      : "my-uschool-session is-locked"
-                  }
-                  disabled={!available}
+                      ? "is-available"
+                      : "is-locked",
+                    completed
+                      ? "is-completed"
+                      : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                  disabled={!clickable}
                   onClick={() =>
-                    available &&
+                    clickable &&
                     onOpen(course)
                   }
                 >
                   <span className="my-uschool-session-number">
-                    {String(
-                      item.dayNumber,
-                    ).padStart(2, "0")}
+                    {completed
+                      ? "✓"
+                      : String(
+                          item.dayNumber,
+                        ).padStart(
+                          2,
+                          "0",
+                        )}
                   </span>
 
                   <span className="my-uschool-session-main">
@@ -280,20 +309,24 @@ function ClassCard({
                     <strong>
                       {getSessionLabel(
                         item,
+                        completed,
                       )}
                     </strong>
 
                     <small>
                       {getReleaseLabel(
                         item,
+                        completed,
                       )}
                     </small>
                   </span>
 
                   <span className="my-uschool-session-icon">
-                    {available
-                      ? "↗"
-                      : "🔒"}
+                    {completed
+                      ? "✓"
+                      : available
+                        ? "↗"
+                        : "🔒"}
                   </span>
                 </button>
               );
@@ -318,13 +351,13 @@ function ClassCard({
             onClick={() =>
               onOpen(course)
             }
-            disabled={
-              !continueSession
-            }
           >
             {continueSession
               ? "Continue Learning"
-              : "All Sessions Locked"}
+              : progress.percentage ===
+                  100
+                ? "Class Completed"
+                : "View Class"}
 
             <span>→</span>
           </button>
@@ -376,9 +409,10 @@ export default function MyUSchool() {
       : [];
 
   const nextSession =
-    activeSessions.find(
-      (item) =>
-        item.status === "available",
+    getContinueSession(
+      activeSessions,
+      demoUser.id,
+      selectedCourse?.id ?? "",
     );
 
   return (
@@ -398,10 +432,10 @@ export default function MyUSchool() {
               </h1>
 
               <p>
-                Continue your learning journey,
-                access released sessions and
-                track your progress across
-                USchool.
+                Continue your learning
+                journey, access released
+                sessions and track your
+                progress across USchool.
               </p>
             </div>
 
@@ -445,8 +479,8 @@ export default function MyUSchool() {
 
             <p className="section-description">
               Your enrolled classes and
-              currently available learning
-              sessions appear here.
+              real learning progress appear
+              here.
             </p>
           </div>
 
@@ -519,7 +553,7 @@ export default function MyUSchool() {
             <h2>
               {nextSession
                 ? nextSession.session.title
-                : "No session available"}
+                : "Class Overview"}
             </h2>
 
             {nextSession ? (
@@ -530,14 +564,17 @@ export default function MyUSchool() {
                     nextSession.dayNumber
                   }{" "}
                   is currently available.
-                  The full learning experience
-                  will be connected to the
-                  class page in the next phase.
+                  Continue your learning
+                  from the class page.
                 </p>
 
                 <div className="my-uschool-modal-meta">
                   <span>
-                    {nextSession.session.durationMinutes}{" "}
+                    {
+                      nextSession
+                        .session
+                        .durationMinutes
+                    }{" "}
                     min
                   </span>
 
@@ -549,24 +586,31 @@ export default function MyUSchool() {
                   </span>
                 </div>
 
-                <button
-                  type="button"
+                <a
+                  href={`/uschool/class/${selectedCourse.id}`}
                   className="my-uschool-modal-action"
-                  onClick={() =>
-                    setSelectedCourse(
-                      null,
-                    )
-                  }
                 >
                   Continue
                   <span>→</span>
-                </button>
+                </a>
               </>
             ) : (
-              <p>
-                No session is available
-                yet.
-              </p>
+              <>
+                <p>
+                  All currently released
+                  sessions have been
+                  completed or no session is
+                  available yet.
+                </p>
+
+                <a
+                  href={`/uschool/class/${selectedCourse.id}`}
+                  className="my-uschool-modal-action"
+                >
+                  Open Class
+                  <span>→</span>
+                </a>
+              </>
             )}
           </div>
         </div>
