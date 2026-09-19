@@ -21,6 +21,12 @@ import {
   type USchoolSessionAccess,
 } from "@/lib/uschool/session-access";
 
+import {
+  calculateClassProgress,
+  completeSession,
+  getSessionProgress,
+} from "@/lib/uschool/progress";
+
 const DEMO_USER_ID =
   "demo-user";
 
@@ -48,10 +54,12 @@ function formatDuration(
 function SessionItem({
   item,
   selected,
+  completed,
   onSelect,
 }: {
   item: USchoolSessionAccess;
   selected: boolean;
+  completed: boolean;
   onSelect: () => void;
 }) {
   const available =
@@ -68,6 +76,9 @@ function SessionItem({
         selected
           ? "is-selected"
           : "",
+        completed
+          ? "is-completed"
+          : "",
       ]
         .filter(Boolean)
         .join(" ")}
@@ -75,9 +86,11 @@ function SessionItem({
       onClick={onSelect}
     >
       <span className="uschool-class-session-number">
-        {String(
-          item.dayNumber,
-        ).padStart(2, "0")}
+        {completed
+          ? "✓"
+          : String(
+              item.dayNumber,
+            ).padStart(2, "0")}
       </span>
 
       <span className="uschool-class-session-info">
@@ -93,15 +106,19 @@ function SessionItem({
       </span>
 
       <span className="uschool-class-session-status">
-        {available
-          ? "Available"
-          : "Locked"}
+        {completed
+          ? "Completed"
+          : available
+            ? "Available"
+            : "Locked"}
       </span>
 
       <span className="uschool-class-session-icon">
-        {available
-          ? "→"
-          : "🔒"}
+        {completed
+          ? "✓"
+          : available
+            ? "→"
+            : "🔒"}
       </span>
     </button>
   );
@@ -109,8 +126,12 @@ function SessionItem({
 
 function LessonContent({
   item,
+  completed,
+  onComplete,
 }: {
   item: USchoolSessionAccess;
+  completed: boolean;
+  onComplete: () => void;
 }) {
   const {
     session,
@@ -253,21 +274,27 @@ function LessonContent({
           </span>
 
           <strong>
-            Available
+            {completed
+              ? "Completed"
+              : "Available"}
           </strong>
         </div>
 
         <button
           type="button"
           className="uschool-complete-button"
-          onClick={() => {
-            alert(
-              "Session completion will be connected to the user progress system in the next phase.",
-            );
-          }}
+          disabled={completed}
+          onClick={onComplete}
         >
-          Mark as Completed
-          <span>✓</span>
+          {completed
+            ? "Completed"
+            : "Mark as Completed"}
+
+          <span>
+            {completed
+              ? "✓"
+              : "✓"}
+          </span>
         </button>
       </div>
     </section>
@@ -325,6 +352,95 @@ function LockedLesson({
   );
 }
 
+function ClassProgress({
+  completed,
+  total,
+  percentage,
+}: {
+  completed: number;
+  total: number;
+  percentage: number;
+}) {
+  return (
+    <div
+      style={{
+        marginTop: "24px",
+        padding: "16px 18px",
+        border: "1px solid var(--color-border)",
+        borderRadius: "14px",
+        background:
+          "var(--color-bg-soft)",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent:
+            "space-between",
+          alignItems: "center",
+          gap: "12px",
+          marginBottom: "10px",
+        }}
+      >
+        <span
+          style={{
+            color:
+              "var(--color-text-secondary)",
+            fontSize: "0.72rem",
+            fontWeight: 700,
+          }}
+        >
+          Course Progress
+        </span>
+
+        <strong
+          style={{
+            color:
+              "var(--color-text-primary)",
+            fontSize: "0.78rem",
+          }}
+        >
+          {percentage}%
+        </strong>
+      </div>
+
+      <div
+        style={{
+          height: "7px",
+          overflow: "hidden",
+          borderRadius: "999px",
+          background:
+            "var(--color-border)",
+        }}
+      >
+        <div
+          style={{
+            width: `${percentage}%`,
+            height: "100%",
+            borderRadius: "999px",
+            background:
+              "var(--color-brand)",
+            transition:
+              "width 0.3s ease",
+          }}
+        />
+      </div>
+
+      <div
+        style={{
+          marginTop: "8px",
+          color:
+            "var(--color-text-muted)",
+          fontSize: "0.68rem",
+        }}
+      >
+        {completed} of {total} sessions
+        completed
+      </div>
+    </div>
+  );
+}
+
 export default function USchoolClassPage({
   classId,
 }: {
@@ -340,6 +456,11 @@ export default function USchoolClassPage({
           course.id,
         )
       : undefined;
+
+  const [
+    progressVersion,
+    setProgressVersion,
+  ] = useState(0);
 
   const sessionAccess =
     useMemo(() => {
@@ -357,7 +478,21 @@ export default function USchoolClassPage({
     }, [
       course,
       enrollment,
+      progressVersion,
     ]);
+
+  const progress =
+    course
+      ? calculateClassProgress(
+          DEMO_USER_ID,
+          course.id,
+          course.sessions,
+        )
+      : {
+          completed: 0,
+          total: 0,
+          percentage: 0,
+        };
 
   const firstAvailable =
     sessionAccess.find(
@@ -440,6 +575,34 @@ export default function USchoolClassPage({
         selectedSessionId,
     );
 
+  const selectedCompleted =
+    selectedSession
+      ? Boolean(
+          getSessionProgress(
+            DEMO_USER_ID,
+            course.id,
+            selectedSession.session.id,
+          )?.status ===
+            "completed",
+        )
+      : false;
+
+  function handleComplete() {
+    if (!selectedSession) {
+      return;
+    }
+
+    completeSession(
+      DEMO_USER_ID,
+      course.id,
+      selectedSession.session.id,
+    );
+
+    setProgressVersion(
+      (value) => value + 1,
+    );
+  }
+
   return (
     <>
       <section className="uschool-class-hero">
@@ -492,6 +655,16 @@ export default function USchoolClassPage({
                   : "+"}
               </span>
             </div>
+
+            <ClassProgress
+              completed={
+                progress.completed
+              }
+              total={progress.total}
+              percentage={
+                progress.percentage
+              }
+            />
           </div>
         </Container>
       </section>
@@ -518,6 +691,14 @@ export default function USchoolClassPage({
                         item.session.id
                       }
                       item={item}
+                      completed={
+                        getSessionProgress(
+                          DEMO_USER_ID,
+                          course.id,
+                          item.session.id,
+                        )?.status ===
+                        "completed"
+                      }
                       selected={
                         item.session.id ===
                         selectedSessionId
@@ -541,10 +722,36 @@ export default function USchoolClassPage({
                   item={
                     selectedSession
                   }
+                  completed={
+                    selectedCompleted
+                  }
+                  onComplete={
+                    handleComplete
+                  }
                 />
               ) : firstAvailable ? (
                 <LessonContent
                   item={firstAvailable}
+                  completed={
+                    getSessionProgress(
+                      DEMO_USER_ID,
+                      course.id,
+                      firstAvailable.session.id,
+                    )?.status ===
+                    "completed"
+                  }
+                  onComplete={() => {
+                    completeSession(
+                      DEMO_USER_ID,
+                      course.id,
+                      firstAvailable.session.id,
+                    );
+
+                    setProgressVersion(
+                      (value) =>
+                        value + 1,
+                    );
+                  }}
                 />
               ) : (
                 <LockedLesson
