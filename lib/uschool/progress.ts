@@ -14,6 +14,12 @@ export type USchoolSessionProgress = {
   completedAt?: string;
 };
 
+/*
+ * Temporary demo storage.
+ *
+ * Later this layer will be connected to
+ * the central Uniqe database / UCore.
+ */
 const demoProgress: USchoolSessionProgress[] = [];
 
 export function getSessionProgress(
@@ -52,9 +58,7 @@ export function startSession(
   );
 
   if (existing) {
-    if (
-      existing.status === "not_started"
-    ) {
+    if (existing.status === "not_started") {
       existing.status = "in_progress";
       existing.startedAt =
         new Date().toISOString();
