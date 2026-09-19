@@ -1,0 +1,490 @@
+.uweb-workspace-page {
+  padding: 48px 0 120px;
+}
+
+.uweb-workspace-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 32px;
+  color: var(--color-text-tertiary);
+  font-size: 13px;
+}
+
+.uweb-workspace-breadcrumb a {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+}
+
+.uweb-workspace-breadcrumb a:hover {
+  color: var(--color-text-primary);
+}
+
+.uweb-workspace-overview {
+  margin-bottom: 32px;
+}
+
+.uweb-workspace-overview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 32px;
+  margin-bottom: 28px;
+}
+
+.uweb-workspace-overview-header h1 {
+  margin: 10px 0;
+  font-size: clamp(36px, 5vw, 60px);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.uweb-workspace-overview-header p {
+  margin: 0;
+  max-width: 700px;
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+}
+
+.uweb-workspace-project-number {
+  padding: 10px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.uweb-workspace-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.uweb-workspace-stats > div {
+  padding: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  background: var(--color-surface);
+}
+
+.uweb-workspace-stats strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 28px;
+}
+
+.uweb-workspace-stats span {
+  color: var(--color-text-tertiary);
+  font-size: 12px;
+}
+
+.uweb-workspace-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 24px;
+  align-items: start;
+}
+
+.uweb-workspace-layout main {
+  min-width: 0;
+}
+
+.uweb-workspace-panel {
+  margin-bottom: 24px;
+  padding: 28px;
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.uweb-workspace-panel-heading {
+  margin-bottom: 24px;
+}
+
+.uweb-workspace-panel-heading h2 {
+  margin: 8px 0 0;
+  font-size: 26px;
+  letter-spacing: -0.025em;
+}
+
+.uweb-workspace-requirements {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.uweb-workspace-requirements strong {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+.uweb-workspace-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.uweb-workspace-tags span {
+  padding: 8px 11px;
+  border-radius: 9px;
+  background: var(--color-bg-soft);
+  color: var(--color-text-secondary);
+  font-size: 12px;
+}
+
+.uweb-workspace-description {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-border);
+}
+
+.uweb-workspace-description p {
+  margin: 10px 0 0;
+  color: var(--color-text-secondary);
+  line-height: 1.9;
+}
+
+.uweb-workspace-milestones {
+  display: grid;
+  gap: 12px;
+}
+
+.uweb-workspace-milestone {
+  display: flex;
+  gap: 16px;
+  padding: 18px;
+  border-radius: 18px;
+  background: var(--color-bg-soft);
+}
+
+.uweb-workspace-milestone-number {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--color-brand);
+  color: var(--color-brand-dark);
+  font-weight: 800;
+}
+
+.uweb-workspace-milestone-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.uweb-workspace-milestone-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.uweb-workspace-milestone-top h3 {
+  margin: 0 0 6px;
+  font-size: 17px;
+}
+
+.uweb-workspace-milestone-top p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  font-size: 13px;
+}
+
+.uweb-workspace-milestone-status {
+  height: fit-content;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.uweb-workspace-milestone-status-completed {
+  color: #15803d;
+}
+
+.uweb-workspace-milestone-status-in_progress {
+  color: #2563eb;
+}
+
+.uweb-workspace-milestone-status-revision {
+  color: #a16207;
+}
+
+.uweb-workspace-milestone-dates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 14px;
+  color: var(--color-text-tertiary);
+  font-size: 11px;
+}
+
+.uweb-workspace-deliveries {
+  display: grid;
+  gap: 10px;
+}
+
+.uweb-workspace-delivery {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+}
+
+.uweb-workspace-delivery-version {
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 5px 8px;
+  border-radius: 7px;
+  background: var(--color-bg-soft);
+  color: var(--color-text-secondary);
+  font-size: 11px;
+}
+
+.uweb-workspace-delivery h3 {
+  margin: 0 0 6px;
+  font-size: 17px;
+}
+
+.uweb-workspace-delivery p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  font-size: 13px;
+}
+
+.uweb-workspace-delivery-side {
+  text-align: left;
+  white-space: nowrap;
+}
+
+.uweb-workspace-delivery-side span {
+  display: block;
+  margin-bottom: 6px;
+  color: #15803d;
+  font-size: 12px;
+}
+
+.uweb-workspace-delivery-side small {
+  color: var(--color-text-tertiary);
+}
+
+.uweb-workspace-revisions {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-border);
+}
+
+.uweb-workspace-revisions h3 {
+  margin: 0 0 14px;
+  font-size: 16px;
+}
+
+.uweb-workspace-revision {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.uweb-workspace-revision:last-child {
+  border-bottom: 0;
+}
+
+.uweb-workspace-revision strong {
+  font-size: 13px;
+}
+
+.uweb-workspace-revision p {
+  margin: 5px 0 0;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+}
+
+.uweb-workspace-revision > span {
+  color: var(--color-text-tertiary);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.uweb-workspace-empty {
+  padding: 24px;
+  text-align: center;
+  border-radius: 14px;
+  background: var(--color-bg-soft);
+  color: var(--color-text-tertiary);
+  font-size: 13px;
+}
+
+.uweb-workspace-activity {
+  display: grid;
+}
+
+.uweb-workspace-activity-item {
+  position: relative;
+  display: flex;
+  gap: 14px;
+  padding: 0 0 24px;
+}
+
+.uweb-workspace-activity-item:last-child {
+  padding-bottom: 0;
+}
+
+.uweb-workspace-activity-dot {
+  width: 10px;
+  height: 10px;
+  flex: 0 0 10px;
+  margin-top: 6px;
+  border-radius: 50%;
+  background: var(--color-text-primary);
+}
+
+.uweb-workspace-activity-item strong {
+  display: block;
+  font-size: 13px;
+}
+
+.uweb-workspace-activity-item p {
+  margin: 5px 0;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+}
+
+.uweb-workspace-activity-item small {
+  color: var(--color-text-tertiary);
+  font-size: 10px;
+}
+
+.uweb-workspace-sidebar {
+  position: sticky;
+  top: 24px;
+  display: grid;
+  gap: 12px;
+}
+
+.uweb-workspace-sidebar-card {
+  padding: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  background: var(--color-surface);
+}
+
+.uweb-workspace-sidebar-card span {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--color-text-tertiary);
+  font-size: 12px;
+}
+
+.uweb-workspace-sidebar-card strong {
+  display: block;
+  font-size: 28px;
+}
+
+.uweb-workspace-sidebar-card p {
+  margin: 5px 0 0;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+}
+
+.uweb-workspace-sidebar-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 18px;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.uweb-workspace-sidebar-link:hover {
+  transform: translateY(-2px);
+  background: var(--color-surface-hover);
+}
+
+.uweb-workspace-sidebar-link span {
+  color: var(--color-text-tertiary);
+}
+
+@media (max-width: 900px) {
+  .uweb-workspace-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .uweb-workspace-sidebar {
+    position: static;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .uweb-workspace-overview-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .uweb-workspace-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .uweb-workspace-requirements {
+    grid-template-columns: 1fr;
+  }
+
+  .uweb-workspace-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .uweb-workspace-milestone-top {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .uweb-workspace-delivery {
+    flex-direction: column;
+  }
+
+  .uweb-workspace-delivery-side {
+    text-align: right;
+  }
+}
+
+@media (max-width: 480px) {
+  .uweb-workspace-page {
+    padding: 32px 0 80px;
+  }
+
+  .uweb-workspace-panel {
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .uweb-workspace-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .uweb-workspace-milestone {
+    padding: 14px;
+  }
+
+  .uweb-workspace-milestone-number {
+    width: 36px;
+    height: 36px;
+    flex-basis: 36px;
+  }
+}
