@@ -1,10 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import {
+  useMemo,
+  useState,
+} from "react";
 
 import Card from "@/components/ui/Card";
 import Container from "@/components/ui/Container";
 import Reveal from "@/components/ui/Reveal";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 
 import type { USchoolCatalogClass } from "./courses";
 import { uschoolCategories } from "./courses";
@@ -13,9 +17,24 @@ type CoursesGridProps = {
   courses: USchoolCatalogClass[];
 };
 
-function formatDuration(minutes: number) {
+function formatDuration(
+  minutes: number,
+  language: "en" | "fa",
+) {
   const hours = Math.floor(minutes / 60);
   const remainingMinutes = minutes % 60;
+
+  if (language === "fa") {
+    if (hours === 0) {
+      return `${minutes} دقیقه`;
+    }
+
+    if (remainingMinutes === 0) {
+      return `${hours} ساعت`;
+    }
+
+    return `${hours} ساعت و ${remainingMinutes} دقیقه`;
+  }
 
   if (hours === 0) {
     return `${minutes} min`;
@@ -62,16 +81,104 @@ function isAgeAllowed(
   return true;
 }
 
+function getCategoryLabel(
+  category: string,
+  language: "en" | "fa",
+) {
+  if (language === "en") {
+    return category;
+  }
+
+  const categories: Record<
+    string,
+    string
+  > = {
+    Technology: "فناوری",
+    "Digital Skills": "مهارت‌های دیجیتال",
+    Business: "کسب‌وکار",
+    Creative: "خلاقیت",
+    Foundation: "زیرساخت",
+  };
+
+  return categories[category] ?? category;
+}
+
+function getTagLabel(
+  tag: string,
+  language: "en" | "fa",
+) {
+  if (language === "en") {
+    return tag;
+  }
+
+  const tags: Record<
+    string,
+    string
+  > = {
+    AI: "هوش مصنوعی",
+    Technology: "فناوری",
+    Beginner: "مقدماتی",
+    Digital: "دیجیتال",
+    Productivity: "بهره‌وری",
+    Skills: "مهارت‌ها",
+  };
+
+  return tags[tag] ?? tag;
+}
+
+function getCourseTitle(
+  title: string,
+  language: "en" | "fa",
+) {
+  if (language === "en") {
+    return title;
+  }
+
+  const titles: Record<
+    string,
+    string
+  > = {
+    "AI Foundations":
+      "مبانی هوش مصنوعی",
+    "Digital Skills for the Modern World":
+      "مهارت‌های دیجیتال برای دنیای مدرن",
+  };
+
+  return titles[title] ?? title;
+}
+
+function getCourseDescription(
+  description: string,
+  language: "en" | "fa",
+) {
+  if (language === "en") {
+    return description;
+  }
+
+  const descriptions: Record<
+    string,
+    string
+  > = {
+    "A practical introduction to artificial intelligence and modern AI concepts.":
+      "مقدمه‌ای کاربردی بر هوش مصنوعی و مفاهیم مدرن این حوزه.",
+    "Build essential digital skills for study, work and everyday life.":
+      "مهارت‌های ضروری دیجیتال برای یادگیری، کار و زندگی روزمره را توسعه دهید.",
+  };
+
+  return descriptions[description] ?? description;
+}
+
 export default function CoursesGrid({
   courses,
 }: CoursesGridProps) {
+  const {
+    language,
+  } = useLanguage();
+
   const [selectedCategory, setSelectedCategory] =
     useState("All");
 
   const [ageInput, setAgeInput] =
-    useState("");
-
-  const [joinMessage, setJoinMessage] =
     useState("");
 
   const selectedAge = useMemo(() => {
@@ -108,11 +215,72 @@ export default function CoursesGrid({
     selectedCategory,
   ]);
 
-  function handleJoin(course: USchoolCatalogClass) {
-    setJoinMessage(
-      `"${course.title}" is ready for enrollment. Account, payment and class access will be connected in the next USchool phase.`,
-    );
-  }
+  const text =
+    language === "fa"
+      ? {
+          collection: "مجموعه USchool",
+          learn: "یاد بگیر.",
+          build: "بساز.",
+          grow: "رشد کن.",
+          description:
+            "تجربه‌های آموزشی ساختاریافته را در اکوسیستم USchool کشف کنید. هر کلاس به‌صورت یک مسیر یادگیری هدایت‌شده با جلسات روزانه، دسترسی متناسب با سن و قالب‌های آموزشی انعطاف‌پذیر طراحی شده است.",
+          category: "دسته‌بندی",
+          ageCheck: "بررسی دسترسی بر اساس سن",
+          yourAge: "سن شما",
+          ageRestricted: "محدودیت سنی",
+          ageRestrictedDescription:
+            "این کلاس برای سن انتخاب‌شده در دسترس نیست.",
+          ageCheckRequired:
+            "بررسی سن مورد نیاز است",
+          availableFor:
+            "مناسب برای سنین",
+          eligible:
+            "امکان عضویت وجود دارد",
+          canContinue:
+            "می‌توانید وارد مسیر عضویت شوید.",
+          join: "عضویت در کلاس",
+          age: "سن",
+          sessions: "جلسات",
+          duration: "مدت",
+          noClasses: "کلاسی پیدا نشد",
+          noClassesDescription:
+            "هنوز کلاس منتشرشده‌ای در این دسته‌بندی وجود ندارد.",
+          free: "رایگان",
+          all: "همه",
+          featured: "ویژه",
+        }
+      : {
+          collection: "USchool Collection",
+          learn: "Learn.",
+          build: "Build.",
+          grow: "Grow.",
+          description:
+            "Explore structured learning experiences inside the USchool ecosystem. Each class is designed as a guided learning path with daily sessions, age-aware access and flexible learning formats.",
+          category: "Category",
+          ageCheck: "Check age access",
+          yourAge: "Your age",
+          ageRestricted: "Age restricted",
+          ageRestrictedDescription:
+            "This class is not available for the selected age.",
+          ageCheckRequired:
+            "Age check required",
+          availableFor:
+            "Available for ages",
+          eligible:
+            "Eligible to join",
+          canContinue:
+            "You can continue to enrollment.",
+          join: "Join Class",
+          age: "Age",
+          sessions: "Sessions",
+          duration: "Duration",
+          noClasses: "No classes found",
+          noClassesDescription:
+            "There are no published classes in this category yet.",
+          free: "Free",
+          all: "All",
+          featured: "Featured",
+        };
 
   return (
     <section
@@ -124,33 +292,32 @@ export default function CoursesGrid({
           <div className="uschool-section-heading">
             <div>
               <span className="section-eyebrow">
-                USchool Collection
+                {text.collection}
               </span>
 
               <h2 className="section-title">
-                Learn.
+                {text.learn}
                 <br />
-                Build.
+                {text.build}
                 <br />
-                Grow.
+                {text.grow}
               </h2>
             </div>
 
             <p className="section-description">
-              Explore structured learning experiences
-              inside the USchool ecosystem. Each class
-              is designed as a guided learning path with
-              daily sessions, age-aware access and
-              flexible learning formats.
+              {text.description}
             </p>
           </div>
         </Reveal>
 
-        <Reveal animation="up" delay={80}>
+        <Reveal
+          animation="up"
+          delay={80}
+        >
           <div className="uschool-catalog-toolbar">
             <div className="uschool-filter-group">
               <span className="uschool-filter-label">
-                Category
+                {text.category}
               </span>
 
               <div className="uschool-filter-list">
@@ -165,7 +332,7 @@ export default function CoursesGrid({
                     setSelectedCategory("All")
                   }
                 >
-                  All
+                  {text.all}
                 </button>
 
                 {uschoolCategories.map(
@@ -184,7 +351,10 @@ export default function CoursesGrid({
                         )
                       }
                     >
-                      {category}
+                      {getCategoryLabel(
+                        category,
+                        language,
+                      )}
                     </button>
                   ),
                 )}
@@ -196,7 +366,7 @@ export default function CoursesGrid({
                 htmlFor="uschool-age"
                 className="uschool-filter-label"
               >
-                Check age access
+                {text.ageCheck}
               </label>
 
               <div className="uschool-age-input-wrap">
@@ -206,7 +376,9 @@ export default function CoursesGrid({
                   min="1"
                   max="100"
                   inputMode="numeric"
-                  placeholder="Your age"
+                  placeholder={
+                    text.yourAge
+                  }
                   value={ageInput}
                   onChange={(event) =>
                     setAgeInput(
@@ -222,7 +394,11 @@ export default function CoursesGrid({
                     onClick={() =>
                       setAgeInput("")
                     }
-                    aria-label="Clear age"
+                    aria-label={
+                      language === "fa"
+                        ? "پاک کردن سن"
+                        : "Clear age"
+                    }
                   >
                     ×
                   </button>
@@ -232,35 +408,16 @@ export default function CoursesGrid({
           </div>
         </Reveal>
 
-        {joinMessage && (
-          <Reveal animation="up">
-            <div className="uschool-join-message">
-              <span>i</span>
-
-              <p>{joinMessage}</p>
-
-              <button
-                type="button"
-                onClick={() =>
-                  setJoinMessage("")
-                }
-                aria-label="Close message"
-              >
-                ×
-              </button>
-            </div>
-          </Reveal>
-        )}
-
         {filteredCourses.length > 0 ? (
           <div className="uschool-catalog-grid">
             {filteredCourses.map(
               (course, index) => {
-                const allowed = isAgeAllowed(
-                  selectedAge,
-                  course.minAge,
-                  course.maxAge,
-                );
+                const allowed =
+                  isAgeAllowed(
+                    selectedAge,
+                    course.minAge,
+                    course.maxAge,
+                  );
 
                 const requiresAge =
                   selectedAge === null;
@@ -268,12 +425,24 @@ export default function CoursesGrid({
                 const locked =
                   !allowed;
 
+                const price =
+                  Number(
+                    course.price ?? 0,
+                  );
+
+                const isFree =
+                  !Number.isFinite(
+                    price,
+                  ) ||
+                  price <= 0;
+
                 return (
                   <Reveal
                     key={course.id}
                     animation="up"
                     delay={
-                      120 + index * 80
+                      120 +
+                      index * 80
                     }
                   >
                     <Card
@@ -287,20 +456,28 @@ export default function CoursesGrid({
                       <article>
                         <div className="uschool-class-banner">
                           <img
-                            src={course.imageUrl}
-                            alt={course.title}
+                            src={
+                              course.imageUrl
+                            }
+                            alt={getCourseTitle(
+                              course.title,
+                              language,
+                            )}
                           />
 
                           <div className="uschool-class-banner-overlay" />
 
                           <div className="uschool-class-banner-top">
                             <span className="uschool-class-category-badge">
-                              {course.category}
+                              {getCategoryLabel(
+                                course.category,
+                                language,
+                              )}
                             </span>
 
                             {course.featured && (
                               <span className="uschool-class-featured">
-                                Featured
+                                {text.featured}
                               </span>
                             )}
                           </div>
@@ -309,7 +486,10 @@ export default function CoursesGrid({
                             <span className="uschool-class-number">
                               {String(
                                 index + 1,
-                              ).padStart(2, "0")}
+                              ).padStart(
+                                2,
+                                "0",
+                              )}
                             </span>
 
                             {locked && (
@@ -324,32 +504,41 @@ export default function CoursesGrid({
                           <div className="uschool-class-heading">
                             <div>
                               <h3>
-                                {course.title}
+                                {getCourseTitle(
+                                  course.title,
+                                  language,
+                                )}
                               </h3>
 
                               <p>
-                                {
-                                  course.shortDescription
-                                }
+                                {getCourseDescription(
+                                  course.shortDescription,
+                                  language,
+                                )}
                               </p>
                             </div>
 
                             <div className="uschool-class-price">
                               <strong>
-                                $
-                                {course.price}
+                                {isFree
+                                  ? text.free
+                                  : `$${price}`}
                               </strong>
 
-                              <span>
-                                {course.currency}
-                              </span>
+                              {!isFree && (
+                                <span>
+                                  {
+                                    course.currency
+                                  }
+                                </span>
+                              )}
                             </div>
                           </div>
 
                           <div className="uschool-class-meta">
                             <div>
                               <span>
-                                Age
+                                {text.age}
                               </span>
 
                               <strong>
@@ -362,7 +551,7 @@ export default function CoursesGrid({
 
                             <div>
                               <span>
-                                Sessions
+                                {text.sessions}
                               </span>
 
                               <strong>
@@ -374,12 +563,13 @@ export default function CoursesGrid({
 
                             <div>
                               <span>
-                                Duration
+                                {text.duration}
                               </span>
 
                               <strong>
                                 {formatDuration(
                                   course.totalDurationMinutes,
+                                  language,
                                 )}
                               </strong>
                             </div>
@@ -391,7 +581,11 @@ export default function CoursesGrid({
                                 <span
                                   key={tag}
                                 >
-                                  #{tag}
+                                  #
+                                  {getTagLabel(
+                                    tag,
+                                    language,
+                                  )}
                                 </span>
                               ),
                             )}
@@ -401,13 +595,15 @@ export default function CoursesGrid({
                             <div className="uschool-class-access locked">
                               <div>
                                 <strong>
-                                  Age restricted
+                                  {
+                                    text.ageRestricted
+                                  }
                                 </strong>
 
                                 <span>
-                                  This class is not
-                                  available for the
-                                  selected age.
+                                  {
+                                    text.ageRestrictedDescription
+                                  }
                                 </span>
                               </div>
 
@@ -420,34 +616,30 @@ export default function CoursesGrid({
                               <div>
                                 <strong>
                                   {requiresAge
-                                    ? "Age check required"
-                                    : "Eligible to join"}
+                                    ? text.ageCheckRequired
+                                    : text.eligible}
                                 </strong>
 
                                 <span>
                                   {requiresAge
-                                    ? `Available for ages ${getAgeLabel(
+                                    ? `${text.availableFor} ${getAgeLabel(
                                         course.minAge,
                                         course.maxAge,
                                       )}.`
-                                    : "You can continue to enrollment."}
+                                    : text.canContinue}
                                 </span>
                               </div>
 
-                              <button
-                                type="button"
+                              <a
+                                href={`/uschool/class/${course.id}`}
                                 className="uschool-join-button"
-                                onClick={() =>
-                                  handleJoin(
-                                    course,
-                                  )
-                                }
                               >
-                                Join Class
+                                {text.join}
+
                                 <span>
                                   ↗
                                 </span>
-                              </button>
+                              </a>
                             </div>
                           )}
                         </div>
@@ -463,12 +655,11 @@ export default function CoursesGrid({
             <span>◌</span>
 
             <h3>
-              No classes found
+              {text.noClasses}
             </h3>
 
             <p>
-              There are no published classes in
-              this category yet.
+              {text.noClassesDescription}
             </p>
           </div>
         )}
