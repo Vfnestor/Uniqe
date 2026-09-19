@@ -65,10 +65,19 @@ function buildContract(
     `uweb-contract-${project.id}`;
 
   const baseContract =
-    createContractDraft(
-      project,
-      "three_party_project_agreement",
-    );
+    createContractDraft({
+      id: contractId,
+      projectId: project.id,
+      type:
+        "three_party_project_agreement",
+      clientId: demoClientId,
+      professionalId,
+      ownerId: demoOwnerId,
+      content:
+        "قرارداد سه‌طرفه پروژه UWeb.",
+      createdAt:
+        "2026-09-19T10:00:00.000Z",
+    });
 
   return {
     ...baseContract,
