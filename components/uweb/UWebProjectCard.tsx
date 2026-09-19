@@ -26,15 +26,20 @@ const statusLabels: Record<UWebProject["status"], string> = {
 const projectTypeLabels: Record<UWebProject["projectType"], string> = {
   new_website: "وب‌سایت جدید",
   redesign: "بازطراحی",
-  web_app: "وب‌اپلیکیشن",
-  landing_page: "Landing Page",
+  feature_development: "توسعه قابلیت",
+  bug_fix: "رفع خطا",
+  maintenance: "نگهداری",
+  optimization: "بهینه‌سازی",
   custom: "سفارشی",
 };
 
 const platformLabels: Record<UWebProject["platform"], string> = {
   wordpress: "WordPress",
   nextjs: "Next.js",
+  react: "React",
+  laravel: "Laravel",
   custom: "Custom",
+  unknown: "نامشخص",
 };
 
 export default function UWebProjectCard({
@@ -72,11 +77,13 @@ export default function UWebProjectCard({
           {platformLabels[project.platform]}
         </span>
 
-        <span>
-          {project.budget.currency}{" "}
-          {project.budget.min.toLocaleString()} —{" "}
-          {project.budget.max.toLocaleString()}
-        </span>
+        {project.budget && (
+          <span>
+            {project.budget.currency}{" "}
+            {project.budget.min?.toLocaleString() ?? "—"} —{" "}
+            {project.budget.max?.toLocaleString() ?? "—"}
+          </span>
+        )}
       </div>
 
       <div className="uweb-project-card-arrow">
