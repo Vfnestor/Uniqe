@@ -11,6 +11,7 @@ export const demoSkills: UWebSkill[] = [
     slug: "wordpress",
     category: "Development",
     description: "WordPress development and customization.",
+    status: "active",
   },
   {
     id: "skill-woocommerce",
@@ -18,6 +19,7 @@ export const demoSkills: UWebSkill[] = [
     slug: "woocommerce",
     category: "E-commerce",
     description: "WooCommerce stores and integrations.",
+    status: "active",
   },
   {
     id: "skill-ui-ux",
@@ -25,6 +27,7 @@ export const demoSkills: UWebSkill[] = [
     slug: "ui-ux",
     category: "Design",
     description: "User interface and user experience design.",
+    status: "active",
   },
   {
     id: "skill-seo",
@@ -32,6 +35,7 @@ export const demoSkills: UWebSkill[] = [
     slug: "seo",
     category: "Marketing",
     description: "Technical and on-page SEO.",
+    status: "active",
   },
   {
     id: "skill-nextjs",
@@ -39,6 +43,7 @@ export const demoSkills: UWebSkill[] = [
     slug: "nextjs",
     category: "Development",
     description: "Modern web applications with Next.js.",
+    status: "active",
   },
 ];
 
@@ -46,56 +51,33 @@ export const demoProfessionals: UWebProfessionalProfile[] = [
   {
     id: "professional-wordpress-01",
     userId: "professional-demo-01",
-    displayName: "WordPress & E-Commerce Developer",
+    headline: "WordPress & E-Commerce Developer",
     bio: "WordPress developer focused on e-commerce and scalable websites.",
-    experienceLevel: "senior",
-    skills: [
-      {
-        skillId: "skill-wordpress",
-        level: "expert",
-      },
-      {
-        skillId: "skill-woocommerce",
-        level: "expert",
-      },
-      {
-        skillId: "skill-seo",
-        level: "mid",
-      },
-      {
-        skillId: "skill-ui-ux",
-        level: "mid",
-      },
+    skillIds: [
+      "skill-wordpress",
+      "skill-woocommerce",
+      "skill-seo",
+      "skill-ui-ux",
     ],
-    supportedPlatforms: ["wordpress"],
+    platforms: ["wordpress"],
+    experienceLevel: "professional",
     availability: "available",
-    activeProjectCount: 1,
-    maxActiveProjects: 3,
+    status: "active",
   },
   {
     id: "professional-nextjs-01",
     userId: "professional-demo-02",
-    displayName: "Next.js Product Developer",
+    headline: "Next.js Product Developer",
     bio: "Next.js developer focused on modern products and web applications.",
-    experienceLevel: "expert",
-    skills: [
-      {
-        skillId: "skill-nextjs",
-        level: "expert",
-      },
-      {
-        skillId: "skill-ui-ux",
-        level: "senior",
-      },
-      {
-        skillId: "skill-seo",
-        level: "mid",
-      },
+    skillIds: [
+      "skill-nextjs",
+      "skill-ui-ux",
+      "skill-seo",
     ],
-    supportedPlatforms: ["nextjs", "custom"],
+    platforms: ["nextjs", "custom"],
+    experienceLevel: "expert",
     availability: "available",
-    activeProjectCount: 0,
-    maxActiveProjects: 2,
+    status: "active",
   },
 ];
 
@@ -103,12 +85,18 @@ export const uwebDemoProject: UWebProject = {
   id: "uweb-project-demo-01",
   projectNumber: "UW-000001",
   clientId: "demo-client",
+
   title: "فروشگاه اینترنتی نمونه",
-  description:
-    "یک فروشگاه اینترنتی مدرن و Responsive برای فروش محصولات به‌صورت آنلاین.",
+
   projectType: "new_website",
   websiteType: "ecommerce",
-  purpose: "فروش آنلاین",
+
+  purpose: [
+    "فروش آنلاین",
+    "افزایش فروش",
+    "ارائه محصولات به‌صورت آنلاین",
+  ],
+
   platform: "wordpress",
 
   features: [
@@ -119,16 +107,28 @@ export const uwebDemoProject: UWebProject = {
     "SEO",
   ],
 
-  design: [
-    "مدرن",
+  designRequirements: [
+    "طراحی مدرن",
     "Responsive",
     "UI/UX اختصاصی",
   ],
 
-  content: {
-    status: "آماده",
-    language: "fa",
-  },
+  contentRequirements: [
+    "معرفی محصولات",
+    "توضیحات محصولات",
+    "محتوای فارسی",
+  ],
+
+  languages: [
+    "fa",
+  ],
+
+  referenceLinks: [],
+
+  description:
+    "یک فروشگاه اینترنتی مدرن و Responsive برای فروش محصولات به‌صورت آنلاین.",
+
+  attachments: [],
 
   budget: {
     min: 1000,
@@ -136,32 +136,28 @@ export const uwebDemoProject: UWebProject = {
     currency: "USD",
   },
 
-  durationDays: 30,
+  expectedDurationDays: 30,
 
   requiredSkills: [
     {
       skillId: "skill-wordpress",
-      name: "WordPress",
-      required: true,
-      experienceLevel: "senior",
+      requiredLevel: "professional",
+      priority: "required",
     },
     {
       skillId: "skill-woocommerce",
-      name: "WooCommerce",
-      required: true,
-      experienceLevel: "senior",
+      requiredLevel: "professional",
+      priority: "required",
     },
     {
       skillId: "skill-ui-ux",
-      name: "UI/UX",
-      required: false,
-      experienceLevel: "mid",
+      requiredLevel: "intermediate",
+      priority: "preferred",
     },
     {
       skillId: "skill-seo",
-      name: "SEO",
-      required: false,
-      experienceLevel: "mid",
+      requiredLevel: "intermediate",
+      priority: "preferred",
     },
   ],
 
@@ -176,7 +172,8 @@ export const uwebDemoProject: UWebProject = {
  *
  * Temporary project collection.
  *
- * Later this will be replaced by the project repository/API layer.
+ * Later this will be replaced by the
+ * project repository / API layer.
  */
 export const demoProjects: UWebProject[] = [
   uwebDemoProject,
