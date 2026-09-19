@@ -8,8 +8,12 @@ import {
   getMyUWebContracts,
 } from "@/lib/my-u/my-uweb-data";
 
+import type {
+  MyUContractSummary,
+} from "@/lib/my-u/types";
+
 export default function MyContractsPage() {
-  const contracts =
+  const contracts: MyUContractSummary[] =
     getMyUWebContracts();
 
   return (
@@ -47,7 +51,7 @@ export default function MyContractsPage() {
           ) : (
             <div className="my-uweb-contract-list">
               {contracts.map(
-                (contract) => (
+                (contract: MyUContractSummary) => (
                   <Link
                     key={contract.id}
                     href={contract.href}
