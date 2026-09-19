@@ -290,11 +290,7 @@ function LessonContent({
             ? "Completed"
             : "Mark as Completed"}
 
-          <span>
-            {completed
-              ? "✓"
-              : "✓"}
-          </span>
+          <span>✓</span>
         </button>
       </div>
     </section>
@@ -577,18 +573,19 @@ export default function USchoolClassPage({
 
   const selectedCompleted =
     selectedSession
-      ? Boolean(
-          getSessionProgress(
-            DEMO_USER_ID,
-            course.id,
-            selectedSession.session.id,
-          )?.status ===
-            "completed",
-        )
+      ? getSessionProgress(
+          DEMO_USER_ID,
+          course.id,
+          selectedSession.session.id,
+        )?.status ===
+        "completed"
       : false;
 
   function handleComplete() {
-    if (!selectedSession) {
+    if (
+      !course ||
+      !selectedSession
+    ) {
       return;
     }
 
@@ -596,6 +593,25 @@ export default function USchoolClassPage({
       DEMO_USER_ID,
       course.id,
       selectedSession.session.id,
+    );
+
+    setProgressVersion(
+      (value) => value + 1,
+    );
+  }
+
+  function handleFirstAvailableComplete() {
+    if (
+      !course ||
+      !firstAvailable
+    ) {
+      return;
+    }
+
+    completeSession(
+      DEMO_USER_ID,
+      course.id,
+      firstAvailable.session.id,
     );
 
     setProgressVersion(
@@ -740,18 +756,9 @@ export default function USchoolClassPage({
                     )?.status ===
                     "completed"
                   }
-                  onComplete={() => {
-                    completeSession(
-                      DEMO_USER_ID,
-                      course.id,
-                      firstAvailable.session.id,
-                    );
-
-                    setProgressVersion(
-                      (value) =>
-                        value + 1,
-                    );
-                  }}
+                  onComplete={
+                    handleFirstAvailableComplete
+                  }
                 />
               ) : (
                 <LockedLesson
