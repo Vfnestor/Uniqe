@@ -195,6 +195,8 @@ export function createUAppsOrder(
       "در انتظار بررسی",
     createdAt: now,
     updatedAt: now,
+    reviewNote: "",
+    ownerNote: "",
   };
 }
 
