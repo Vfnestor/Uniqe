@@ -10,6 +10,7 @@ import {
   uappsDemoData,
 } from "@/lib/uapps/demo-data";
 
+import GooglePlaySection from "./GooglePlaySection";
 import UserAppsSection from "./UserAppsSection";
 import UAppsActionPanel from "./UAppsActionPanel";
 import UAppsSearchPanel from "./UAppsSearchPanel";
@@ -68,6 +69,8 @@ export default function UAppsHome() {
         icon="🌐"
         apps={externalApps}
       />
+
+      <GooglePlaySection />
 
       <UAppsSearchPanel />
 
