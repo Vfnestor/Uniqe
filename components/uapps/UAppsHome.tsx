@@ -10,6 +10,10 @@ import {
   uappsDemoData,
 } from "@/lib/uapps/demo-data";
 
+import {
+  getUAppCollections,
+} from "@/lib/uapps/collections";
+
 import UserAppsSection from "./UserAppsSection";
 import UAppsActionPanel from "./UAppsActionPanel";
 import UAppsSearchPanel from "./UAppsSearchPanel";
@@ -35,6 +39,12 @@ export default function UAppsHome() {
           "google-play" ||
         app.source ===
           "app-store",
+    );
+
+  const collections =
+    getUAppCollections().filter(
+      (collection) =>
+        collection.apps.length > 0,
     );
 
   return (
@@ -69,6 +79,26 @@ export default function UAppsHome() {
           icon="🌐"
           apps={externalApps}
         />
+
+        {collections.map(
+          (collection) => (
+            <UAppsSection
+              key={collection.id}
+              title={
+                collection.title
+              }
+              subtitle={
+                collection.description
+              }
+              icon={
+                collection.icon
+              }
+              apps={
+                collection.apps
+              }
+            />
+          ),
+        )}
 
         <UAppsSearchPanel />
 
