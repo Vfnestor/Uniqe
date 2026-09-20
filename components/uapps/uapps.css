@@ -1893,3 +1893,81 @@
     width: calc(100% - 28px);
   }
 }
+
+
+
+
+*/################
+تایید
+###################*/
+
+.uapps-collection-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    3,
+    minmax(260px, 1fr)
+  );
+  gap: 20px;
+  align-items: start;
+}
+
+.uapps-collection-grid .uapps-app-card {
+  width: 100%;
+  min-width: 0;
+  max-width: 360px;
+  margin-inline: auto;
+  flex: none;
+}
+
+.uapps-collection-grid .uapps-app-cover {
+  height: 160px;
+}
+
+.uapps-collection-grid .uapps-app-card-body {
+  padding: 17px;
+}
+
+.uapps-collection-grid .uapps-app-card h3 {
+  font-size: 18px;
+}
+
+.uapps-collection-grid .uapps-app-card p {
+  min-height: 48px;
+  font-size: 12px;
+}
+
+.uapps-collection-grid .uapps-card-footer {
+  margin-top: 15px;
+}
+
+@media (max-width: 1000px) {
+  .uapps-collection-grid {
+    grid-template-columns: repeat(
+      2,
+      minmax(250px, 1fr)
+    );
+  }
+
+  .uapps-collection-grid .uapps-app-card {
+    max-width: 340px;
+  }
+}
+
+@media (max-width: 650px) {
+  .uapps-collection-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .uapps-collection-grid .uapps-app-card {
+    width: min(
+      100%,
+      330px
+    );
+    max-width: 330px;
+  }
+
+  .uapps-collection-grid .uapps-app-cover {
+    height: 145px;
+  }
+}
