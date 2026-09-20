@@ -24,6 +24,11 @@ import {
   clearStoredAuthSession,
 } from "@/lib/auth/auth-storage";
 
+import {
+  getStoredUserProfile,
+  type UserProfile,
+} from "@/lib/my-u/profile";
+
 import "./global-header.css";
 
 type AdminSession = {
@@ -88,16 +93,17 @@ export default function GlobalHeader() {
     setLoggingOut,
   ] = useState(false);
 
+  const [
+    profile,
+    setProfile,
+  ] = useState<UserProfile | null>(
+    null,
+  );
+
   const menuRef =
     useRef<HTMLDivElement | null>(
       null,
     );
-
-  /*
-   * =========================================================
-   * ADMIN SESSION
-   * =========================================================
-   */
 
   useEffect(() => {
     let mounted = true;
@@ -158,11 +164,37 @@ export default function GlobalHeader() {
     };
   }, []);
 
-  /*
-   * =========================================================
-   * CLOSE MENU
-   * =========================================================
-   */
+  useEffect(() => {
+    function loadProfile() {
+      setProfile(
+        getStoredUserProfile(),
+      );
+    }
+
+    loadProfile();
+
+    window.addEventListener(
+      "uniqe-profile-updated",
+      loadProfile,
+    );
+
+    window.addEventListener(
+      "storage",
+      loadProfile,
+    );
+
+    return () => {
+      window.removeEventListener(
+        "uniqe-profile-updated",
+        loadProfile,
+      );
+
+      window.removeEventListener(
+        "storage",
+        loadProfile,
+      );
+    };
+  }, []);
 
   useEffect(() => {
     const handleOutsideClick = (
@@ -191,12 +223,6 @@ export default function GlobalHeader() {
     };
   }, []);
 
-  /*
-   * =========================================================
-   * ROLE
-   * =========================================================
-   */
-
   const isOwner =
     adminSession?.authenticated &&
     adminSession.role ===
@@ -208,23 +234,29 @@ export default function GlobalHeader() {
       "authenticated" &&
     !!state.user;
 
-  /*
-   * =========================================================
-   * USER DATA
-   * =========================================================
-   */
-
   const user =
     isUser
       ? state.user
       : null;
 
+  const fullName =
+    profile
+      ? `${profile.firstName} ${profile.lastName}`.trim()
+      : "";
+
   const displayName =
+    fullName ||
     user?.name ||
     "کاربر Uniqe";
 
   const avatar =
+    profile?.avatar ||
     user?.avatar;
+
+  const username =
+    profile?.username
+      ? `@${profile.username}`
+      : "نام کاربری ثبت نشده";
 
   const initials =
     displayName
@@ -232,12 +264,6 @@ export default function GlobalHeader() {
       .charAt(0)
       .toUpperCase() ||
     "U";
-
-  /*
-   * =========================================================
-   * LOGOUT
-   * =========================================================
-   */
 
   async function handleLogout() {
     if (loggingOut) {
@@ -262,10 +288,6 @@ export default function GlobalHeader() {
         clearStoredAuthSession();
       }
     } catch {
-      /*
-       * Logout must still redirect
-       * even if the request fails.
-       */
     } finally {
       setAdminSession(null);
       setMenuOpen(false);
@@ -275,17 +297,7 @@ export default function GlobalHeader() {
     }
   }
 
-  /*
-   * =========================================================
-   * PROFILE BUTTON
-   * =========================================================
-   */
-
   function renderProfileButton() {
-    /*
-     * OWNER
-     */
-
     if (isOwner) {
       return (
         <button
@@ -310,10 +322,6 @@ export default function GlobalHeader() {
       );
     }
 
-    /*
-     * USER
-     */
-
     if (isUser) {
       return (
         <button
@@ -336,12 +344,11 @@ export default function GlobalHeader() {
           {avatar ? (
             <Image
               src={avatar}
-              alt={
-                displayName
-              }
+              alt={displayName}
               width={38}
               height={38}
               className="global-profile-avatar"
+              unoptimized
             />
           ) : (
             <span className="global-profile-avatar global-profile-initial">
@@ -351,10 +358,6 @@ export default function GlobalHeader() {
         </button>
       );
     }
-
-    /*
-     * GUEST
-     */
 
     return (
       <Link
@@ -371,7 +374,6 @@ export default function GlobalHeader() {
   return (
     <header className="global-header">
       <div className="global-header-inner">
-
         <Link
           href="/"
           className="global-header-brand"
@@ -408,7 +410,6 @@ export default function GlobalHeader() {
         </nav>
 
         <div className="global-header-actions">
-
           <LanguageToggle />
 
           <ThemeToggle />
@@ -434,9 +435,7 @@ export default function GlobalHeader() {
                 }`}
                 role="menu"
               >
-
                 <div className="global-profile-user">
-
                   {isOwner ? (
                     <>
                       <div className="global-profile-owner-badge">
@@ -455,18 +454,33 @@ export default function GlobalHeader() {
                     </>
                   ) : (
                     <>
+                      {avatar ? (
+                        <Image
+                          src={avatar}
+                          alt={displayName}
+                          width={48}
+                          height={48}
+                          className="global-profile-menu-avatar"
+                          unoptimized
+                        />
+                      ) : (
+                        <span className="global-profile-menu-avatar global-profile-menu-initial">
+                          {initials}
+                        </span>
+                      )}
+
                       <div className="global-profile-user-name">
                         {displayName}
                       </div>
 
-                      {user?.email ? (
-                        <div className="global-profile-user-email">
-                          {user.email}
-                        </div>
-                      ) : null}
+                      <div
+                        className="global-profile-user-username"
+                        dir="ltr"
+                      >
+                        {username}
+                      </div>
                     </>
                   )}
-
                 </div>
 
                 <div className="global-profile-divider" />
@@ -638,10 +652,8 @@ export default function GlobalHeader() {
                     ? "در حال خروج..."
                     : "خروج"}
                 </button>
-
               </div>
             ) : null}
-
           </div>
         </div>
       </div>
