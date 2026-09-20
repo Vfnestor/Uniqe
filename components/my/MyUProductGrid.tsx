@@ -1,4 +1,8 @@
 import type {
+  ReactNode,
+} from "react";
+
+import type {
   MyUProduct,
 } from "@/lib/my-u/types";
 
@@ -6,10 +10,12 @@ import MyUProductCard from "./MyUProductCard";
 
 type Props = {
   products: MyUProduct[];
+  uappsPanel?: ReactNode;
 };
 
 export default function MyUProductGrid({
   products,
+  uappsPanel,
 }: Props) {
   return (
     <section className="my-u-products-section">
@@ -39,6 +45,8 @@ export default function MyUProductGrid({
             />
           ),
         )}
+
+        {uappsPanel}
       </div>
     </section>
   );
