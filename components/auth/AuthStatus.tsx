@@ -1,9 +1,11 @@
 "use client";
 
+import Link from "next/link";
+
 import { useAuth } from "./AuthProvider";
 
 export default function AuthStatus() {
-  const { state, login, logout } = useAuth();
+  const { state, logout } = useAuth();
 
   if (state.status === "loading") {
     return (
@@ -16,16 +18,13 @@ export default function AuthStatus() {
   if (state.status === "unauthenticated") {
     return (
       <div>
-        <p>وارد حساب کاربری نشده‌اید.</p>
+        <p>
+          وارد حساب کاربری نشده‌اید.
+        </p>
 
-        <button
-          type="button"
-          onClick={() => {
-            void login();
-          }}
-        >
-          ورود آزمایشی
-        </button>
+        <Link href="/auth/login">
+          ورود به حساب
+        </Link>
       </div>
     );
   }
@@ -34,11 +33,20 @@ export default function AuthStatus() {
     <div>
       <p>
         وارد شده به عنوان:{" "}
-        <strong>{state.user?.name}</strong>
+        <strong>
+          {state.user?.name}
+        </strong>
       </p>
 
       <p>
         {state.user?.email}
+      </p>
+
+      <p>
+        نقش:{" "}
+        <strong>
+          {state.user?.role}
+        </strong>
       </p>
 
       <button
