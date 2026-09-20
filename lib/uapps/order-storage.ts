@@ -36,6 +36,8 @@ export type UAppsOrder = {
   statusLabel: string;
   createdAt: string;
   updatedAt: string;
+  reviewNote?: string;
+  ownerNote?: string;
 };
 
 export type CreateUAppsOrderInput = {
