@@ -20,6 +20,10 @@ import {
   getFeaturedUniqeApps,
 } from "@/lib/uapps/uniqe-apps";
 
+import {
+  getUAppVerification,
+} from "@/lib/uapps/verification";
+
 type SearchScope =
   | "all"
   | "app-store"
@@ -32,6 +36,10 @@ type SearchResult = {
   icon: string;
   source: string;
   href?: string;
+  verification:
+    | "official"
+    | "verified"
+    | "unverified";
 };
 
 function normalizeLocalApps(): SearchResult[] {
@@ -58,6 +66,10 @@ function normalizeLocalApps(): SearchResult[] {
     icon: app.icon || "UA",
     source: app.sourceLabel,
     href: app.href,
+    verification:
+      getUAppVerification(
+        app,
+      ).status,
   }));
 }
 
@@ -114,6 +126,10 @@ async function searchAppStore(
           "App Store",
         href:
           app.href,
+        verification:
+          getUAppVerification(
+            app,
+          ).status,
       }),
     );
   } catch {
@@ -165,6 +181,10 @@ async function searchGooglePlay(
           "Google Play",
         href:
           app.href,
+        verification:
+          getUAppVerification(
+            app,
+          ).status,
       }),
     );
   } catch {
@@ -193,7 +213,9 @@ export default function UAppsSearchPanel() {
   const [
     results,
     setResults,
-  ] = useState<SearchResult[]>([]);
+  ] = useState<SearchResult[]>(
+    [],
+  );
 
   const [
     loading,
@@ -228,7 +250,8 @@ export default function UAppsSearchPanel() {
         );
 
       if (
-        scope === "app-store"
+        scope ===
+        "app-store"
       ) {
         const appStoreResults =
           await searchAppStore(
@@ -246,7 +269,8 @@ export default function UAppsSearchPanel() {
       }
 
       if (
-        scope === "google-play"
+        scope ===
+        "google-play"
       ) {
         const googlePlayResults =
           await searchGooglePlay(
@@ -292,6 +316,29 @@ export default function UAppsSearchPanel() {
   ) {
     setScope(nextScope);
     setResults([]);
+  }
+
+  function getVerificationLabel(
+    status:
+      | "official"
+      | "verified"
+      | "unverified",
+  ) {
+    if (
+      status ===
+      "official"
+    ) {
+      return "رسمی";
+    }
+
+    if (
+      status ===
+      "verified"
+    ) {
+      return "تأیید شده";
+    }
+
+    return "تأیید نشده";
   }
 
   return (
@@ -347,7 +394,9 @@ export default function UAppsSearchPanel() {
 
       <div className="uapps-search-panel-content">
         <div className="uapps-search-box">
-          <span>⌕</span>
+          <span>
+            ⌕
+          </span>
 
           <input
             value={query}
@@ -403,7 +452,10 @@ export default function UAppsSearchPanel() {
               )
             }
           >
-            <span>●</span>
+            <span>
+              ●
+            </span>
+
             App Store
           </button>
 
@@ -421,7 +473,10 @@ export default function UAppsSearchPanel() {
               )
             }
           >
-            <span>▶</span>
+            <span>
+              ▶
+            </span>
+
             Google Play
           </button>
 
@@ -438,7 +493,10 @@ export default function UAppsSearchPanel() {
               )
             }
           >
-            <span>✦</span>
+            <span>
+              ✦
+            </span>
+
             همه
           </button>
         </div>
@@ -522,6 +580,21 @@ export default function UAppsSearchPanel() {
                       {result.category}
                       {" · "}
                       {result.source}
+                    </span>
+
+                    <span
+                      className={`uapps-search-verification uapps-search-verification-${result.verification}`}
+                    >
+                      <span>
+                        {result.verification ===
+                          "unverified"
+                          ? "!"
+                          : "✓"}
+                      </span>
+
+                      {getVerificationLabel(
+                        result.verification,
+                      )}
                     </span>
                   </div>
 
