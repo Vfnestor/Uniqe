@@ -1,22 +1,18 @@
 "use client";
 
 import { useRef } from "react";
-import Link from "next/link";
 
-type AppItem = {
-  id: string;
-  name: string;
-  category: string;
-  description: string;
-  icon: string;
-  accent: string;
-};
+import type {
+  UApp,
+} from "@/lib/uapps/types";
+
+import UniversalAppCard from "@/components/uapps/UniversalAppCard";
 
 type Props = {
   title: string;
   subtitle: string;
   icon: string;
-  apps: AppItem[];
+  apps: UApp[];
 };
 
 export default function UAppsSection({
@@ -28,7 +24,9 @@ export default function UAppsSection({
   const scrollRef =
     useRef<HTMLDivElement>(null);
 
-  function scroll(direction: "next" | "prev") {
+  function scroll(
+    direction: "next" | "prev",
+  ) {
     if (!scrollRef.current) {
       return;
     }
@@ -63,7 +61,9 @@ export default function UAppsSection({
           <button
             type="button"
             aria-label="نرم‌افزارهای قبلی"
-            onClick={() => scroll("prev")}
+            onClick={() =>
+              scroll("prev")
+            }
           >
             →
           </button>
@@ -71,7 +71,9 @@ export default function UAppsSection({
           <button
             type="button"
             aria-label="نرم‌افزارهای بعدی"
-            onClick={() => scroll("next")}
+            onClick={() =>
+              scroll("next")
+            }
           >
             ←
           </button>
@@ -83,42 +85,10 @@ export default function UAppsSection({
         className="uapps-carousel"
       >
         {apps.map((app) => (
-          <article
+          <UniversalAppCard
             key={app.id}
-            className="uapps-app-card"
-          >
-            <div
-              className={`uapps-app-cover uapps-accent-${app.accent}`}
-            >
-              <div className="uapps-cover-pattern" />
-
-              <div className="uapps-app-icon">
-                {app.icon}
-              </div>
-
-              <span className="uapps-platform-label">
-                APP
-              </span>
-            </div>
-
-            <div className="uapps-app-card-body">
-              <span className="uapps-app-category">
-                {app.category}
-              </span>
-
-              <h3>{app.name}</h3>
-
-              <p>{app.description}</p>
-
-              <Link
-                href="/uapps"
-                className="uapps-continue-button"
-              >
-                ادامه
-                <span>←</span>
-              </Link>
-            </div>
-          </article>
+            app={app}
+          />
         ))}
       </div>
     </section>
