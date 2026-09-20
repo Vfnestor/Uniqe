@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+
 import {
   useEffect,
   useState,
@@ -30,7 +31,7 @@ function getStatusLabel(
     return "تأیید شده";
   }
 
-  return "رد شده";
+  return "نیازمند اصلاح";
 }
 
 function getStatusClass(
@@ -100,9 +101,11 @@ export default function UAppsMyApps() {
     id: string,
   ) {
     submitStoredUserApp(id);
+
     setMessage(
       "نرم‌افزار برای بررسی ارسال شد.",
     );
+
     loadApps();
   }
 
@@ -156,8 +159,9 @@ export default function UAppsMyApps() {
           </h1>
 
           <p>
-            اینجا می‌توانی نرم‌افزارهایی که ساخته‌ای
-            را مدیریت و برای بررسی Uniqe ارسال کنی.
+            نرم‌افزارهای ساخته‌شده توسط شما،
+            وضعیت بررسی و وضعیت تأیید آن‌ها را
+            مدیریت کنید.
           </p>
         </section>
 
@@ -179,7 +183,7 @@ export default function UAppsMyApps() {
 
             <p>
               اولین نرم‌افزار خودت را بساز و آن را
-              برای انتشار در UApps آماده کن.
+              برای بررسی در UApps ارسال کن.
             </p>
 
             <Link
@@ -255,11 +259,47 @@ export default function UAppsMyApps() {
                       >
                         مشاهده لینک
                       </a>
+
+                      {app.verified && (
+                        <span className="uapps-my-app-verified">
+                          ✓ تأیید شده توسط Uniqe
+                        </span>
+                      )}
                     </div>
 
+                    {app.rejectionReason && (
+                      <div className="uapps-my-app-review-note">
+                        <strong>
+                          دلیل نیاز به اصلاح:
+                        </strong>
+
+                        <span>
+                          {
+                            app.rejectionReason
+                          }
+                        </span>
+                      </div>
+                    )}
+
+                    {app.reviewNote && (
+                      <div className="uapps-my-app-review-note">
+                        <strong>
+                          یادداشت بررسی:
+                        </strong>
+
+                        <span>
+                          {
+                            app.reviewNote
+                          }
+                        </span>
+                      </div>
+                    )}
+
                     <div className="uapps-my-app-actions">
-                      {app.reviewStatus ===
-                        "draft" && (
+                      {(app.reviewStatus ===
+                        "draft" ||
+                        app.reviewStatus ===
+                          "rejected") && (
                         <button
                           type="button"
                           className="uapps-build-primary-button"
@@ -269,7 +309,11 @@ export default function UAppsMyApps() {
                             )
                           }
                         >
-                          ارسال برای بررسی
+                          {app.reviewStatus ===
+                          "rejected"
+                            ? "ارسال مجدد"
+                            : "ارسال برای بررسی"}
+
                           <span>
                             →
                           </span>
@@ -277,21 +321,17 @@ export default function UAppsMyApps() {
                       )}
 
                       {app.reviewStatus ===
-                        "rejected" && (
-                        <button
-                          type="button"
-                          className="uapps-build-primary-button"
-                          onClick={() =>
-                            handleSubmit(
-                              app.id,
-                            )
-                          }
-                        >
-                          ارسال مجدد
-                          <span>
-                            →
-                          </span>
-                        </button>
+                        "pending-review" && (
+                        <span className="uapps-my-app-pending-message">
+                          درخواست شما در صف بررسی قرار دارد.
+                        </span>
+                      )}
+
+                      {app.reviewStatus ===
+                        "approved" && (
+                        <span className="uapps-my-app-approved-message">
+                          ✓ این نرم‌افزار تأیید شده است.
+                        </span>
                       )}
 
                       <button
