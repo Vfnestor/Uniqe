@@ -265,6 +265,12 @@ export default function MyU({
         "pending-review",
     ).length;
 
+  const productApps =
+    products.filter(
+      (product) =>
+        product.id !== "uapps",
+    );
+
   return (
     <main className="my-u-page">
       <Container>
@@ -456,67 +462,69 @@ export default function MyU({
               )}
             </section>
 
-            <section className="my-u-uapps-panel">
-              <div>
-                <span className="section-eyebrow">
-                  UAPPS
-                </span>
-
-                <h2>
-                  نرم‌افزارهای من
-                </h2>
-
-                <p>
-                  ساخت، مدیریت و ارسال نرم‌افزارهای
-                  شما برای بررسی Uniqe.
-                </p>
-              </div>
-
-              <div className="my-u-uapps-stats">
-                <div>
-                  <strong>
-                    {userApps.length}
-                  </strong>
-
-                  <span>
-                    کل نرم‌افزارها
-                  </span>
-                </div>
-
-                <div>
-                  <strong>
-                    {draftCount}
-                  </strong>
-
-                  <span>
-                    پیش‌نویس
-                  </span>
-                </div>
-
-                <div>
-                  <strong>
-                    {pendingCount}
-                  </strong>
-
-                  <span>
-                    در انتظار بررسی
-                  </span>
-                </div>
-              </div>
-
-              <Link
-                href="/uapps/my-apps"
-                className="my-u-uapps-action"
-              >
-                مدیریت نرم‌افزارها
-                <span>
-                  ←
-                </span>
-              </Link>
-            </section>
-
             <MyUProductGrid
-              products={products}
+              products={productApps}
+              uappsPanel={
+                <section className="my-u-uapps-panel">
+                  <div>
+                    <span className="section-eyebrow">
+                      UAPPS
+                    </span>
+
+                    <h2>
+                      نرم‌افزارهای من
+                    </h2>
+
+                    <p>
+                      ساخت، مدیریت و ارسال نرم‌افزارهای
+                      شما برای بررسی Uniqe.
+                    </p>
+                  </div>
+
+                  <div className="my-u-uapps-stats">
+                    <div>
+                      <strong>
+                        {userApps.length}
+                      </strong>
+
+                      <span>
+                        کل نرم‌افزارها
+                      </span>
+                    </div>
+
+                    <div>
+                      <strong>
+                        {draftCount}
+                      </strong>
+
+                      <span>
+                        پیش‌نویس
+                      </span>
+                    </div>
+
+                    <div>
+                      <strong>
+                        {pendingCount}
+                      </strong>
+
+                      <span>
+                        در انتظار بررسی
+                      </span>
+                    </div>
+                  </div>
+
+                  <Link
+                    href="/uapps/my-apps"
+                    className="my-u-uapps-action"
+                  >
+                    مدیریت نرم‌افزارها
+
+                    <span>
+                      ←
+                    </span>
+                  </Link>
+                </section>
+              }
             />
           </div>
         </div>
