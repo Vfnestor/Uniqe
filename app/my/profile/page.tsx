@@ -281,6 +281,12 @@ export default function MyProfilePage() {
       nextProfile,
     );
 
+    window.dispatchEvent(
+      new CustomEvent(
+        "uniqe-profile-updated",
+      ),
+    );
+
     setSaveMessage(
       "اطلاعات پروفایل با موفقیت ذخیره شد.",
     );
@@ -338,13 +344,13 @@ export default function MyProfilePage() {
                     "کاربر Uniqe"}
                 </strong>
 
-                <span>
+                <span dir="ltr">
                   {profile.username
                     ? `@${profile.username}`
                     : "نام کاربری ثبت نشده"}
                 </span>
 
-                <small>
+                <small dir="ltr">
                   {profile.email ||
                     "ایمیل ثبت نشده"}
                 </small>
