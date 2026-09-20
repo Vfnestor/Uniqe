@@ -15,6 +15,10 @@ import type {
   MyUNavigationItem,
 } from "@/lib/my-u/types";
 
+import {
+  getStoredUserProfile,
+} from "@/lib/my-u/profile";
+
 type Props = {
   items: readonly MyUNavigationItem[];
 };
@@ -31,12 +35,25 @@ export default function MyUNavigation({
   const user =
     state.user;
 
+  const profile =
+    getStoredUserProfile();
+
   async function handleLogout() {
     clearStoredAuthSession();
 
     window.location.href =
       "/admin/login";
   }
+
+  const displayName =
+    profile.firstName ||
+    profile.lastName
+      ? `${profile.firstName} ${profile.lastName}`.trim()
+      : user?.name ||
+        "کاربر Uniqe";
+
+  const avatar =
+    profile.avatar;
 
   return (
     <>
@@ -66,33 +83,56 @@ export default function MyUNavigation({
 
       <aside className="my-u-navigation">
         <div className="my-u-navigation-header">
-          <div className="my-u-user-card">
+          <Link
+            href="/my/profile"
+            className="my-u-user-card"
+            onClick={() => {
+              document.body.classList.remove(
+                "my-u-sidebar-open",
+              );
+            }}
+          >
             <div className="my-u-user-avatar">
-              {user?.name
-                ? user.name
-                    .trim()
-                    .charAt(0)
-                    .toUpperCase()
-                : "U"}
+              {avatar ? (
+                <img
+                  src={avatar}
+                  alt="تصویر پروفایل"
+                />
+              ) : (
+                displayName
+                  .trim()
+                  .charAt(0)
+                  .toUpperCase() || "U"
+              )}
             </div>
 
             <div className="my-u-user-info">
               <strong>
-                {user?.name ||
-                  "کاربر Uniqe"}
+                {displayName}
               </strong>
 
               <span>
                 {user?.email ||
+                  profile.email ||
                   "حساب کاربری"}
               </span>
             </div>
+
+            <span
+              className="my-u-profile-link-arrow"
+              aria-hidden="true"
+            >
+              ←
+            </span>
 
             <button
               type="button"
               className="my-u-mobile-close"
               aria-label="بستن منو"
-              onClick={() => {
+              onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+
                 document.body.classList.remove(
                   "my-u-sidebar-open",
                 );
@@ -100,7 +140,7 @@ export default function MyUNavigation({
             >
               ×
             </button>
-          </div>
+          </Link>
 
           <div className="my-u-account-status">
             <span className="my-u-status-dot" />
