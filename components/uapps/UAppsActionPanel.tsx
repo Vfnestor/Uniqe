@@ -50,6 +50,16 @@ export default function UAppsActionPanel() {
           </span>
           سفارش ساخت نرم‌افزار
         </Link>
+
+        <Link
+          href="/uapps/orders"
+          className="uapps-action-secondary"
+        >
+          <span>
+            ◫
+          </span>
+          سفارش‌های من
+        </Link>
       </div>
     </section>
   );
