@@ -1973,3 +1973,352 @@
     height: 145px;
   }
 }
+
+/* =========================================================
+   U10 - VERIFIED SYSTEM
+   ========================================================= */
+
+.uapps-verified-section {
+  width: 100%;
+  margin-top: 0;
+}
+
+.uapps-verified-summary {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.uapps-verified-summary span,
+.uapps-verified-summary a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted-foreground);
+  font-size: 10px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.uapps-verified-summary a {
+  color: var(--foreground);
+}
+
+.uapps-verified-summary a:hover {
+  border-color: var(--foreground);
+}
+
+.uapps-verified-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    3,
+    minmax(0, 1fr)
+  );
+  gap: 18px;
+  align-items: start;
+}
+
+.uapps-verified-item {
+  min-width: 0;
+}
+
+.uapps-verified-item
+  .uapps-app-card {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  flex: none;
+}
+
+.uapps-verification-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 25px;
+  padding: 0 9px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1;
+  backdrop-filter: blur(10px);
+  box-shadow:
+    0 5px 15px
+    rgba(0, 0, 0, 0.08);
+}
+
+.uapps-verification-badge span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.uapps-verification-badge-official {
+  border-color: color-mix(
+    in srgb,
+    var(--foreground) 18%,
+    transparent
+  );
+  background: color-mix(
+    in srgb,
+    var(--background) 88%,
+    var(--foreground)
+  );
+  color: var(--foreground);
+}
+
+.uapps-verification-badge-official span {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.uapps-verification-badge-verified {
+  border-color: rgba(
+    34,
+    197,
+    94,
+    0.22
+  );
+  background: color-mix(
+    in srgb,
+    var(--background) 88%,
+    rgba(34, 197, 94, 1)
+  );
+  color: var(--foreground);
+}
+
+.uapps-verification-badge-verified span {
+  background: rgba(
+    34,
+    197,
+    94,
+    1
+  );
+  color: white;
+}
+
+.uapps-verification-badge-unverified {
+  border-color: var(--border);
+  background: color-mix(
+    in srgb,
+    var(--background) 92%,
+    var(--foreground)
+  );
+  color: var(--muted-foreground);
+}
+
+.uapps-verification-badge-unverified span {
+  background: var(--surface);
+  color: var(--muted-foreground);
+}
+
+.uapps-verification-meta {
+  display: flex;
+  align-items: center;
+  min-height: 25px;
+  margin-top: 9px;
+}
+
+.uapps-verification-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 24px;
+  padding: 0 8px;
+  border-radius: 7px;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.uapps-verification-status > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.uapps-verification-status-official {
+  background: var(--surface);
+  color: var(--foreground);
+}
+
+.uapps-verification-status-official
+  > span {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.uapps-verification-status-verified {
+  background: color-mix(
+    in srgb,
+    rgba(34, 197, 94, 1) 10%,
+    var(--surface)
+  );
+  color: var(--foreground);
+}
+
+.uapps-verification-status-verified
+  > span {
+  background: rgba(
+    34,
+    197,
+    94,
+    1
+  );
+  color: white;
+}
+
+.uapps-verification-status-unverified {
+  background: var(--surface);
+  color: var(--muted-foreground);
+}
+
+.uapps-verification-status-unverified
+  > span {
+  background: var(--background);
+  color: var(--muted-foreground);
+}
+
+.uapps-search-verification {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 4px;
+  width: fit-content;
+  margin-top: 3px;
+  font-size: 9px !important;
+  font-weight: 700;
+}
+
+.uapps-search-verification > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.uapps-search-verification-official {
+  color: var(--foreground) !important;
+}
+
+.uapps-search-verification-official
+  > span {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.uapps-search-verification-verified {
+  color: rgba(
+    22,
+    163,
+    74,
+    1
+  ) !important;
+}
+
+.uapps-search-verification-verified
+  > span {
+  background: rgba(
+    34,
+    197,
+    94,
+    1
+  );
+  color: white;
+}
+
+.uapps-search-verification-unverified {
+  color: var(--muted-foreground) !important;
+}
+
+.uapps-search-verification-unverified
+  > span {
+  background: var(--surface);
+  color: var(--muted-foreground);
+}
+
+@media (max-width: 1100px) {
+  .uapps-verified-grid {
+    grid-template-columns: repeat(
+      2,
+      minmax(0, 1fr)
+    );
+  }
+}
+
+@media (max-width: 800px) {
+  .uapps-verified-summary {
+    justify-content: flex-start;
+  }
+
+  .uapps-verified-grid {
+    grid-template-columns: repeat(
+      2,
+      minmax(0, 1fr)
+    );
+    gap: 14px;
+  }
+
+  .uapps-verification-badge {
+    top: 9px;
+    left: 9px;
+    min-height: 22px;
+    padding: 0 7px;
+    font-size: 8px;
+  }
+
+  .uapps-verification-badge span {
+    width: 12px;
+    height: 12px;
+    font-size: 8px;
+  }
+}
+
+@media (max-width: 650px) {
+  .uapps-verified-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .uapps-verified-item
+    .uapps-app-card {
+    width: min(
+      100%,
+      340px
+    );
+    margin-inline: auto;
+  }
+
+  .uapps-verified-summary {
+    gap: 5px;
+  }
+
+  .uapps-verified-summary span,
+  .uapps-verified-summary a {
+    min-height: 27px;
+    padding: 0 8px;
+    font-size: 9px;
+  }
+}
