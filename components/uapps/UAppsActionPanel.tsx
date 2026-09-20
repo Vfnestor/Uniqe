@@ -25,15 +25,29 @@ export default function UAppsActionPanel() {
           href="/uapps/build"
           className="uapps-action-primary"
         >
-          <span>＋</span>
+          <span>
+            ＋
+          </span>
           ساخت نرم‌افزار
+        </Link>
+
+        <Link
+          href="/uapps/my-apps"
+          className="uapps-action-secondary"
+        >
+          <span>
+            ▣
+          </span>
+          نرم‌افزارهای من
         </Link>
 
         <Link
           href="/uapps/order"
           className="uapps-action-secondary"
         >
-          <span>◇</span>
+          <span>
+            ◇
+          </span>
           سفارش ساخت نرم‌افزار
         </Link>
       </div>
