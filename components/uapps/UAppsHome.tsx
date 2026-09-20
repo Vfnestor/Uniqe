@@ -64,7 +64,6 @@ export default function UAppsHome() {
 
       <UAppsSection
         title="اپلیکیشن‌های خارجی"
-        description="نمونه‌ای از اپلیکیشن‌های موجود در فروشگاه‌های خارجی."
         apps={externalApps}
       />
 
