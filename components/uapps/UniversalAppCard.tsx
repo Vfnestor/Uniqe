@@ -26,7 +26,16 @@ export default function UniversalAppCard({
           {app.sourceLabel}
         </div>
 
-        {app.verified && (
+        {app.official && (
+          <span
+            className="uapps-official-badge"
+            title="محصول رسمی Uniqe"
+          >
+            رسمی
+          </span>
+        )}
+
+        {app.verified && !app.official && (
           <span
             className="uapps-verified-badge"
             title="تأیید شده"
@@ -50,6 +59,20 @@ export default function UniversalAppCard({
         <h3>{app.name}</h3>
 
         <p>{app.description}</p>
+
+        {app.official && (
+          <div className="uapps-official-meta">
+            <span>
+              {app.releaseLabel}
+            </span>
+
+            {app.version && (
+              <span>
+                v{app.version}
+              </span>
+            )}
+          </div>
+        )}
 
         <div className="uapps-card-footer">
           <span className="uapps-card-type">
