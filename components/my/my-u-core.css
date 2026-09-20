@@ -5,66 +5,10 @@
 
 .my-u-core-layout {
   display: grid;
-  grid-template-columns: 250px minmax(0, 1fr);
-  gap: 28px;
+  grid-template-columns:
+    270px minmax(0, 1fr);
+  gap: 32px;
   align-items: start;
-}
-
-.my-u-core-sidebar {
-  position: sticky;
-  top: 24px;
-  padding: 20px;
-  border: 1px solid var(--color-border);
-  border-radius: 22px;
-  background: var(--color-surface);
-  box-shadow: var(--shadow-sm);
-}
-
-.my-u-core-sidebar-header {
-  padding: 2px 8px 18px;
-  border-bottom: 1px solid var(--color-border);
-  margin-bottom: 10px;
-}
-
-.my-u-core-sidebar-header h2 {
-  margin: 8px 0 0;
-  font-size: 21px;
-}
-
-.my-u-core-nav {
-  display: grid;
-  gap: 4px;
-}
-
-.my-u-core-nav-item {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  min-height: 43px;
-  padding: 10px 11px;
-  border-radius: 11px;
-  color: var(--color-text-secondary);
-  text-decoration: none;
-  font-size: 12px;
-  transition:
-    background 0.2s ease,
-    color 0.2s ease;
-}
-
-.my-u-core-nav-item:hover {
-  background: var(--color-bg-soft);
-  color: var(--color-text-primary);
-}
-
-.my-u-core-nav-item-active {
-  background: var(--color-bg-soft);
-  color: var(--color-text-primary);
-}
-
-.my-u-core-nav-icon {
-  width: 24px;
-  text-align: center;
-  font-size: 14px;
 }
 
 .my-u-core-main {
@@ -89,6 +33,10 @@
   font-size: 13px;
   line-height: 1.9;
 }
+
+/* ============================================================
+   CORE PANEL
+   ============================================================ */
 
 .my-u-core-panel {
   padding: 24px;
@@ -132,6 +80,10 @@
   text-align: center;
   font-size: 12px;
 }
+
+/* ============================================================
+   ORDERS
+   ============================================================ */
 
 .my-u-order-list {
   display: grid;
@@ -205,6 +157,10 @@
   font-size: 12px;
 }
 
+/* ============================================================
+   CORE LINKS
+   ============================================================ */
+
 .my-u-core-link {
   display: inline-flex;
   align-items: center;
@@ -217,6 +173,10 @@
 .my-u-core-link:hover {
   text-decoration: underline;
 }
+
+/* ============================================================
+   NOTIFICATIONS
+   ============================================================ */
 
 .my-u-notification-list {
   display: grid;
@@ -300,9 +260,17 @@
   font-size: 9px;
 }
 
+/* ============================================================
+   FAVORITES
+   ============================================================ */
+
 .my-u-favorite-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
   gap: 12px;
 }
 
@@ -326,9 +294,9 @@
 }
 
 .my-u-favorite-icon {
+  display: flex;
   width: 40px;
   height: 40px;
-  display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 18px;
@@ -360,18 +328,24 @@
   line-height: 1.8;
 }
 
-.my-u-favorite-item .my-u-core-link {
+.my-u-favorite-item
+  .my-u-core-link {
   justify-content: space-between;
   margin-top: auto;
   padding-top: 16px;
 }
+
+/* ============================================================
+   SETTINGS
+   ============================================================ */
 
 .my-u-settings-section {
   padding: 4px 0 24px;
   border-bottom: 1px solid var(--color-border);
 }
 
-.my-u-settings-section + .my-u-settings-section {
+.my-u-settings-section
+  + .my-u-settings-section {
   padding-top: 26px;
 }
 
@@ -445,7 +419,8 @@
   border-radius: 999px;
   background: var(--color-border);
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition:
+    background 0.2s ease;
 }
 
 .my-u-toggle span {
@@ -454,7 +429,8 @@
   height: 18px;
   border-radius: 50%;
   background: var(--color-surface);
-  transition: transform 0.2s ease;
+  transition:
+    transform 0.2s ease;
 }
 
 .my-u-toggle-active {
@@ -488,9 +464,14 @@
   font-size: 10px !important;
 }
 
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
 @media (max-width: 950px) {
   .my-u-core-layout {
-    grid-template-columns: 210px minmax(0, 1fr);
+    grid-template-columns:
+      230px minmax(0, 1fr);
     gap: 20px;
   }
 
@@ -500,16 +481,12 @@
 }
 
 @media (max-width: 760px) {
+  .my-u-core-page {
+    padding-top: 78px;
+  }
+
   .my-u-core-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .my-u-core-sidebar {
-    position: static;
-  }
-
-  .my-u-core-nav {
-    grid-template-columns: repeat(2, 1fr);
+    display: block;
   }
 
   .my-u-order-item {
@@ -525,16 +502,12 @@
 
 @media (max-width: 500px) {
   .my-u-core-page {
-    padding: 30px 0 80px;
+    padding: 72px 0 80px;
   }
 
   .my-u-core-panel {
     padding: 18px;
     border-radius: 18px;
-  }
-
-  .my-u-core-nav {
-    grid-template-columns: 1fr;
   }
 
   .my-u-setting-row {
