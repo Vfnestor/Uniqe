@@ -1,35 +1,73 @@
-const AUTH_STORAGE_KEY = "uniqe-authenticated";
+const AUTH_STORAGE_KEY =
+  "uniqe-auth-session";
 
-export function getStoredAuthState(): boolean {
+export type StoredAuthSession = {
+  authenticated: boolean;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    role:
+      | "user"
+      | "owner"
+      | "seller"
+      | "teacher"
+      | "professional";
+  };
+};
+
+export function getStoredAuthSession():
+  | StoredAuthSession
+  | null {
   if (typeof window === "undefined") {
-    return false;
+    return null;
   }
 
   try {
-    return localStorage.getItem(AUTH_STORAGE_KEY) === "true";
+    const value =
+      localStorage.getItem(
+        AUTH_STORAGE_KEY,
+      );
+
+    if (!value) {
+      return null;
+    }
+
+    return JSON.parse(
+      value,
+    ) as StoredAuthSession;
   } catch {
-    return false;
+    return null;
   }
 }
 
-export function setStoredAuthState(
-  authenticated: boolean,
+export function setStoredAuthSession(
+  session: StoredAuthSession,
 ): void {
   if (typeof window === "undefined") {
     return;
   }
 
   try {
-    if (authenticated) {
-      localStorage.setItem(AUTH_STORAGE_KEY, "true");
-    } else {
-      localStorage.removeItem(AUTH_STORAGE_KEY);
-    }
+    localStorage.setItem(
+      AUTH_STORAGE_KEY,
+      JSON.stringify(session),
+    );
   } catch {
     // Storage may be unavailable.
   }
 }
 
-export function clearStoredAuthState(): void {
-  setStoredAuthState(false);
+export function clearStoredAuthSession(): void {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  try {
+    localStorage.removeItem(
+      AUTH_STORAGE_KEY,
+    );
+  } catch {
+    // Storage may be unavailable.
+  }
 }
