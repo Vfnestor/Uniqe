@@ -24,6 +24,8 @@ import GlobalHeader from "@/components/navigation/GlobalHeader";
 
 import CommandPaletteGlobal from "@/components/command/CommandPaletteGlobal";
 
+import Providers from "./providers";
+
 export const metadata: Metadata = {
   title: "Uniqe",
   description:
@@ -42,15 +44,17 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body>
-        <ThemeProvider>
-          <LanguageProvider>
-            <GlobalHeader />
+        <Providers>
+          <ThemeProvider>
+            <LanguageProvider>
+              <GlobalHeader />
 
-            {children}
+              {children}
 
-            <CommandPaletteGlobal />
-          </LanguageProvider>
-        </ThemeProvider>
+              <CommandPaletteGlobal />
+            </LanguageProvider>
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );
