@@ -22,7 +22,8 @@ import {
 
 type SearchScope =
   | "all"
-  | "app-store";
+  | "app-store"
+  | "google-play";
 
 type SearchResult = {
   id: string;
@@ -60,6 +61,15 @@ function normalizeLocalApps(): SearchResult[] {
   }));
 }
 
+function isImageUrl(
+  value: string,
+): boolean {
+  return (
+    value.startsWith("http://") ||
+    value.startsWith("https://")
+  );
+}
+
 export default function UAppsSearchPanel() {
   const [
     open,
@@ -69,7 +79,9 @@ export default function UAppsSearchPanel() {
   const [
     scope,
     setScope,
-  ] = useState<SearchScope>("all");
+  ] = useState<SearchScope>(
+    "app-store",
+  );
 
   const [
     query,
@@ -97,6 +109,7 @@ export default function UAppsSearchPanel() {
 
     if (!value) {
       setResults([]);
+      setError("");
       return;
     }
 
@@ -104,6 +117,17 @@ export default function UAppsSearchPanel() {
     setError("");
 
     try {
+      if (
+        scope ===
+        "google-play"
+      ) {
+        setResults([]);
+        setError(
+          "جستجوی Google Play فعلاً غیرفعال است و در مرحله بعد فعال می‌شود.",
+        );
+        return;
+      }
+
       const localResults =
         normalizeLocalApps().filter(
           (item) =>
@@ -119,7 +143,9 @@ export default function UAppsSearchPanel() {
               ),
         );
 
-      if (scope === "all") {
+      if (
+        scope === "all"
+      ) {
         try {
           const response =
             await fetch(
@@ -127,19 +153,30 @@ export default function UAppsSearchPanel() {
                 value,
               )}`,
               {
-                cache: "no-store",
+                cache:
+                  "no-store",
               },
             );
 
           const data =
             await response.json();
 
-          if (response.ok && data.success) {
+          if (
+            response.ok &&
+            data.success
+          ) {
             const appStoreResults =
-              (data.results || []).map(
-                (app: UApp) => ({
-                  id: app.id,
-                  name: app.name,
+              (
+                data.results ||
+                []
+              ).map(
+                (
+                  app: UApp,
+                ) => ({
+                  id:
+                    app.id,
+                  name:
+                    app.name,
                   category:
                     app.category,
                   icon:
@@ -153,29 +190,39 @@ export default function UAppsSearchPanel() {
                 }),
               );
 
-            setResults([
-              ...localResults,
-              ...appStoreResults,
-            ].slice(0, 20));
+            setResults(
+              [
+                ...localResults,
+                ...appStoreResults,
+              ].slice(0, 20),
+            );
 
             return;
           }
         } catch {
           setResults(
-            localResults.slice(0, 20),
+            localResults.slice(
+              0,
+              20,
+            ),
           );
+
           return;
         }
       }
 
-      if (scope === "app-store") {
+      if (
+        scope ===
+        "app-store"
+      ) {
         const response =
           await fetch(
             `/api/uapps/app-store?q=${encodeURIComponent(
               value,
             )}`,
             {
-              cache: "no-store",
+              cache:
+                "no-store",
             },
           );
 
@@ -193,10 +240,17 @@ export default function UAppsSearchPanel() {
         }
 
         const appStoreResults =
-          (data.results || []).map(
-            (app: UApp) => ({
-              id: app.id,
-              name: app.name,
+          (
+            data.results ||
+            []
+          ).map(
+            (
+              app: UApp,
+            ) => ({
+              id:
+                app.id,
+              name:
+                app.name,
               category:
                 app.category,
               icon:
@@ -211,7 +265,10 @@ export default function UAppsSearchPanel() {
           );
 
         setResults(
-          appStoreResults.slice(0, 20),
+          appStoreResults.slice(
+            0,
+            20,
+          ),
         );
       }
     } catch {
@@ -222,6 +279,14 @@ export default function UAppsSearchPanel() {
     } finally {
       setLoading(false);
     }
+  }
+
+  function changeScope(
+    nextScope: SearchScope,
+  ) {
+    setScope(nextScope);
+    setResults([]);
+    setError("");
   }
 
   return (
@@ -259,14 +324,16 @@ export default function UAppsSearchPanel() {
             </h2>
 
             <p>
-              جستجو در اکوسیستم Uniqe و App Store
+              جستجو در اکوسیستم Uniqe و فروشگاه‌های خارجی
             </p>
           </div>
         </div>
 
         <span
           className={`uapps-search-panel-chevron ${
-            open ? "open" : ""
+            open
+              ? "open"
+              : ""
           }`}
         >
           ↓
@@ -279,12 +346,17 @@ export default function UAppsSearchPanel() {
 
           <input
             value={query}
-            onChange={(event) =>
+            onChange={(
+              event,
+            ) =>
               setQuery(
-                event.target.value,
+                event.target
+                  .value,
               )
             }
-            onKeyDown={(event) => {
+            onKeyDown={(
+              event,
+            ) => {
               if (
                 event.key ===
                 "Enter"
@@ -298,8 +370,12 @@ export default function UAppsSearchPanel() {
 
           <button
             type="button"
-            onClick={search}
-            disabled={loading}
+            onClick={
+              search
+            }
+            disabled={
+              loading
+            }
           >
             {loading
               ? "..."
@@ -311,35 +387,54 @@ export default function UAppsSearchPanel() {
           <button
             type="button"
             className={
-              scope === "all"
+              scope ===
+              "app-store"
                 ? "active"
                 : ""
             }
-            onClick={() => {
-              setScope("all");
-              setResults([]);
-              setError("");
-            }}
+            onClick={() =>
+              changeScope(
+                "app-store",
+              )
+            }
           >
-            <span>✦</span>
-            همه
+            <span>●</span>
+            App Store
           </button>
 
           <button
             type="button"
             className={
-              scope === "app-store"
+              scope ===
+              "google-play"
                 ? "active"
                 : ""
             }
-            onClick={() => {
-              setScope("app-store");
-              setResults([]);
-              setError("");
-            }}
+            onClick={() =>
+              changeScope(
+                "google-play",
+              )
+            }
           >
-            <span>●</span>
-            App Store
+            <span>▶</span>
+            Google Play
+          </button>
+
+          <button
+            type="button"
+            className={
+              scope === "all"
+                ? "active"
+                : ""
+            }
+            onClick={() =>
+              changeScope(
+                "all",
+              )
+            }
+          >
+            <span>✦</span>
+            همه
           </button>
         </div>
 
@@ -356,9 +451,17 @@ export default function UAppsSearchPanel() {
             </strong>
 
             <span>
-              {scope === "all"
-                ? "Uniqe + App Store"
-                : "App Store"}
+              {scope ===
+                "app-store" &&
+                "App Store"}
+
+              {scope ===
+                "google-play" &&
+                "Google Play"}
+
+              {scope ===
+                "all" &&
+                "Uniqe + App Store"}
             </span>
           </div>
 
@@ -374,7 +477,9 @@ export default function UAppsSearchPanel() {
                 result,
               ) => (
                 <a
-                  key={result.id}
+                  key={
+                    result.id
+                  }
                   href={
                     result.href ||
                     "#"
@@ -392,7 +497,21 @@ export default function UAppsSearchPanel() {
                   className="uapps-search-result"
                 >
                   <div className="uapps-result-icon">
-                    {result.icon}
+                    {isImageUrl(
+                      result.icon,
+                    ) ? (
+                      <img
+                        src={
+                          result.icon
+                        }
+                        alt={
+                          result.name
+                        }
+                        loading="lazy"
+                      />
+                    ) : (
+                      result.icon
+                    )}
                   </div>
 
                   <div className="uapps-result-info">
@@ -416,7 +535,10 @@ export default function UAppsSearchPanel() {
           </div>
         ) : (
           <div className="uapps-search-empty">
-            برای شروع، نام یک نرم‌افزار یا دسته‌بندی را جستجو کنید.
+            {scope ===
+            "google-play"
+              ? "Google Play فعلاً متوقف است و در مرحله بعد به جستجوی واقعی متصل می‌شود."
+              : "برای شروع، نام یک نرم‌افزار یا دسته‌بندی را جستجو کنید."}
           </div>
         )}
       </div>
