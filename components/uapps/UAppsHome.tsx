@@ -16,6 +16,7 @@ import {
 
 import UserAppsSection from "./UserAppsSection";
 import UAppsActionPanel from "./UAppsActionPanel";
+import UAppsCollectionsSection from "./UAppsCollectionsSection";
 import UAppsSearchPanel from "./UAppsSearchPanel";
 import UAppsSection from "./UAppsSection";
 import UniqeAppsSection from "./UniqeAppsSection";
@@ -26,7 +27,8 @@ export default function UAppsHome() {
       (app) =>
         app.reviewStatus ===
           "approved" &&
-        app.status !== "development",
+        app.status !==
+          "development",
     );
 
   const uniqeApps =
@@ -66,39 +68,31 @@ export default function UAppsHome() {
 
       <div className="uapps-sections-container">
         <UserAppsSection
-          apps={publishedUserApps}
+          apps={
+            publishedUserApps
+          }
         />
 
         <UniqeAppsSection
-          apps={uniqeApps}
+          apps={
+            uniqeApps
+          }
+        />
+
+        <UAppsCollectionsSection
+          collections={
+            collections
+          }
         />
 
         <UAppsSection
           title="اپلیکیشن‌های خارجی"
           subtitle="محبوب‌ترین نرم‌افزارهای موجود در فروشگاه‌های خارجی."
           icon="🌐"
-          apps={externalApps}
+          apps={
+            externalApps
+          }
         />
-
-        {collections.map(
-          (collection) => (
-            <UAppsSection
-              key={collection.id}
-              title={
-                collection.title
-              }
-              subtitle={
-                collection.description
-              }
-              icon={
-                collection.icon
-              }
-              apps={
-                collection.apps
-              }
-            />
-          ),
-        )}
 
         <UAppsSearchPanel />
 
