@@ -70,6 +70,108 @@ function isImageUrl(
   );
 }
 
+async function searchAppStore(
+  query: string,
+): Promise<SearchResult[]> {
+  try {
+    const response =
+      await fetch(
+        `/api/uapps/app-store?q=${encodeURIComponent(
+          query,
+        )}`,
+        {
+          cache: "no-store",
+        },
+      );
+
+    if (!response.ok) {
+      return [];
+    }
+
+    const data =
+      await response.json();
+
+    if (
+      !data.success ||
+      !Array.isArray(
+        data.results,
+      )
+    ) {
+      return [];
+    }
+
+    return data.results.map(
+      (app: UApp) => ({
+        id: app.id,
+        name: app.name,
+        category:
+          app.category,
+        icon:
+          app.cover ||
+          app.icon ||
+          "AS",
+        source:
+          "App Store",
+        href:
+          app.href,
+      }),
+    );
+  } catch {
+    return [];
+  }
+}
+
+async function searchGooglePlay(
+  query: string,
+): Promise<SearchResult[]> {
+  try {
+    const response =
+      await fetch(
+        `/api/uapps/google-play?q=${encodeURIComponent(
+          query,
+        )}`,
+        {
+          cache: "no-store",
+        },
+      );
+
+    if (!response.ok) {
+      return [];
+    }
+
+    const data =
+      await response.json();
+
+    if (
+      !data.success ||
+      !Array.isArray(
+        data.results,
+      )
+    ) {
+      return [];
+    }
+
+    return data.results.map(
+      (app: UApp) => ({
+        id: app.id,
+        name: app.name,
+        category:
+          app.category,
+        icon:
+          app.cover ||
+          app.icon ||
+          "GP",
+        source:
+          "Google Play",
+        href:
+          app.href,
+      }),
+    );
+  } catch {
+    return [];
+  }
+}
+
 export default function UAppsSearchPanel() {
   const [
     open,
@@ -98,36 +200,18 @@ export default function UAppsSearchPanel() {
     setLoading,
   ] = useState(false);
 
-  const [
-    error,
-    setError,
-  ] = useState("");
-
   async function search() {
     const value =
       query.trim();
 
     if (!value) {
       setResults([]);
-      setError("");
       return;
     }
 
     setLoading(true);
-    setError("");
 
     try {
-      if (
-        scope ===
-        "google-play"
-      ) {
-        setResults([]);
-        setError(
-          "جستجوی Google Play فعلاً غیرفعال است و در مرحله بعد فعال می‌شود.",
-        );
-        return;
-      }
-
       const localResults =
         normalizeLocalApps().filter(
           (item) =>
@@ -144,124 +228,11 @@ export default function UAppsSearchPanel() {
         );
 
       if (
-        scope === "all"
+        scope === "app-store"
       ) {
-        try {
-          const response =
-            await fetch(
-              `/api/uapps/app-store?q=${encodeURIComponent(
-                value,
-              )}`,
-              {
-                cache:
-                  "no-store",
-              },
-            );
-
-          const data =
-            await response.json();
-
-          if (
-            response.ok &&
-            data.success
-          ) {
-            const appStoreResults =
-              (
-                data.results ||
-                []
-              ).map(
-                (
-                  app: UApp,
-                ) => ({
-                  id:
-                    app.id,
-                  name:
-                    app.name,
-                  category:
-                    app.category,
-                  icon:
-                    app.cover ||
-                    app.icon ||
-                    "AS",
-                  source:
-                    "App Store",
-                  href:
-                    app.href,
-                }),
-              );
-
-            setResults(
-              [
-                ...localResults,
-                ...appStoreResults,
-              ].slice(0, 20),
-            );
-
-            return;
-          }
-        } catch {
-          setResults(
-            localResults.slice(
-              0,
-              20,
-            ),
-          );
-
-          return;
-        }
-      }
-
-      if (
-        scope ===
-        "app-store"
-      ) {
-        const response =
-          await fetch(
-            `/api/uapps/app-store?q=${encodeURIComponent(
-              value,
-            )}`,
-            {
-              cache:
-                "no-store",
-            },
-          );
-
-        const data =
-          await response.json();
-
-        if (
-          !response.ok ||
-          !data.success
-        ) {
-          throw new Error(
-            data.message ||
-              "خطا در دریافت نتایج",
-          );
-        }
-
         const appStoreResults =
-          (
-            data.results ||
-            []
-          ).map(
-            (
-              app: UApp,
-            ) => ({
-              id:
-                app.id,
-              name:
-                app.name,
-              category:
-                app.category,
-              icon:
-                app.cover ||
-                app.icon ||
-                "AS",
-              source:
-                "App Store",
-              href:
-                app.href,
-            }),
+          await searchAppStore(
+            value,
           );
 
         setResults(
@@ -270,11 +241,46 @@ export default function UAppsSearchPanel() {
             20,
           ),
         );
+
+        return;
       }
-    } catch {
-      setResults([]);
-      setError(
-        "دریافت نتایج جستجو انجام نشد.",
+
+      if (
+        scope === "google-play"
+      ) {
+        const googlePlayResults =
+          await searchGooglePlay(
+            value,
+          );
+
+        setResults(
+          googlePlayResults.slice(
+            0,
+            20,
+          ),
+        );
+
+        return;
+      }
+
+      const [
+        appStoreResults,
+        googlePlayResults,
+      ] = await Promise.all([
+        searchAppStore(
+          value,
+        ),
+        searchGooglePlay(
+          value,
+        ),
+      ]);
+
+      setResults(
+        [
+          ...localResults,
+          ...appStoreResults,
+          ...googlePlayResults,
+        ].slice(0, 30),
       );
     } finally {
       setLoading(false);
@@ -286,7 +292,6 @@ export default function UAppsSearchPanel() {
   ) {
     setScope(nextScope);
     setResults([]);
-    setError("");
   }
 
   return (
@@ -438,12 +443,6 @@ export default function UAppsSearchPanel() {
           </button>
         </div>
 
-        {error && (
-          <div className="uapps-search-error">
-            {error}
-          </div>
-        )}
-
         <div className="uapps-search-results-header">
           <div>
             <strong>
@@ -461,7 +460,7 @@ export default function UAppsSearchPanel() {
 
               {scope ===
                 "all" &&
-                "Uniqe + App Store"}
+                "Uniqe + App Store + Google Play"}
             </span>
           </div>
 
@@ -535,10 +534,7 @@ export default function UAppsSearchPanel() {
           </div>
         ) : (
           <div className="uapps-search-empty">
-            {scope ===
-            "google-play"
-              ? "Google Play فعلاً متوقف است و در مرحله بعد به جستجوی واقعی متصل می‌شود."
-              : "برای شروع، نام یک نرم‌افزار یا دسته‌بندی را جستجو کنید."}
+            برای شروع، نام یک نرم‌افزار یا دسته‌بندی را جستجو کنید.
           </div>
         )}
       </div>
