@@ -4,6 +4,10 @@ import type {
   UApp,
 } from "@/lib/uapps/types";
 
+import {
+  getUAppVerification,
+} from "@/lib/uapps/verification";
+
 type Props = {
   app: UApp;
 };
@@ -11,8 +15,13 @@ type Props = {
 export default function UniversalAppCard({
   app,
 }: Props) {
+  const verification =
+    getUAppVerification(app);
+
   return (
-    <article className="uapps-app-card">
+    <article
+      className={`uapps-app-card uapps-verification-${verification.status}`}
+    >
       <div
         className={`uapps-app-cover uapps-accent-${app.accent}`}
       >
@@ -26,21 +35,51 @@ export default function UniversalAppCard({
           {app.sourceLabel}
         </div>
 
-        {app.official && (
+        {verification.status ===
+          "official" && (
           <span
-            className="uapps-official-badge"
-            title="محصول رسمی Uniqe"
+            className="uapps-verification-badge uapps-verification-badge-official"
+            title={
+              verification.description
+            }
           >
-            رسمی
+            <span>
+              {verification.icon}
+            </span>
+
+            {verification.shortLabel}
           </span>
         )}
 
-        {app.verified && !app.official && (
+        {verification.status ===
+          "verified" && (
           <span
-            className="uapps-verified-badge"
-            title="تأیید شده"
+            className="uapps-verification-badge uapps-verification-badge-verified"
+            title={
+              verification.description
+            }
           >
-            ✓
+            <span>
+              {verification.icon}
+            </span>
+
+            {verification.shortLabel}
+          </span>
+        )}
+
+        {verification.status ===
+          "unverified" && (
+          <span
+            className="uapps-verification-badge uapps-verification-badge-unverified"
+            title={
+              verification.description
+            }
+          >
+            <span>
+              {verification.icon}
+            </span>
+
+            {verification.shortLabel}
           </span>
         )}
       </div>
@@ -56,9 +95,25 @@ export default function UniversalAppCard({
           </span>
         </div>
 
-        <h3>{app.name}</h3>
+        <h3>
+          {app.name}
+        </h3>
 
-        <p>{app.description}</p>
+        <p>
+          {app.description}
+        </p>
+
+        <div className="uapps-verification-meta">
+          <span
+            className={`uapps-verification-status uapps-verification-status-${verification.status}`}
+          >
+            <span>
+              {verification.icon}
+            </span>
+
+            {verification.label}
+          </span>
+        </div>
 
         {app.official && (
           <div className="uapps-official-meta">
@@ -84,7 +139,9 @@ export default function UniversalAppCard({
             className="uapps-continue-button"
           >
             ادامه
-            <span>←</span>
+            <span>
+              ←
+            </span>
           </Link>
         </div>
       </div>
