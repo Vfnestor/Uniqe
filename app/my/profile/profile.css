@@ -1,0 +1,324 @@
+.my-u-profile-page {
+  padding: 32px 0 72px;
+}
+
+.my-u-profile-layout {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+
+.my-u-profile-main {
+  min-width: 0;
+}
+
+.my-u-profile-header {
+  margin-bottom: 28px;
+}
+
+.my-u-profile-header h1 {
+  margin: 8px 0 10px;
+  font-size: clamp(28px, 4vw, 42px);
+  line-height: 1.25;
+}
+
+.my-u-profile-header p {
+  margin: 0;
+  color: #6b7280;
+  line-height: 1.9;
+}
+
+.my-u-profile-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 24px;
+  padding: 22px;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+}
+
+.my-u-profile-card-avatar,
+.my-u-profile-editor-avatar {
+  width: 76px;
+  height: 76px;
+  flex: 0 0 76px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #111827;
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.my-u-profile-card-avatar img,
+.my-u-profile-editor-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.my-u-profile-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.my-u-profile-card-info strong {
+  font-size: 19px;
+}
+
+.my-u-profile-card-info span {
+  color: #374151;
+  direction: ltr;
+  text-align: right;
+}
+
+.my-u-profile-card-info small {
+  color: #6b7280;
+  direction: ltr;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.my-u-profile-form-card {
+  margin-bottom: 24px;
+  padding: 26px;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+}
+
+.my-u-profile-section-title {
+  margin-bottom: 24px;
+}
+
+.my-u-profile-section-title h2 {
+  margin: 0 0 7px;
+  font-size: 21px;
+}
+
+.my-u-profile-section-title p {
+  margin: 0;
+  color: #6b7280;
+  line-height: 1.8;
+}
+
+.my-u-profile-avatar-editor {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: start;
+  align-items: center;
+  column-gap: 16px;
+  row-gap: 5px;
+  margin-bottom: 28px;
+}
+
+.my-u-profile-editor-avatar {
+  grid-row: span 2;
+  width: 92px;
+  height: 92px;
+  flex-basis: 92px;
+}
+
+.my-u-profile-upload {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 9px 15px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #111827;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.my-u-profile-upload:hover {
+  background: #f9fafb;
+}
+
+.my-u-profile-upload input {
+  display: none;
+}
+
+.my-u-profile-avatar-editor small {
+  color: #9ca3af;
+}
+
+.my-u-profile-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.my-u-profile-grid label,
+.my-u-profile-sheba-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.my-u-profile-grid label > span,
+.my-u-profile-sheba-field > span {
+  font-size: 14px;
+  font-weight: 700;
+  color: #374151;
+}
+
+.my-u-profile-grid input,
+.my-u-profile-grid select,
+.my-u-profile-sheba-field input {
+  width: 100%;
+  min-height: 46px;
+  padding: 0 13px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  outline: none;
+  background: #ffffff;
+  color: #111827;
+  font: inherit;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.my-u-profile-grid input:focus,
+.my-u-profile-grid select:focus,
+.my-u-profile-sheba-field input:focus {
+  border-color: #111827;
+  box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.08);
+}
+
+.my-u-profile-field-wide {
+  grid-column: 1 / -1;
+}
+
+.my-u-profile-sheba-field {
+  max-width: 700px;
+}
+
+.my-u-profile-success,
+.my-u-profile-error {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.my-u-profile-success {
+  color: #15803d;
+}
+
+.my-u-profile-error {
+  color: #dc2626;
+}
+
+.my-u-profile-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.my-u-profile-save-button {
+  min-height: 48px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 11px;
+  background: #111827;
+  color: #ffffff;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.my-u-profile-save-button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.my-u-profile-save-message {
+  font-size: 13px;
+}
+
+@media (max-width: 950px) {
+  .my-u-profile-layout {
+    display: block;
+  }
+
+  .my-u-profile-main {
+    padding-top: 76px;
+  }
+}
+
+@media (max-width: 700px) {
+  .my-u-profile-page {
+    padding: 20px 0 48px;
+  }
+
+  .my-u-profile-header {
+    margin-bottom: 20px;
+  }
+
+  .my-u-profile-card {
+    padding: 18px;
+    border-radius: 16px;
+  }
+
+  .my-u-profile-card-avatar {
+    width: 62px;
+    height: 62px;
+    flex-basis: 62px;
+    font-size: 22px;
+  }
+
+  .my-u-profile-card-info strong {
+    font-size: 16px;
+  }
+
+  .my-u-profile-form-card {
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
+
+  .my-u-profile-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .my-u-profile-field-wide {
+    grid-column: auto;
+  }
+
+  .my-u-profile-avatar-editor {
+    margin-bottom: 22px;
+  }
+
+  .my-u-profile-editor-avatar {
+    width: 78px;
+    height: 78px;
+  }
+
+  .my-u-profile-save-button {
+    width: 100%;
+  }
+
+  .my-u-profile-save-message {
+    width: 100%;
+  }
+}
