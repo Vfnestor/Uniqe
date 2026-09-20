@@ -9,6 +9,10 @@
   margin-inline: auto;
 }
 
+/* =========================================================
+   HERO
+   ========================================================= */
+
 .uapps-hero {
   position: relative;
   overflow: hidden;
@@ -108,12 +112,36 @@
   font-size: 12px;
 }
 
+/* =========================================================
+   MAIN
+   ========================================================= */
+
 .uapps-main {
   padding: 70px 0 100px;
 }
 
+.uapps-sections-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* =========================================================
+   GENERAL SECTIONS
+   ========================================================= */
+
 .uapps-section {
   margin-bottom: 72px;
+}
+
+.uapps-sections-container > .uapps-section,
+.uapps-sections-container > .uapps-user-section,
+.uapps-sections-container > .uapps-uniqe-section {
+  margin: 0;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: var(--surface);
 }
 
 .uapps-section-header {
@@ -121,7 +149,7 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: 30px;
-  margin-bottom: 25px;
+  margin-bottom: 0;
 }
 
 .uapps-section-title-row {
@@ -132,14 +160,14 @@
 
 .uapps-section-title-row h2 {
   margin: 0;
-  font-size: 25px;
+  font-size: 22px;
   letter-spacing: -0.02em;
 }
 
 .uapps-section-header p {
   margin: 9px 0 0;
   color: var(--muted-foreground);
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .uapps-section-icon {
@@ -152,6 +180,17 @@
   border-radius: 12px;
   background: var(--surface);
 }
+
+.uapps-section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* =========================================================
+   CAROUSEL
+   ========================================================= */
 
 .uapps-carousel-controls {
   display: flex;
@@ -167,7 +206,10 @@
   background: var(--surface);
   color: var(--foreground);
   cursor: pointer;
-  transition: 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
 }
 
 .uapps-carousel-controls button:hover {
@@ -180,7 +222,7 @@
   gap: 18px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  padding: 5px 2px 15px;
+  padding: 4px 2px 14px;
   scrollbar-width: none;
   direction: ltr;
 }
@@ -189,11 +231,15 @@
   display: none;
 }
 
+/* =========================================================
+   UNIVERSAL APP CARD
+   ========================================================= */
+
 .uapps-app-card {
-  flex: 0 0 285px;
+  flex: 0 0 250px;
   overflow: hidden;
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: 16px;
   background: var(--surface);
   scroll-snap-align: start;
   direction: rtl;
@@ -210,12 +256,14 @@
     var(--foreground) 25%,
     var(--border)
   );
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 18px 50px
+    rgba(0, 0, 0, 0.08);
 }
 
 .uapps-app-cover {
   position: relative;
-  height: 175px;
+  height: 145px;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -238,6 +286,10 @@
       transparent 30%
     );
 }
+
+/* =========================================================
+   ACCENTS
+   ========================================================= */
 
 .uapps-accent-blue {
   background: linear-gradient(
@@ -295,20 +347,26 @@
   );
 }
 
+/* =========================================================
+   APP ICON / COVER META
+   ========================================================= */
+
 .uapps-app-icon {
   position: relative;
   z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 72px;
-  height: 72px;
-  border-radius: 18px;
+  width: 60px;
+  height: 60px;
+  border-radius: 15px;
   background: rgba(255, 255, 255, 0.94);
   color: #161616;
-  font-size: 30px;
+  font-size: 24px;
   font-weight: 800;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 15px 35px
+    rgba(0, 0, 0, 0.2);
 }
 
 .uapps-platform-label {
@@ -322,409 +380,6 @@
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.12em;
-}
-
-.uapps-app-card-body {
-  padding: 19px;
-}
-
-.uapps-app-category {
-  font-size: 11px;
-  color: var(--muted-foreground);
-}
-
-.uapps-app-card h3 {
-  margin: 7px 0 8px;
-  font-size: 19px;
-}
-
-.uapps-app-card p {
-  min-height: 48px;
-  margin: 0;
-  color: var(--muted-foreground);
-  font-size: 13px;
-  line-height: 1.8;
-}
-
-.uapps-continue-button {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 17px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  background: var(--background);
-  color: var(--foreground);
-  font-size: 12px;
-  font-weight: 700;
-  text-decoration: none;
-  transition: 0.2s ease;
-}
-
-.uapps-continue-button:hover {
-  background: var(--foreground);
-  color: var(--background);
-}
-
-.uapps-search-panel {
-  margin-top: 90px;
-  padding: 34px;
-  border: 1px solid var(--border);
-  border-radius: 26px;
-  background: var(--surface);
-}
-
-.uapps-search-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 30px;
-}
-
-.uapps-search-header h2 {
-  margin: 0;
-  font-size: 30px;
-}
-
-.uapps-search-header p {
-  margin: 8px 0 0;
-  color: var(--muted-foreground);
-  font-size: 14px;
-}
-
-.uapps-search-symbol {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 58px;
-  height: 58px;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  font-size: 30px;
-}
-
-.uapps-search-box {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 30px;
-  padding: 0 18px;
-  height: 58px;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  background: var(--background);
-}
-
-.uapps-search-box span {
-  font-size: 22px;
-  color: var(--muted-foreground);
-}
-
-.uapps-search-box input {
-  width: 100%;
-  height: 100%;
-  border: 0;
-  outline: 0;
-  background: transparent;
-  color: var(--foreground);
-  font-family: inherit;
-  font-size: 14px;
-}
-
-.uapps-search-box input::placeholder {
-  color: var(--muted-foreground);
-}
-
-.uapps-store-switch {
-  display: flex;
-  gap: 8px;
-  margin-top: 15px;
-}
-
-.uapps-store-switch button {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 15px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: transparent;
-  color: var(--muted-foreground);
-  font-family: inherit;
-  font-size: 12px;
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-
-.uapps-store-switch button.active {
-  border-color: var(--foreground);
-  background: var(--foreground);
-  color: var(--background);
-}
-
-.uapps-search-results-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 32px;
-  margin-bottom: 15px;
-}
-
-.uapps-search-results-header > div {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.uapps-search-results-header strong {
-  font-size: 14px;
-}
-
-.uapps-search-results-header span {
-  color: var(--muted-foreground);
-  font-size: 11px;
-}
-
-.uapps-view-all {
-  border: 0;
-  background: transparent;
-  color: var(--foreground);
-  font-family: inherit;
-  font-size: 12px;
-  cursor: pointer;
-}
-
-.uapps-search-results {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.uapps-search-result {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 13px;
-  border: 1px solid var(--border);
-  border-radius: 13px;
-  background: var(--background);
-  transition: 0.2s ease;
-}
-
-.uapps-search-result:hover {
-  transform: translateY(-2px);
-  border-color: var(--foreground);
-}
-
-.uapps-result-icon {
-  display: flex;
-  flex: 0 0 42px;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 11px;
-  background: var(--surface);
-  font-size: 17px;
-  font-weight: 800;
-}
-
-.uapps-result-info {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.uapps-result-info strong {
-  font-size: 13px;
-}
-
-.uapps-result-info span {
-  color: var(--muted-foreground);
-  font-size: 10px;
-}
-
-.uapps-result-arrow {
-  width: 32px;
-  height: 32px;
-  border: 0;
-  border-radius: 8px;
-  background: var(--surface);
-  color: var(--foreground);
-  cursor: pointer;
-}
-
-.uapps-action-panel {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 40px;
-  margin-top: 25px;
-  padding: 38px;
-  border: 1px solid var(--border);
-  border-radius: 26px;
-  background:
-    radial-gradient(
-      circle at 100% 0%,
-      rgba(91, 124, 255, 0.13),
-      transparent 35%
-    ),
-    var(--surface);
-}
-
-.uapps-action-content {
-  max-width: 650px;
-}
-
-.uapps-action-content h2 {
-  margin: 0;
-  font-size: 29px;
-}
-
-.uapps-action-content p {
-  margin: 12px 0 0;
-  color: var(--muted-foreground);
-  font-size: 14px;
-  line-height: 2;
-}
-
-.uapps-action-buttons {
-  display: flex;
-  flex-shrink: 0;
-  gap: 10px;
-}
-
-.uapps-action-primary,
-.uapps-action-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 46px;
-  padding: 0 18px;
-  border-radius: 11px;
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 700;
-  text-decoration: none;
-  transition: 0.2s ease;
-}
-
-.uapps-action-primary {
-  background: var(--foreground);
-  color: var(--background);
-}
-
-.uapps-action-secondary {
-  border: 1px solid var(--border);
-  background: var(--background);
-  color: var(--foreground);
-}
-
-.uapps-action-primary:hover,
-.uapps-action-secondary:hover {
-  transform: translateY(-2px);
-}
-
-@media (max-width: 800px) {
-  .uapps-container {
-    width: min(100% - 28px, 1240px);
-  }
-
-  .uapps-hero {
-    padding: 75px 0 65px;
-  }
-
-  .uapps-main {
-    padding-top: 45px;
-  }
-
-  .uapps-section-header {
-    align-items: flex-start;
-  }
-
-  .uapps-carousel-controls {
-    display: none;
-  }
-
-  .uapps-app-card {
-    flex-basis: 270px;
-  }
-
-  .uapps-search-panel {
-    padding: 22px;
-    border-radius: 20px;
-  }
-
-  .uapps-search-results {
-    grid-template-columns: 1fr;
-  }
-
-  .uapps-action-panel {
-    flex-direction: column;
-    align-items: stretch;
-    padding: 25px;
-  }
-
-  .uapps-action-buttons {
-    display: grid;
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 520px) {
-  .uapps-hero h1 {
-    font-size: 38px;
-  }
-
-  .uapps-hero p {
-    font-size: 14px;
-  }
-
-  .uapps-hero-meta {
-    gap: 7px;
-  }
-
-  .uapps-hero-meta span {
-    font-size: 10px;
-  }
-
-  .uapps-section-title-row h2 {
-    font-size: 21px;
-  }
-
-  .uapps-section-header p {
-    font-size: 12px;
-  }
-
-  .uapps-search-header h2 {
-    font-size: 25px;
-  }
-
-  .uapps-search-symbol {
-    width: 48px;
-    height: 48px;
-  }
-
-  .uapps-store-switch {
-    flex-direction: column;
-  }
-
-  .uapps-store-switch button {
-    justify-content: center;
-  }
-
-  .uapps-search-results-header {
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .uapps-search-results-header > div {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 3px;
-  }
 }
 
 .uapps-card-source {
@@ -760,7 +415,38 @@
   color: #3155e7;
   font-size: 13px;
   font-weight: 900;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+  box-shadow:
+    0 6px 18px
+    rgba(0, 0, 0, 0.18);
+}
+
+.uapps-official-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  height: 26px;
+  padding: 0 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #111827;
+  font-size: 11px;
+  font-weight: 800;
+  box-shadow:
+    0 6px 18px
+    rgba(0, 0, 0, 0.12);
+}
+
+/* =========================================================
+   APP CARD BODY
+   ========================================================= */
+
+.uapps-app-card-body {
+  padding: 15px;
 }
 
 .uapps-card-meta {
@@ -782,6 +468,24 @@
   border-radius: 6px;
 }
 
+.uapps-app-category {
+  font-size: 11px;
+  color: var(--muted-foreground);
+}
+
+.uapps-app-card h3 {
+  margin: 7px 0 8px;
+  font-size: 17px;
+}
+
+.uapps-app-card p {
+  min-height: 42px;
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
 .uapps-card-footer {
   display: flex;
   align-items: center;
@@ -800,6 +504,67 @@
   margin-top: 0;
 }
 
+.uapps-continue-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 17px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--background);
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.uapps-continue-button:hover {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+/* =========================================================
+   OFFICIAL / UNIQE
+   ========================================================= */
+
+.uapps-uniqe-section {
+  position: relative;
+}
+
+.uapps-official-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--muted-foreground);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.uapps-uniqe-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 16px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* =========================================================
+   USER APPS
+   ========================================================= */
+
 .uapps-user-section {
   position: relative;
 }
@@ -809,10 +574,10 @@
 }
 
 .uapps-user-app-card {
-  flex: 0 0 285px;
+  flex: 0 0 250px;
   overflow: hidden;
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: 16px;
   background: var(--surface);
   scroll-snap-align: start;
   direction: rtl;
@@ -921,7 +686,9 @@
   font-size: 12px;
   font-weight: 700;
   text-decoration: none;
-  transition: 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .uapps-user-app-button:hover {
@@ -954,132 +721,9 @@
   cursor: pointer;
 }
 
-@media (max-width: 800px) {
-  .uapps-user-app-card {
-    flex-basis: 270px;
-  }
-}
-
-
-.uapps-official-badge {
-  position: absolute;
-  top: 14px;
-  left: 14px;
-  z-index: 3;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 48px;
-  height: 26px;
-  padding: 0 9px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.94);
-  color: var(--foreground);
-  font-size: 11px;
-  font-weight: 800;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
-}
-
-.uapps-official-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-top: 14px;
-  padding: 8px 10px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--surface);
-  color: var(--muted-foreground);
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.uapps-uniqe-section {
-  position: relative;
-}
-
-.uapps-uniqe-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-top: 16px;
-  color: var(--muted-foreground);
-  font-size: 12px;
-  font-weight: 700;
-}
-
-@media (max-width: 760px) {
-  .uapps-uniqe-footer {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .uapps-official-meta {
-    font-size: 10px;
-  }
-}
-
-.uapps-official-badge {
-  position: absolute;
-  top: 14px;
-  left: 14px;
-  z-index: 3;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 48px;
-  height: 26px;
-  padding: 0 9px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.94);
-  color: var(--foreground);
-  font-size: 11px;
-  font-weight: 800;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
-}
-
-.uapps-official-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-top: 14px;
-  padding: 8px 10px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--surface);
-  color: var(--muted-foreground);
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.uapps-uniqe-section {
-  position: relative;
-}
-
-.uapps-uniqe-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-top: 16px;
-  color: var(--muted-foreground);
-  font-size: 12px;
-  font-weight: 700;
-}
-
-@media (max-width: 760px) {
-  .uapps-uniqe-footer {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .uapps-official-meta {
-    font-size: 10px;
-  }
-}
+/* =========================================================
+   GOOGLE PLAY
+   ========================================================= */
 
 .uapps-google-play-section {
   margin-top: 48px;
@@ -1128,7 +772,10 @@
 
 .uapps-google-play-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(
+    3,
+    minmax(0, 1fr)
+  );
   gap: 18px;
   margin-top: 24px;
 }
@@ -1153,104 +800,17 @@
   font-size: 13px;
 }
 
-@media (max-width: 900px) {
-  .uapps-google-play-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 620px) {
-  .uapps-google-play-search {
-    flex-direction: column;
-  }
-
-  .uapps-google-play-search button {
-    width: 100%;
-    height: 46px;
-  }
-
-  .uapps-google-play-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.uapps-sections-container {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.uapps-sections-container > .uapps-section,
-.uapps-sections-container > .uapps-user-section,
-.uapps-sections-container > .uapps-uniqe-section {
-  margin: 0;
-  padding: 24px;
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  background: var(--surface);
-}
-
-.uapps-sections-container > .uapps-section .uapps-carousel,
-.uapps-sections-container > .uapps-user-section .uapps-carousel,
-.uapps-sections-container > .uapps-uniqe-section .uapps-carousel {
-  margin-top: 20px;
-  padding: 4px 2px 14px;
-}
-
-.uapps-app-card,
-.uapps-user-app-card {
-  flex-basis: 250px;
-  border-radius: 16px;
-}
-
-.uapps-app-cover {
-  height: 145px;
-}
-
-.uapps-app-icon {
-  width: 60px;
-  height: 60px;
-  border-radius: 15px;
-  font-size: 24px;
-}
-
-.uapps-app-card-body {
-  padding: 15px;
-}
-
-.uapps-app-card h3 {
-  font-size: 17px;
-}
-
-.uapps-app-card p {
-  min-height: 42px;
-  font-size: 12px;
-}
-
-.uapps-section-header {
-  margin-bottom: 0;
-}
-
-.uapps-section-title-row h2 {
-  font-size: 22px;
-}
-
-.uapps-uniqe-section .uapps-section-heading {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.uapps-uniqe-section .uapps-carousel {
-  margin-top: 20px;
-}
+/* =========================================================
+   SEARCH
+   ========================================================= */
 
 .uapps-search-panel {
   margin-top: 0;
   padding: 0;
   overflow: hidden;
+  border: 1px solid var(--border);
   border-radius: 24px;
+  background: var(--surface);
 }
 
 .uapps-search-panel-header {
@@ -1309,7 +869,9 @@
   height: 36px;
   border: 1px solid var(--border);
   border-radius: 10px;
-  transition: transform 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    background 0.2s ease;
 }
 
 .uapps-search-panel-chevron.open {
@@ -1335,7 +897,35 @@
 }
 
 .uapps-search-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   margin-top: 0;
+  padding: 0 18px;
+  height: 58px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--background);
+}
+
+.uapps-search-box span {
+  font-size: 22px;
+  color: var(--muted-foreground);
+}
+
+.uapps-search-box input {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.uapps-search-box input::placeholder {
+  color: var(--muted-foreground);
 }
 
 .uapps-search-box button {
@@ -1354,6 +944,154 @@
 .uapps-search-box button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.uapps-store-switch {
+  display: flex;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.uapps-store-switch button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--muted-foreground);
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.uapps-store-switch button.active {
+  border-color: var(--foreground);
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.uapps-search-results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 32px;
+  margin-bottom: 15px;
+}
+
+.uapps-search-results-header > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.uapps-search-results-header strong {
+  font-size: 14px;
+}
+
+.uapps-search-results-header span {
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+
+.uapps-search-count {
+  padding: 5px 8px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+}
+
+.uapps-view-all {
+  border: 0;
+  background: transparent;
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.uapps-search-results {
+  display: grid;
+  grid-template-columns: repeat(
+    2,
+    minmax(0, 1fr)
+  );
+  gap: 10px;
+}
+
+.uapps-search-result {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: var(--background);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.uapps-search-result:hover {
+  transform: translateY(-2px);
+  border-color: var(--foreground);
+}
+
+.uapps-result-icon {
+  display: flex;
+  flex: 0 0 42px;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  overflow: hidden;
+  border-radius: 11px;
+  background: var(--surface);
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.uapps-result-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.uapps-result-info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.uapps-result-info strong {
+  overflow: hidden;
+  font-size: 13px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.uapps-result-info span {
+  color: var(--muted-foreground);
+  font-size: 10px;
+}
+
+.uapps-result-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--foreground);
 }
 
 .uapps-search-error {
@@ -1375,22 +1113,467 @@
   font-size: 12px;
 }
 
-.uapps-search-count {
-  padding: 5px 8px;
+/* =========================================================
+   ACTION PANEL
+   ========================================================= */
+
+.uapps-action-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  margin-top: 0;
+  padding: 38px;
   border: 1px solid var(--border);
-  border-radius: 7px;
+  border-radius: 26px;
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(91, 124, 255, 0.13),
+      transparent 35%
+    ),
+    var(--surface);
 }
 
-@media (max-width: 800px) {
-  .uapps-sections-container {
-    gap: 16px;
+.uapps-action-content {
+  max-width: 650px;
+}
+
+.uapps-action-content h2 {
+  margin: 0;
+  font-size: 29px;
+}
+
+.uapps-action-content p {
+  margin: 12px 0 0;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 2;
+}
+
+.uapps-action-buttons {
+  display: flex;
+  flex-shrink: 0;
+  gap: 10px;
+}
+
+.uapps-action-primary,
+.uapps-action-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 18px;
+  border-radius: 11px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.uapps-action-primary {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.uapps-action-secondary {
+  border: 1px solid var(--border);
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.uapps-action-primary:hover,
+.uapps-action-secondary:hover {
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   COLLECTIONS
+   ========================================================= */
+
+.uapps-collections-section {
+  width: 100%;
+  margin-top: 0;
+}
+
+.uapps-collections-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    4,
+    minmax(0, 1fr)
+  );
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.uapps-collection-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 220px;
+  padding: 24px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: var(--surface);
+  color: var(--foreground);
+  text-decoration: none;
+  isolation: isolate;
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease,
+    background 0.22s ease;
+}
+
+.uapps-collection-card::before {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  right: -90px;
+  top: -90px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(91, 124, 255, 0.1),
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+.uapps-collection-card:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(
+    in srgb,
+    var(--foreground) 20%,
+    var(--border)
+  );
+  box-shadow:
+    0 16px 40px
+    rgba(0, 0, 0, 0.08);
+}
+
+.uapps-collection-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  margin-bottom: 18px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--background);
+  color: var(--foreground);
+  font-size: 28px;
+}
+
+.uapps-collection-card-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.uapps-collection-card-content h3 {
+  margin: 6px 0 10px;
+  color: var(--foreground);
+  font-size: 19px;
+  line-height: 1.5;
+}
+
+.uapps-collection-card-content p {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+.uapps-collection-card-count {
+  display: inline-flex;
+  width: fit-content;
+  margin-top: auto;
+  padding-top: 18px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.uapps-collection-card-arrow {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  color: var(--muted-foreground);
+  font-size: 20px;
+  opacity: 0.75;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+}
+
+.uapps-collection-card:hover
+.uapps-collection-card-arrow {
+  color: var(--foreground);
+  transform: translateX(-3px);
+}
+
+.uapps-section-link {
+  color: var(--foreground);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.uapps-section-link:hover {
+  text-decoration: underline;
+}
+
+/* =========================================================
+   COLLECTION DETAIL PAGE
+   ========================================================= */
+
+.uapps-collection-hero {
+  width: min(1100px, calc(100% - 40px));
+  margin-inline: auto;
+  padding: 48px 0 38px;
+}
+
+.uapps-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 30px;
+  color: var(--muted-foreground);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.uapps-back-link:hover {
+  color: var(--foreground);
+  transform: translateX(3px);
+}
+
+.uapps-collection-hero-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 76px;
+  height: 76px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: var(--surface);
+  color: var(--foreground);
+  font-size: 38px;
+  box-shadow:
+    0 12px 30px
+    rgba(0, 0, 0, 0.05);
+}
+
+.uapps-collection-hero h1 {
+  margin: 8px 0 12px;
+  color: var(--foreground);
+  font-size: clamp(
+    30px,
+    5vw,
+    48px
+  );
+  line-height: 1.25;
+  letter-spacing: -0.03em;
+}
+
+.uapps-collection-hero p {
+  max-width: 700px;
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+.uapps-collection-meta {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 18px;
+  padding: 7px 11px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.uapps-collection-apps {
+  width: min(1100px, calc(100% - 40px));
+  margin-inline: auto;
+  padding-bottom: 70px;
+}
+
+.uapps-collection-apps-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.uapps-collection-apps-header h2 {
+  margin: 6px 0 0;
+  color: var(--foreground);
+  font-size: 24px;
+  letter-spacing: -0.02em;
+}
+
+.uapps-collection-apps-header > span {
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+
+.uapps-collection-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    3,
+    minmax(0, 1fr)
+  );
+  gap: 20px;
+}
+
+.uapps-collection-grid .uapps-app-card {
+  width: 100%;
+  min-width: 0;
+}
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.uapps-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: min(900px, calc(100% - 40px));
+  min-height: 420px;
+  margin-inline: auto;
+  padding: 40px 20px;
+  color: var(--foreground);
+  text-align: center;
+}
+
+.uapps-empty-state-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: var(--surface);
+  color: var(--foreground);
+  font-size: 34px;
+}
+
+.uapps-empty-state h1,
+.uapps-empty-state h2 {
+  margin: 0 0 12px;
+  color: var(--foreground);
+}
+
+.uapps-empty-state p {
+  max-width: 520px;
+  margin: 0 0 24px;
+  color: var(--muted-foreground);
+  line-height: 1.8;
+}
+
+.uapps-primary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 20px;
+  border: 1px solid var(--foreground);
+  border-radius: 12px;
+  background: var(--foreground);
+  color: var(--background);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.uapps-primary-button:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+/* =========================================================
+   RESPONSIVE - 1100
+   ========================================================= */
+
+@media (max-width: 1100px) {
+  .uapps-collections-grid {
+    grid-template-columns: repeat(
+      2,
+      minmax(0, 1fr)
+    );
   }
 
-  .uapps-sections-container > .uapps-section,
-  .uapps-sections-container > .uapps-user-section,
-  .uapps-sections-container > .uapps-uniqe-section {
-    padding: 16px;
-    border-radius: 18px;
+  .uapps-collection-grid {
+    grid-template-columns: repeat(
+      2,
+      minmax(0, 1fr)
+    );
+  }
+
+  .uapps-google-play-grid {
+    grid-template-columns: repeat(
+      2,
+      minmax(0, 1fr)
+    );
+  }
+}
+
+/* =========================================================
+   RESPONSIVE - 800
+   ========================================================= */
+
+@media (max-width: 800px) {
+  .uapps-container {
+    width: min(
+      100% - 28px,
+      1240px
+    );
+  }
+
+  .uapps-hero {
+    padding: 75px 0 65px;
+  }
+
+  .uapps-main {
+    padding-top: 45px;
+  }
+
+  .uapps-section-header {
+    align-items: flex-start;
+  }
+
+  .uapps-carousel-controls {
+    display: none;
   }
 
   .uapps-app-card,
@@ -1451,6 +1634,17 @@
     font-size: 10px;
   }
 
+  .uapps-sections-container {
+    gap: 16px;
+  }
+
+  .uapps-sections-container > .uapps-section,
+  .uapps-sections-container > .uapps-user-section,
+  .uapps-sections-container > .uapps-uniqe-section {
+    padding: 16px;
+    border-radius: 18px;
+  }
+
   .uapps-search-panel-header {
     padding: 17px;
   }
@@ -1476,9 +1670,116 @@
     width: 42px;
     height: 42px;
   }
+
+  .uapps-search-results {
+    grid-template-columns: 1fr;
+  }
+
+  .uapps-action-panel {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 25px;
+  }
+
+  .uapps-action-buttons {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .uapps-uniqe-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .uapps-official-meta {
+    font-size: 10px;
+  }
+
+  .uapps-google-play-grid {
+    grid-template-columns: repeat(
+      2,
+      minmax(0, 1fr)
+    );
+  }
+
+  .uapps-collection-hero,
+  .uapps-collection-apps {
+    width: min(
+      100% - 28px,
+      1100px
+    );
+  }
 }
 
+/* =========================================================
+   RESPONSIVE - 700
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .uapps-collections-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .uapps-collection-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .uapps-collection-card {
+    min-height: 190px;
+  }
+
+  .uapps-collection-hero {
+    padding-top: 28px;
+  }
+
+  .uapps-collection-apps-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .uapps-google-play-search {
+    flex-direction: column;
+  }
+
+  .uapps-google-play-search button {
+    width: 100%;
+    height: 46px;
+  }
+
+  .uapps-google-play-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE - 520
+   ========================================================= */
+
 @media (max-width: 520px) {
+  .uapps-hero h1 {
+    font-size: 38px;
+  }
+
+  .uapps-hero p {
+    font-size: 14px;
+  }
+
+  .uapps-hero-meta {
+    gap: 7px;
+  }
+
+  .uapps-hero-meta span {
+    font-size: 10px;
+  }
+
+  .uapps-section-title-row h2 {
+    font-size: 18px;
+  }
+
+  .uapps-section-header p {
+    font-size: 10px;
+  }
+
   .uapps-app-card,
   .uapps-user-app-card {
     flex-basis: 195px;
@@ -1527,319 +1828,68 @@
     padding: 8px;
     font-size: 10px;
   }
-}
 
-.uapps-collections-section {
-  width: 100%;
-  margin-top: 32px;
-}
-
-.uapps-collections-section {
-  width: 100%;
-  margin-top: 32px;
-}
-
-.uapps-collections-grid {
-  display: grid;
-  grid-template-columns: repeat(
-    4,
-    minmax(0, 1fr)
-  );
-  gap: 16px;
-  margin-top: 20px;
-}
-
-.uapps-collection-card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-height: 220px;
-  padding: 24px;
-  border: 1px solid
-    var(--uapps-border-color, rgba(15, 23, 42, 0.08));
-  border-radius: 24px;
-  background:
-    var(--uapps-card-background, #ffffff);
-  color:
-    var(--uapps-text-color, #0f172a);
-  text-decoration: none;
-  overflow: hidden;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    border-color 0.2s ease,
-    background 0.2s ease,
-    color 0.2s ease;
-}
-
-.uapps-collection-card:hover {
-  transform: translateY(-4px);
-  box-shadow:
-    0 16px 40px
-    var(--uapps-shadow-color, rgba(15, 23, 42, 0.08));
-  border-color:
-    var(--uapps-border-hover-color, rgba(15, 23, 42, 0.16));
-}
-
-.uapps-collection-card-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 54px;
-  height: 54px;
-  margin-bottom: 20px;
-  border-radius: 16px;
-  background:
-    var(--uapps-icon-background, #f1f5f9);
-  color:
-    var(--uapps-text-color, #0f172a);
-  font-size: 28px;
-}
-
-.uapps-collection-card-content {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.uapps-collection-card-content h3 {
-  margin: 6px 0 10px;
-  color:
-    var(--uapps-heading-color, #0f172a);
-  font-size: 19px;
-  line-height: 1.5;
-}
-
-.uapps-collection-card-content p {
-  margin: 0;
-  color:
-    var(--uapps-muted-color, #64748b);
-  font-size: 14px;
-  line-height: 1.8;
-}
-
-.uapps-collection-card-count {
-  display: inline-flex;
-  width: fit-content;
-  margin-top: auto;
-  padding-top: 18px;
-  color:
-    var(--uapps-muted-color, #64748b);
-  font-size: 13px;
-}
-
-.uapps-collection-card-arrow {
-  position: absolute;
-  left: 20px;
-  bottom: 20px;
-  color:
-    var(--uapps-muted-color, #64748b);
-  font-size: 20px;
-  opacity: 0.75;
-}
-
-.uapps-collection-card:hover
-.uapps-collection-card-arrow {
-  color:
-    var(--uapps-heading-color, #0f172a);
-}
-
-.uapps-section-link {
-  color:
-    var(--uapps-text-color, #0f172a);
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.uapps-collection-hero {
-  width: 100%;
-  padding: 48px 0 36px;
-}
-
-.uapps-back-link {
-  display: inline-flex;
-  margin-bottom: 28px;
-  color:
-    var(--uapps-muted-color, #64748b);
-  text-decoration: none;
-  font-size: 14px;
-}
-
-.uapps-collection-hero-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 72px;
-  height: 72px;
-  margin-bottom: 20px;
-  border-radius: 22px;
-  background:
-    var(--uapps-icon-background, #f1f5f9);
-  color:
-    var(--uapps-text-color, #0f172a);
-  font-size: 38px;
-}
-
-.uapps-collection-hero h1 {
-  margin: 8px 0 12px;
-  color:
-    var(--uapps-heading-color, #0f172a);
-  font-size: clamp(
-    30px,
-    5vw,
-    48px
-  );
-  line-height: 1.25;
-}
-
-.uapps-collection-hero p {
-  max-width: 700px;
-  margin: 0;
-  color:
-    var(--uapps-muted-color, #64748b);
-  font-size: 16px;
-  line-height: 1.9;
-}
-
-.uapps-collection-meta {
-  display: inline-block;
-  margin-top: 18px;
-  color:
-    var(--uapps-muted-color, #64748b);
-  font-size: 14px;
-}
-
-.uapps-collection-apps {
-  width: 100%;
-  padding-bottom: 48px;
-}
-
-.uapps-collection-apps-header {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 20px;
-  margin-bottom: 24px;
-}
-
-.uapps-collection-apps-header h2 {
-  margin: 6px 0 0;
-  color:
-    var(--uapps-heading-color, #0f172a);
-  font-size: 24px;
-}
-
-.uapps-collection-apps-header > span {
-  color:
-    var(--uapps-muted-color, #64748b);
-  font-size: 13px;
-}
-
-.uapps-collection-grid {
-  display: grid;
-  grid-template-columns: repeat(
-    3,
-    minmax(0, 1fr)
-  );
-  gap: 20px;
-}
-
-.uapps-empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 420px;
-  padding: 40px 20px;
-  color:
-    var(--uapps-text-color, #0f172a);
-  text-align: center;
-}
-
-.uapps-empty-state-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 72px;
-  height: 72px;
-  margin-bottom: 20px;
-  border-radius: 22px;
-  background:
-    var(--uapps-icon-background, #f1f5f9);
-  font-size: 34px;
-}
-
-.uapps-empty-state h1,
-.uapps-empty-state h2 {
-  margin: 0 0 12px;
-  color:
-    var(--uapps-heading-color, #0f172a);
-}
-
-.uapps-empty-state p {
-  max-width: 520px;
-  margin: 0 0 24px;
-  color:
-    var(--uapps-muted-color, #64748b);
-  line-height: 1.8;
-}
-
-.uapps-primary-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
-  padding: 0 20px;
-  border-radius: 12px;
-  background:
-    var(--uapps-button-background, #0f172a);
-  color:
-    var(--uapps-button-text, #ffffff);
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-@media (
-  max-width: 1100px
-) {
-  .uapps-collections-grid {
-    grid-template-columns: repeat(
-      2,
-      minmax(0, 1fr)
-    );
+  .uapps-search-results-header {
+    align-items: flex-start;
+    gap: 10px;
   }
 
-  .uapps-collection-grid {
-    grid-template-columns: repeat(
-      2,
-      minmax(0, 1fr)
-    );
-  }
-}
-
-@media (
-  max-width: 700px
-) {
-  .uapps-collections-grid {
-    grid-template-columns: 1fr;
+  .uapps-search-results-header > div {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 3px;
   }
 
-  .uapps-collection-grid {
-    grid-template-columns: 1fr;
+  .uapps-search-header {
+    gap: 15px;
+  }
+
+  .uapps-action-content h2 {
+    font-size: 23px;
   }
 
   .uapps-collection-card {
-    min-height: 190px;
+    padding: 20px;
+    border-radius: 18px;
+  }
+
+  .uapps-collection-card-content h3 {
+    font-size: 17px;
+  }
+
+  .uapps-collection-card-content p {
+    font-size: 12px;
   }
 
   .uapps-collection-hero {
-    padding-top: 28px;
+    width: calc(100% - 28px);
+    padding-bottom: 28px;
   }
 
-  .uapps-collection-apps-header {
-    align-items: flex-start;
-    flex-direction: column;
+  .uapps-collection-hero-icon {
+    width: 64px;
+    height: 64px;
+    font-size: 32px;
+    border-radius: 18px;
+  }
+
+  .uapps-collection-hero h1 {
+    font-size: 30px;
+  }
+
+  .uapps-collection-hero p {
+    font-size: 13px;
+  }
+
+  .uapps-collection-apps {
+    width: calc(100% - 28px);
+  }
+
+  .uapps-collection-apps-header h2 {
+    font-size: 21px;
+  }
+
+  .uapps-empty-state {
+    width: calc(100% - 28px);
   }
 }
