@@ -1534,6 +1534,11 @@
   margin-top: 32px;
 }
 
+.uapps-collections-section {
+  width: 100%;
+  margin-top: 32px;
+}
+
 .uapps-collections-grid {
   display: grid;
   grid-template-columns: repeat(
@@ -1550,38 +1555,30 @@
   flex-direction: column;
   min-height: 220px;
   padding: 24px;
-  border: 1px solid rgba(
-    15,
-    23,
-    42,
-    0.08
-  );
+  border: 1px solid
+    var(--uapps-border-color, rgba(15, 23, 42, 0.08));
   border-radius: 24px;
-  background: #ffffff;
-  color: inherit;
+  background:
+    var(--uapps-card-background, #ffffff);
+  color:
+    var(--uapps-text-color, #0f172a);
   text-decoration: none;
   overflow: hidden;
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,
-    border-color 0.2s ease;
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .uapps-collection-card:hover {
   transform: translateY(-4px);
   box-shadow:
-    0 16px 40px rgba(
-      15,
-      23,
-      42,
-      0.08
-    );
-  border-color: rgba(
-    15,
-    23,
-    42,
-    0.16
-  );
+    0 16px 40px
+    var(--uapps-shadow-color, rgba(15, 23, 42, 0.08));
+  border-color:
+    var(--uapps-border-hover-color, rgba(15, 23, 42, 0.16));
 }
 
 .uapps-collection-card-icon {
@@ -1592,7 +1589,10 @@
   height: 54px;
   margin-bottom: 20px;
   border-radius: 16px;
-  background: #f1f5f9;
+  background:
+    var(--uapps-icon-background, #f1f5f9);
+  color:
+    var(--uapps-text-color, #0f172a);
   font-size: 28px;
 }
 
@@ -1604,13 +1604,16 @@
 
 .uapps-collection-card-content h3 {
   margin: 6px 0 10px;
+  color:
+    var(--uapps-heading-color, #0f172a);
   font-size: 19px;
   line-height: 1.5;
 }
 
 .uapps-collection-card-content p {
   margin: 0;
-  color: #64748b;
+  color:
+    var(--uapps-muted-color, #64748b);
   font-size: 14px;
   line-height: 1.8;
 }
@@ -1620,7 +1623,8 @@
   width: fit-content;
   margin-top: auto;
   padding-top: 18px;
-  color: #475569;
+  color:
+    var(--uapps-muted-color, #64748b);
   font-size: 13px;
 }
 
@@ -1628,12 +1632,21 @@
   position: absolute;
   left: 20px;
   bottom: 20px;
+  color:
+    var(--uapps-muted-color, #64748b);
   font-size: 20px;
-  opacity: 0.55;
+  opacity: 0.75;
+}
+
+.uapps-collection-card:hover
+.uapps-collection-card-arrow {
+  color:
+    var(--uapps-heading-color, #0f172a);
 }
 
 .uapps-section-link {
-  color: inherit;
+  color:
+    var(--uapps-text-color, #0f172a);
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;
@@ -1647,7 +1660,8 @@
 .uapps-back-link {
   display: inline-flex;
   margin-bottom: 28px;
-  color: #64748b;
+  color:
+    var(--uapps-muted-color, #64748b);
   text-decoration: none;
   font-size: 14px;
 }
@@ -1660,12 +1674,17 @@
   height: 72px;
   margin-bottom: 20px;
   border-radius: 22px;
-  background: #f1f5f9;
+  background:
+    var(--uapps-icon-background, #f1f5f9);
+  color:
+    var(--uapps-text-color, #0f172a);
   font-size: 38px;
 }
 
 .uapps-collection-hero h1 {
   margin: 8px 0 12px;
+  color:
+    var(--uapps-heading-color, #0f172a);
   font-size: clamp(
     30px,
     5vw,
@@ -1677,7 +1696,8 @@
 .uapps-collection-hero p {
   max-width: 700px;
   margin: 0;
-  color: #64748b;
+  color:
+    var(--uapps-muted-color, #64748b);
   font-size: 16px;
   line-height: 1.9;
 }
@@ -1685,7 +1705,8 @@
 .uapps-collection-meta {
   display: inline-block;
   margin-top: 18px;
-  color: #475569;
+  color:
+    var(--uapps-muted-color, #64748b);
   font-size: 14px;
 }
 
@@ -1704,11 +1725,14 @@
 
 .uapps-collection-apps-header h2 {
   margin: 6px 0 0;
+  color:
+    var(--uapps-heading-color, #0f172a);
   font-size: 24px;
 }
 
 .uapps-collection-apps-header > span {
-  color: #64748b;
+  color:
+    var(--uapps-muted-color, #64748b);
   font-size: 13px;
 }
 
@@ -1728,6 +1752,8 @@
   justify-content: center;
   min-height: 420px;
   padding: 40px 20px;
+  color:
+    var(--uapps-text-color, #0f172a);
   text-align: center;
 }
 
@@ -1739,19 +1765,23 @@
   height: 72px;
   margin-bottom: 20px;
   border-radius: 22px;
-  background: #f1f5f9;
+  background:
+    var(--uapps-icon-background, #f1f5f9);
   font-size: 34px;
 }
 
 .uapps-empty-state h1,
 .uapps-empty-state h2 {
   margin: 0 0 12px;
+  color:
+    var(--uapps-heading-color, #0f172a);
 }
 
 .uapps-empty-state p {
   max-width: 520px;
   margin: 0 0 24px;
-  color: #64748b;
+  color:
+    var(--uapps-muted-color, #64748b);
   line-height: 1.8;
 }
 
@@ -1762,8 +1792,10 @@
   min-height: 44px;
   padding: 0 20px;
   border-radius: 12px;
-  background: #0f172a;
-  color: #ffffff;
+  background:
+    var(--uapps-button-background, #0f172a);
+  color:
+    var(--uapps-button-text, #ffffff);
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;
