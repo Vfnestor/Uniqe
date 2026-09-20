@@ -107,6 +107,9 @@ export async function authenticate(
       name: "کاربر نمونه",
       email: normalizedEmail,
       role: "user" as const,
+      status: "active" as const,
+      createdAt:
+        new Date().toISOString(),
     };
 
     return {
