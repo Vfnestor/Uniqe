@@ -45,6 +45,7 @@ export type StoredUserApp = {
   submittedAt?: string;
   reviewedAt?: string;
   rejectionReason?: string;
+  reviewNote?: string;
 };
 
 export type CreateUserAppInput = {
@@ -65,10 +66,11 @@ export type CreateUserAppInput = {
 export const USER_APPS_STORAGE_KEY =
   "uniqe-user-apps";
 
+export const USER_APPS_UPDATED_EVENT =
+  "uniqe-user-apps-updated";
+
 function isBrowser() {
-  return (
-    typeof window !== "undefined"
-  );
+  return typeof window !== "undefined";
 }
 
 function createId() {
@@ -161,7 +163,7 @@ export function saveStoredUserApps(
 
   window.dispatchEvent(
     new CustomEvent(
-      "uniqe-user-apps-updated",
+      USER_APPS_UPDATED_EVENT,
     ),
   );
 }
@@ -258,10 +260,85 @@ export function submitStoredUserApp(
       reviewStatus:
         "pending-review",
       status: "available",
-      statusLabel: "در انتظار بررسی",
+      statusLabel:
+        "در انتظار بررسی",
       submittedAt:
         new Date().toISOString(),
+      reviewedAt:
+        undefined,
       rejectionReason:
+        undefined,
+      reviewNote:
+        undefined,
+    },
+  );
+}
+
+export function approveStoredUserApp(
+  id: string,
+  reviewNote = "",
+) {
+  return updateStoredUserApp(
+    id,
+    {
+      reviewStatus:
+        "approved",
+      verified: true,
+      status: "available",
+      statusLabel: "تأیید شده",
+      reviewedAt:
+        new Date().toISOString(),
+      rejectionReason:
+        undefined,
+      reviewNote:
+        reviewNote.trim() ||
+        undefined,
+    },
+  );
+}
+
+export function rejectStoredUserApp(
+  id: string,
+  rejectionReason: string,
+  reviewNote = "",
+) {
+  return updateStoredUserApp(
+    id,
+    {
+      reviewStatus:
+        "rejected",
+      verified: false,
+      status: "development",
+      statusLabel:
+        "نیازمند اصلاح",
+      reviewedAt:
+        new Date().toISOString(),
+      rejectionReason:
+        rejectionReason.trim(),
+      reviewNote:
+        reviewNote.trim() ||
+        undefined,
+    },
+  );
+}
+
+export function revokeStoredUserAppVerification(
+  id: string,
+  reason = "",
+) {
+  return updateStoredUserApp(
+    id,
+    {
+      reviewStatus:
+        "pending-review",
+      verified: false,
+      status: "available",
+      statusLabel:
+        "در انتظار بررسی",
+      reviewedAt:
+        new Date().toISOString(),
+      reviewNote:
+        reason.trim() ||
         undefined,
     },
   );
