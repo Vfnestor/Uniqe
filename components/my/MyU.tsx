@@ -10,6 +10,11 @@ import {
   type UserProfile,
 } from "@/lib/my-u/profile";
 
+import {
+  getStoredUserApps,
+  type StoredUserApp,
+} from "@/lib/uapps/user-app-storage";
+
 import type { MyUProduct } from "@/lib/my-u/types";
 
 import MyUNavigation from "./MyUNavigation";
@@ -28,6 +33,12 @@ const navigation = [
     title: "نمای کلی",
     href: "/my",
     icon: "⌂",
+  },
+  {
+    id: "uapps",
+    title: "نرم‌افزارهای من",
+    href: "/uapps/my-apps",
+    icon: "▣",
   },
   {
     id: "uweb",
@@ -116,12 +127,19 @@ export default function MyU({
   const [
     profile,
     setProfile,
-  ] = useState<UserProfile | null>(null);
+  ] = useState<UserProfile | null>(
+    null,
+  );
 
   const [
     profileCollapsed,
     setProfileCollapsed,
   ] = useState(false);
+
+  const [
+    userApps,
+    setUserApps,
+  ] = useState<StoredUserApp[]>([]);
 
   useEffect(() => {
     function loadProfile() {
@@ -130,7 +148,14 @@ export default function MyU({
       );
     }
 
+    function loadApps() {
+      setUserApps(
+        getStoredUserApps(),
+      );
+    }
+
     loadProfile();
+    loadApps();
 
     const storedCollapsed =
       window.localStorage.getItem(
@@ -147,8 +172,18 @@ export default function MyU({
     );
 
     window.addEventListener(
+      "uniqe-user-apps-updated",
+      loadApps,
+    );
+
+    window.addEventListener(
       "storage",
       loadProfile,
+    );
+
+    window.addEventListener(
+      "storage",
+      loadApps,
     );
 
     return () => {
@@ -158,8 +193,18 @@ export default function MyU({
       );
 
       window.removeEventListener(
+        "uniqe-user-apps-updated",
+        loadApps,
+      );
+
+      window.removeEventListener(
         "storage",
         loadProfile,
+      );
+
+      window.removeEventListener(
+        "storage",
+        loadApps,
       );
     };
   }, []);
@@ -205,6 +250,20 @@ export default function MyU({
           .filter(Boolean)
           .join(" · ")
       : "ثبت نشده";
+
+  const draftCount =
+    userApps.filter(
+      (app) =>
+        app.reviewStatus ===
+        "draft",
+    ).length;
+
+  const pendingCount =
+    userApps.filter(
+      (app) =>
+        app.reviewStatus ===
+        "pending-review",
+    ).length;
 
   return (
     <main className="my-u-page">
@@ -395,6 +454,65 @@ export default function MyU({
                   </div>
                 </div>
               )}
+            </section>
+
+            <section className="my-u-uapps-panel">
+              <div>
+                <span className="section-eyebrow">
+                  UAPPS
+                </span>
+
+                <h2>
+                  نرم‌افزارهای من
+                </h2>
+
+                <p>
+                  ساخت، مدیریت و ارسال نرم‌افزارهای
+                  شما برای بررسی Uniqe.
+                </p>
+              </div>
+
+              <div className="my-u-uapps-stats">
+                <div>
+                  <strong>
+                    {userApps.length}
+                  </strong>
+
+                  <span>
+                    کل نرم‌افزارها
+                  </span>
+                </div>
+
+                <div>
+                  <strong>
+                    {draftCount}
+                  </strong>
+
+                  <span>
+                    پیش‌نویس
+                  </span>
+                </div>
+
+                <div>
+                  <strong>
+                    {pendingCount}
+                  </strong>
+
+                  <span>
+                    در انتظار بررسی
+                  </span>
+                </div>
+              </div>
+
+              <Link
+                href="/uapps/my-apps"
+                className="my-u-uapps-action"
+              >
+                مدیریت نرم‌افزارها
+                <span>
+                  ←
+                </span>
+              </Link>
             </section>
 
             <MyUProductGrid
