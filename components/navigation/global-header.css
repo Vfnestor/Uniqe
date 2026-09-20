@@ -324,6 +324,7 @@
   transform:
     translateY(-1px);
 }
+
 .global-profile-owner-button {
   width: 40px;
   height: 40px;
@@ -453,11 +454,6 @@
   border-radius:
     var(--radius-lg);
 
-  /*
-   * Still glassy, but deliberately stronger
-   * than the normal surface.
-   */
-
   background:
     rgba(28, 31, 39, 0.84);
 
@@ -479,8 +475,6 @@
     both;
 }
 
-/* Dark mode: slightly brighter glass */
-
 html[data-theme="dark"]
 .global-profile-menu {
   background:
@@ -489,8 +483,6 @@ html[data-theme="dark"]
   border-color:
     rgba(255, 255, 255, 0.14);
 }
-
-/* Light mode: slightly darker glass */
 
 html[data-theme="light"]
 .global-profile-menu {
@@ -529,7 +521,9 @@ html[dir="rtl"]
     var(--weight-semibold);
 
   overflow: hidden;
+
   text-overflow: ellipsis;
+
   white-space: nowrap;
 }
 
@@ -543,7 +537,9 @@ html[dir="rtl"]
     var(--text-xs);
 
   overflow: hidden;
+
   text-overflow: ellipsis;
+
   white-space: nowrap;
 }
 
@@ -672,4 +668,56 @@ html[dir="rtl"]
   .global-profile-menu {
     width: 210px;
   }
+}
+
+/* =========================================================
+   LIVE USER PROFILE
+   ========================================================= */
+
+.global-profile-menu-avatar {
+  display: block;
+
+  width: 48px;
+  height: 48px;
+
+  flex: 0 0 48px;
+
+  overflow: hidden;
+
+  border-radius: 50%;
+
+  object-fit: cover;
+}
+
+.global-profile-menu-initial {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background:
+    var(--surface);
+
+  color:
+    var(--text-primary);
+
+  font-size: 19px;
+
+  font-weight:
+    var(--weight-bold);
+}
+
+.global-profile-user-username {
+  margin-top: 4px;
+
+  color:
+    var(--text-muted);
+
+  font-size: 13px;
+
+  text-align: right;
+}
+
+.global-profile-user-name {
+  margin-top: 10px;
 }
