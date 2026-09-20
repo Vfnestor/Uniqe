@@ -1,12 +1,16 @@
-import Link from "next/link";
-
 import Container from "@/components/ui/Container";
+
+import MyUNavigation from "./MyUNavigation";
 
 type Props = {
   eyebrow: string;
   title: string;
   description: string;
   active:
+    | "overview"
+    | "uweb"
+    | "projects"
+    | "contracts"
     | "orders"
     | "notifications"
     | "favorites"
@@ -76,44 +80,11 @@ export default function MyUCoreLayout({
     <main className="my-u-core-page">
       <Container>
         <div className="my-u-core-layout">
-          <aside className="my-u-core-sidebar">
-            <div className="my-u-core-sidebar-header">
-              <span className="section-eyebrow">
-                MY U
-              </span>
-
-              <h2>
-                حساب من
-              </h2>
-            </div>
-
-            <nav className="my-u-core-nav">
-              {navigation.map((item) => {
-                const isActive =
-                  item.id === active;
-
-                return (
-                  <Link
-                    key={item.id}
-                    href={item.href}
-                    className={
-                      isActive
-                        ? "my-u-core-nav-item my-u-core-nav-item-active"
-                        : "my-u-core-nav-item"
-                    }
-                  >
-                    <span className="my-u-core-nav-icon">
-                      {item.icon}
-                    </span>
-
-                    <span>
-                      {item.title}
-                    </span>
-                  </Link>
-                );
-              })}
-            </nav>
-          </aside>
+          <MyUNavigation
+            items={
+              navigation
+            }
+          />
 
           <section className="my-u-core-main">
             <header className="my-u-core-header">
