@@ -800,3 +800,165 @@
   margin-top: 0;
 }
 
+.uapps-user-section {
+  position: relative;
+}
+
+.uapps-user-carousel {
+  padding-bottom: 12px;
+}
+
+.uapps-user-app-card {
+  flex: 0 0 285px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  scroll-snap-align: start;
+  direction: rtl;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.uapps-user-app-card:hover {
+  transform: translateY(-5px);
+  border-color: color-mix(
+    in srgb,
+    var(--foreground) 25%,
+    var(--border)
+  );
+  box-shadow:
+    0 18px 50px
+    rgba(0, 0, 0, 0.08);
+}
+
+.uapps-user-app-body {
+  padding: 19px;
+}
+
+.uapps-user-app-category {
+  color: var(--muted-foreground);
+  font-size: 10px;
+}
+
+.uapps-user-app-body h3 {
+  margin: 7px 0 8px;
+  font-size: 19px;
+}
+
+.uapps-user-app-body p {
+  min-height: 48px;
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.uapps-user-app-creator {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.uapps-creator-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--background);
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.uapps-user-app-creator > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.uapps-user-app-creator strong {
+  font-size: 11px;
+}
+
+.uapps-user-app-creator span {
+  color: var(--muted-foreground);
+  font-size: 9px;
+  direction: ltr;
+}
+
+.uapps-user-app-info {
+  display: flex;
+  gap: 7px;
+  margin-top: 14px;
+}
+
+.uapps-user-app-info span {
+  padding: 5px 8px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--muted-foreground);
+  font-size: 9px;
+}
+
+.uapps-user-app-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 15px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--background);
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.uapps-user-app-button:hover {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.uapps-user-section-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.uapps-user-section-footer > span {
+  color: var(--muted-foreground);
+  font-size: 10px;
+}
+
+.uapps-user-view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 0;
+  background: transparent;
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media (max-width: 800px) {
+  .uapps-user-app-card {
+    flex-basis: 270px;
+  }
+}
+
+
+
