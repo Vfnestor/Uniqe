@@ -209,3 +209,47 @@
     font-size: 2.2rem;
   }
 }
+.auth-form-error {
+  padding: 12px 14px;
+  border: 1px solid #ef4444;
+  border-radius: var(--radius-md);
+  background: color-mix(
+    in srgb,
+    #ef4444 7%,
+    transparent
+  );
+  color: #dc2626;
+  font-size: 0.72rem;
+  line-height: 1.7;
+}
+
+.auth-form-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 2px;
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+}
+
+.auth-form-links a {
+  color: var(--text-primary);
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.auth-form-links a:hover {
+  text-decoration: underline;
+}
+
+.auth-field-row a {
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  text-decoration: none;
+}
+
+.auth-field-row a:hover {
+  color: var(--text-primary);
+  text-decoration: underline;
+}
