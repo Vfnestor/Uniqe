@@ -726,3 +726,651 @@
     font-size: 1.65rem;
   }
 }
+
+/* =========================================================
+   U12 - UAPPS OWNER REVIEW
+   ========================================================= */
+
+.admin-uapps-page {
+  width: 100%;
+  padding-bottom: 50px;
+}
+
+.admin-uapps-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 25px;
+  margin-bottom: 28px;
+}
+
+.admin-uapps-header h1 {
+  margin: 7px 0 8px;
+  font-size: 34px;
+  letter-spacing: -0.04em;
+}
+
+.admin-uapps-header p {
+  max-width: 650px;
+  margin: 0;
+  color: var(--admin-muted, #737373);
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+.admin-uapps-public-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--admin-border, #e5e5e5);
+  border-radius: 10px;
+  color: inherit;
+  text-decoration: none;
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.admin-uapps-public-link:hover {
+  border-color: currentColor;
+}
+
+.admin-uapps-stats {
+  display: grid;
+  grid-template-columns: repeat(
+    4,
+    minmax(0, 1fr)
+  );
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.admin-uapps-stat {
+  display: flex;
+  min-height: 92px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  padding: 15px;
+  border: 1px solid var(--admin-border, #e5e5e5);
+  border-radius: 14px;
+  background: var(--admin-surface, #fff);
+  color: inherit;
+  font-family: inherit;
+  text-align: right;
+  cursor: pointer;
+}
+
+.admin-uapps-stat:hover {
+  border-color: currentColor;
+}
+
+.admin-uapps-stat.is-active {
+  border-color: currentColor;
+}
+
+.admin-uapps-stat strong {
+  font-size: 25px;
+  line-height: 1;
+}
+
+.admin-uapps-stat span {
+  color: var(--admin-muted, #737373);
+  font-size: 9px;
+}
+
+.admin-uapps-message {
+  margin-bottom: 15px;
+  padding: 12px 14px;
+  border: 1px solid rgba(
+    34,
+    197,
+    94,
+    0.22
+  );
+  border-radius: 10px;
+  background: rgba(
+    34,
+    197,
+    94,
+    0.07
+  );
+  color: #15803d;
+  font-size: 11px;
+}
+
+.admin-uapps-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 14px;
+}
+
+.admin-uapps-toolbar input {
+  width: min(
+    420px,
+    100%
+  );
+  height: 42px;
+  padding: 0 13px;
+  border: 1px solid var(--admin-border, #e5e5e5);
+  border-radius: 10px;
+  outline: none;
+  background: var(--admin-surface, #fff);
+  color: inherit;
+  font-family: inherit;
+  font-size: 11px;
+}
+
+.admin-uapps-toolbar input:focus {
+  border-color: currentColor;
+}
+
+.admin-uapps-toolbar > span {
+  color: var(--admin-muted, #737373);
+  font-size: 10px;
+}
+
+.admin-uapps-layout {
+  display: grid;
+  grid-template-columns: minmax(
+      300px,
+      0.9fr
+    )
+    minmax(
+      420px,
+      1.5fr
+    );
+  gap: 15px;
+  min-height: 620px;
+}
+
+.admin-uapps-list,
+.admin-uapps-detail {
+  min-width: 0;
+  border: 1px solid var(--admin-border, #e5e5e5);
+  border-radius: 16px;
+  background: var(--admin-surface, #fff);
+}
+
+.admin-uapps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px;
+  overflow-y: auto;
+}
+
+.admin-uapps-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 72px;
+  padding: 9px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  text-align: right;
+  cursor: pointer;
+}
+
+.admin-uapps-item:hover {
+  background: var(--admin-background, #fafafa);
+}
+
+.admin-uapps-item.is-selected {
+  border-color: var(--admin-border, #e5e5e5);
+  background: var(--admin-background, #fafafa);
+}
+
+.admin-uapps-item-icon,
+.admin-uapps-detail-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  border-radius: 12px;
+  color: #fff;
+  font-weight: 800;
+}
+
+.admin-uapps-item-icon {
+  width: 48px;
+  height: 48px;
+  font-size: 19px;
+}
+
+.admin-uapps-detail-icon {
+  width: 64px;
+  height: 64px;
+  font-size: 25px;
+}
+
+.admin-uapps-accent-blue {
+  background: #5b7cff;
+}
+
+.admin-uapps-accent-purple {
+  background: #9b5cff;
+}
+
+.admin-uapps-accent-green {
+  background: #22c55e;
+}
+
+.admin-uapps-accent-orange {
+  background: #f97316;
+}
+
+.admin-uapps-accent-black {
+  background: #171717;
+}
+
+.admin-uapps-accent-pink {
+  background: #ec4899;
+}
+
+.admin-uapps-accent-red {
+  background: #ef4444;
+}
+
+.admin-uapps-item-content {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-uapps-item-content strong {
+  overflow: hidden;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-uapps-item-content span {
+  overflow: hidden;
+  color: var(--admin-muted, #737373);
+  font-size: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-uapps-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 24px;
+  padding: 0 7px;
+  border-radius: 999px;
+  font-size: 7px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.admin-uapps-status-draft {
+  background: #f5f5f5;
+  color: #737373;
+}
+
+.admin-uapps-status-pending-review {
+  background: rgba(
+    245,
+    158,
+    11,
+    0.1
+  );
+  color: #b45309;
+}
+
+.admin-uapps-status-approved {
+  background: rgba(
+    34,
+    197,
+    94,
+    0.1
+  );
+  color: #15803d;
+}
+
+.admin-uapps-status-rejected {
+  background: rgba(
+    239,
+    68,
+    68,
+    0.1
+  );
+  color: #b91c1c;
+}
+
+.admin-uapps-detail {
+  padding: 22px;
+  overflow-y: auto;
+}
+
+.admin-uapps-detail-empty,
+.admin-uapps-empty {
+  display: flex;
+  height: 100%;
+  min-height: 300px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: var(--admin-muted, #737373);
+  text-align: center;
+}
+
+.admin-uapps-detail-empty > div,
+.admin-uapps-empty > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  margin-bottom: 8px;
+  border: 1px solid var(--admin-border, #e5e5e5);
+  border-radius: 15px;
+  font-size: 22px;
+}
+
+.admin-uapps-detail-empty strong,
+.admin-uapps-empty strong {
+  color: inherit;
+  font-size: 12px;
+}
+
+.admin-uapps-detail-empty span,
+.admin-uapps-empty span {
+  max-width: 270px;
+  font-size: 9px;
+  line-height: 1.8;
+}
+
+.admin-uapps-detail-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 19px;
+  border-bottom: 1px solid var(--admin-border, #e5e5e5);
+}
+
+.admin-uapps-detail-eyebrow {
+  color: var(--admin-muted, #737373);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.admin-uapps-detail-top h2 {
+  margin: 5px 0 4px;
+  font-size: 20px;
+}
+
+.admin-uapps-detail-top > div > span:last-child {
+  color: var(--admin-muted, #737373);
+  font-size: 9px;
+}
+
+.admin-uapps-detail-section {
+  padding: 19px 0;
+  border-bottom: 1px solid var(--admin-border, #e5e5e5);
+}
+
+.admin-uapps-detail-section h3 {
+  margin: 0 0 12px;
+  font-size: 11px;
+}
+
+.admin-uapps-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    2,
+    minmax(0, 1fr)
+  );
+  gap: 10px;
+}
+
+.admin-uapps-detail-grid > div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px;
+  border-radius: 9px;
+  background: var(--admin-background, #fafafa);
+}
+
+.admin-uapps-detail-grid span {
+  color: var(--admin-muted, #737373);
+  font-size: 8px;
+}
+
+.admin-uapps-detail-grid strong {
+  overflow: hidden;
+  font-size: 10px;
+  text-overflow: ellipsis;
+}
+
+.admin-uapps-description {
+  margin: 0;
+  color: var(--admin-muted, #737373);
+  font-size: 10px;
+  line-height: 2;
+}
+
+.admin-uapps-app-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid var(--admin-border, #e5e5e5);
+  border-radius: 9px;
+  color: inherit;
+  font-size: 9px;
+  text-decoration: none;
+  direction: ltr;
+  overflow-wrap: anywhere;
+}
+
+.admin-uapps-app-link:hover {
+  border-color: currentColor;
+}
+
+.admin-uapps-cover-preview {
+  display: block;
+  width: 100%;
+  max-height: 220px;
+  border: 1px solid var(--admin-border, #e5e5e5);
+  border-radius: 11px;
+  object-fit: cover;
+}
+
+.admin-uapps-detail-section textarea {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 90px;
+  padding: 11px;
+  border: 1px solid var(--admin-border, #e5e5e5);
+  border-radius: 9px;
+  outline: none;
+  background: var(--admin-background, #fafafa);
+  color: inherit;
+  font-family: inherit;
+  font-size: 10px;
+  line-height: 1.8;
+  resize: vertical;
+}
+
+.admin-uapps-detail-section textarea:focus {
+  border-color: currentColor;
+}
+
+.admin-uapps-review-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 19px;
+}
+
+.admin-uapps-approve-button,
+.admin-uapps-reject-button,
+.admin-uapps-revoke-button {
+  min-height: 40px;
+  padding: 0 13px;
+  border-radius: 9px;
+  font-family: inherit;
+  font-size: 9px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.admin-uapps-approve-button {
+  border: 1px solid #16a34a;
+  background: #16a34a;
+  color: #fff;
+}
+
+.admin-uapps-reject-button {
+  border: 1px solid #dc2626;
+  background: transparent;
+  color: #dc2626;
+}
+
+.admin-uapps-revoke-button {
+  border: 1px solid #d97706;
+  background: transparent;
+  color: #b45309;
+}
+
+.admin-uapps-approve-button:hover,
+.admin-uapps-reject-button:hover,
+.admin-uapps-revoke-button:hover {
+  opacity: 0.85;
+}
+
+.uapps-my-app-verified {
+  border-color: rgba(
+    34,
+    197,
+    94,
+    0.25
+  ) !important;
+  background: rgba(
+    34,
+    197,
+    94,
+    0.06
+  ) !important;
+  color: #15803d !important;
+}
+
+.uapps-my-app-review-note {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 11px;
+  padding: 10px 11px;
+  border-radius: 9px;
+  background: var(--background);
+  font-size: 9px;
+  line-height: 1.8;
+}
+
+.uapps-my-app-review-note strong {
+  font-size: 9px;
+}
+
+.uapps-my-app-review-note span {
+  color: var(--muted-foreground);
+}
+
+.uapps-my-app-pending-message,
+.uapps-my-app-approved-message {
+  display: inline-flex;
+  align-items: center;
+  min-height: 37px;
+  padding: 0 11px;
+  border-radius: 9px;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.uapps-my-app-pending-message {
+  background: rgba(
+    245,
+    158,
+    11,
+    0.08
+  );
+  color: #b45309;
+}
+
+.uapps-my-app-approved-message {
+  background: rgba(
+    34,
+    197,
+    94,
+    0.08
+  );
+  color: #15803d;
+}
+
+@media (max-width: 950px) {
+  .admin-uapps-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-uapps-list {
+    max-height: 420px;
+  }
+
+  .admin-uapps-detail {
+    min-height: 500px;
+  }
+}
+
+@media (max-width: 700px) {
+  .admin-uapps-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .admin-uapps-stats {
+    grid-template-columns: repeat(
+      2,
+      minmax(0, 1fr)
+    );
+  }
+
+  .admin-uapps-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admin-uapps-toolbar input {
+    width: 100%;
+  }
+}
+
+@media (max-width: 500px) {
+  .admin-uapps-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-uapps-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-uapps-detail {
+    padding: 15px;
+  }
+}
