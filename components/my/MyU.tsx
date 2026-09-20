@@ -13,6 +13,58 @@ type Props = {
   products: MyUProduct[];
 };
 
+const navigation = [
+  {
+    id: "overview",
+    title: "نمای کلی",
+    href: "/my",
+    icon: "⌂",
+  },
+  {
+    id: "uweb",
+    title: "UWeb",
+    href: "/my-uweb",
+    icon: "🌐",
+    area: "uweb",
+  },
+  {
+    id: "projects",
+    title: "پروژه‌های من",
+    href: "/my/projects",
+    icon: "▣",
+  },
+  {
+    id: "contracts",
+    title: "قراردادهای من",
+    href: "/my/contracts",
+    icon: "▤",
+  },
+  {
+    id: "orders",
+    title: "سفارش‌های من",
+    href: "/my/orders",
+    icon: "◫",
+  },
+  {
+    id: "notifications",
+    title: "اعلان‌ها",
+    href: "/my/notifications",
+    icon: "◉",
+  },
+  {
+    id: "favorites",
+    title: "علاقه‌مندی‌ها",
+    href: "/my/favorites",
+    icon: "♡",
+  },
+  {
+    id: "settings",
+    title: "تنظیمات",
+    href: "/my/settings",
+    icon: "⚙",
+  },
+] as const;
+
 export default function MyU({
   products,
 }: Props) {
@@ -21,57 +73,9 @@ export default function MyU({
       <Container>
         <div className="my-u-layout">
           <MyUNavigation
-            items={[
-              {
-                id: "overview",
-                title: "نمای کلی",
-                href: "/my",
-                icon: "⌂",
-              },
-              {
-                id: "uweb",
-                title: "UWeb",
-                href: "/my-uweb",
-                icon: "🌐",
-                area: "uweb",
-              },
-              {
-                id: "projects",
-                title: "پروژه‌های من",
-                href: "/my/projects",
-                icon: "▣",
-              },
-              {
-                id: "contracts",
-                title: "قراردادهای من",
-                href: "/my/contracts",
-                icon: "▤",
-              },
-              {
-                id: "orders",
-                title: "سفارش‌های من",
-                href: "/my/orders",
-                icon: "◫",
-              },
-              {
-                id: "notifications",
-                title: "اعلان‌ها",
-                href: "/my/notifications",
-                icon: "◉",
-              },
-              {
-                id: "favorites",
-                title: "علاقه‌مندی‌ها",
-                href: "/my/favorites",
-                icon: "♡",
-              },
-              {
-                id: "settings",
-                title: "تنظیمات",
-                href: "/my/settings",
-                icon: "⚙",
-              },
-            ]}
+            items={
+              navigation
+            }
           />
 
           <div className="my-u-main">
@@ -87,8 +91,9 @@ export default function MyU({
 
                 <p>
                   از اینجا می‌توانید تمام
-                  سرویس‌ها، پروژه‌ها، سفارش‌ها
-                  و فعالیت‌های خود را مدیریت کنید.
+                  سرویس‌ها، پروژه‌ها،
+                  سفارش‌ها و فعالیت‌های
+                  خود را مدیریت کنید.
                 </p>
               </div>
 
@@ -97,7 +102,10 @@ export default function MyU({
                 className="my-u-primary-action"
               >
                 شروع یک پروژه جدید
-                <span>←</span>
+
+                <span>
+                  ←
+                </span>
               </Link>
             </section>
 
