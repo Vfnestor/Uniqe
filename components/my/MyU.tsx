@@ -1,10 +1,16 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 import Container from "@/components/ui/Container";
 
-import type {
-  MyUProduct,
-} from "@/lib/my-u/types";
+import {
+  getStoredUserProfile,
+  type UserProfile,
+} from "@/lib/my-u/profile";
+
+import type { MyUProduct } from "@/lib/my-u/types";
 
 import MyUNavigation from "./MyUNavigation";
 import MyUProductGrid from "./MyUProductGrid";
@@ -12,6 +18,9 @@ import MyUProductGrid from "./MyUProductGrid";
 type Props = {
   products: MyUProduct[];
 };
+
+const PROFILE_COLLAPSED_STORAGE_KEY =
+  "uniqe-my-profile-card-collapsed";
 
 const navigation = [
   {
@@ -65,17 +74,144 @@ const navigation = [
   },
 ] as const;
 
+function getGenderLabel(
+  gender: UserProfile["gender"],
+) {
+  if (gender === "male") {
+    return "مرد";
+  }
+
+  if (gender === "female") {
+    return "زن";
+  }
+
+  return "نامشخص";
+}
+
+function getDeviceTypeLabel(
+  type: UserProfile["deviceType"],
+) {
+  if (type === "mobile") {
+    return "موبایل";
+  }
+
+  if (type === "laptop") {
+    return "لپ‌تاپ";
+  }
+
+  if (type === "tablet") {
+    return "تبلت";
+  }
+
+  if (type === "desktop") {
+    return "کامپیوتر";
+  }
+
+  return "سایر";
+}
+
 export default function MyU({
   products,
 }: Props) {
+  const [
+    profile,
+    setProfile,
+  ] = useState<UserProfile | null>(null);
+
+  const [
+    profileCollapsed,
+    setProfileCollapsed,
+  ] = useState(false);
+
+  useEffect(() => {
+    function loadProfile() {
+      setProfile(
+        getStoredUserProfile(),
+      );
+    }
+
+    loadProfile();
+
+    const storedCollapsed =
+      window.localStorage.getItem(
+        PROFILE_COLLAPSED_STORAGE_KEY,
+      );
+
+    setProfileCollapsed(
+      storedCollapsed === "true",
+    );
+
+    window.addEventListener(
+      "uniqe-profile-updated",
+      loadProfile,
+    );
+
+    window.addEventListener(
+      "storage",
+      loadProfile,
+    );
+
+    return () => {
+      window.removeEventListener(
+        "uniqe-profile-updated",
+        loadProfile,
+      );
+
+      window.removeEventListener(
+        "storage",
+        loadProfile,
+      );
+    };
+  }, []);
+
+  function toggleProfileCard() {
+    setProfileCollapsed(
+      (current) => {
+        const next = !current;
+
+        window.localStorage.setItem(
+          PROFILE_COLLAPSED_STORAGE_KEY,
+          String(next),
+        );
+
+        return next;
+      },
+    );
+  }
+
+  const fullName =
+    profile
+      ? `${profile.firstName} ${profile.lastName}`.trim()
+      : "";
+
+  const displayName =
+    fullName ||
+    "کاربر Uniqe";
+
+  const username =
+    profile?.username
+      ? `@${profile.username}`
+      : "نام کاربری ثبت نشده";
+
+  const device =
+    profile
+      ? [
+          getDeviceTypeLabel(
+            profile.deviceType,
+          ),
+          profile.deviceBrand,
+          profile.deviceModel,
+        ]
+          .filter(Boolean)
+          .join(" · ")
+      : "ثبت نشده";
+
   return (
     <main className="my-u-page">
       <Container>
         <div className="my-u-layout">
           <MyUNavigation
-            items={
-              navigation
-            }
+            items={navigation}
           />
 
           <div className="my-u-main">
@@ -107,6 +243,158 @@ export default function MyU({
                   ←
                 </span>
               </Link>
+            </section>
+
+            <section
+              className={
+                profileCollapsed
+                  ? "my-u-profile-summary my-u-profile-summary-collapsed"
+                  : "my-u-profile-summary"
+              }
+            >
+              <div className="my-u-profile-summary-header">
+                <div className="my-u-profile-summary-identity">
+                  <div className="my-u-profile-summary-avatar">
+                    {profile?.avatar ? (
+                      <img
+                        src={profile.avatar}
+                        alt="تصویر پروفایل"
+                      />
+                    ) : (
+                      <span>
+                        {displayName
+                          .charAt(0)
+                          .toUpperCase()}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="my-u-profile-summary-title">
+                    <strong>
+                      {displayName}
+                    </strong>
+
+                    <span dir="ltr">
+                      {username}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="my-u-profile-summary-actions">
+                  <Link
+                    href="/my/profile"
+                    className="my-u-profile-summary-edit"
+                  >
+                    ویرایش پروفایل
+                  </Link>
+
+                  <button
+                    type="button"
+                    className={
+                      profileCollapsed
+                        ? "my-u-profile-summary-toggle my-u-profile-summary-toggle-collapsed"
+                        : "my-u-profile-summary-toggle"
+                    }
+                    onClick={
+                      toggleProfileCard
+                    }
+                    aria-label={
+                      profileCollapsed
+                        ? "باز کردن اطلاعات پروفایل"
+                        : "بستن اطلاعات پروفایل"
+                    }
+                    aria-expanded={
+                      !profileCollapsed
+                    }
+                  >
+                    <span>
+                      ↓
+                    </span>
+                  </button>
+                </div>
+              </div>
+
+              {!profileCollapsed && (
+                <div className="my-u-profile-summary-body">
+                  <div className="my-u-profile-summary-grid">
+                    <div className="my-u-profile-summary-item">
+                      <span>
+                        نام
+                      </span>
+
+                      <strong>
+                        {displayName}
+                      </strong>
+                    </div>
+
+                    <div className="my-u-profile-summary-item">
+                      <span>
+                        نام کاربری
+                      </span>
+
+                      <strong dir="ltr">
+                        {username}
+                      </strong>
+                    </div>
+
+                    <div className="my-u-profile-summary-item">
+                      <span>
+                        جنسیت
+                      </span>
+
+                      <strong>
+                        {getGenderLabel(
+                          profile?.gender ||
+                            "unspecified",
+                        )}
+                      </strong>
+                    </div>
+
+                    <div className="my-u-profile-summary-item">
+                      <span>
+                        شماره تلفن
+                      </span>
+
+                      <strong dir="ltr">
+                        {profile?.phone ||
+                          "ثبت نشده"}
+                      </strong>
+                    </div>
+
+                    <div className="my-u-profile-summary-item">
+                      <span>
+                        ایمیل
+                      </span>
+
+                      <strong dir="ltr">
+                        {profile?.email ||
+                          "ثبت نشده"}
+                      </strong>
+                    </div>
+
+                    <div className="my-u-profile-summary-item">
+                      <span>
+                        دستگاه
+                      </span>
+
+                      <strong>
+                        {device}
+                      </strong>
+                    </div>
+
+                    <div className="my-u-profile-summary-item my-u-profile-summary-item-wide">
+                      <span>
+                        شماره شبا
+                      </span>
+
+                      <strong dir="ltr">
+                        {profile?.sheba ||
+                          "ثبت نشده"}
+                      </strong>
+                    </div>
+                  </div>
+                </div>
+              )}
             </section>
 
             <MyUProductGrid
