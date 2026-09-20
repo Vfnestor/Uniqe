@@ -1,9 +1,6 @@
-"use client";
-
-import UAppsSection from "@/components/uapps/UAppsSection";
-import UAppsSearchPanel from "@/components/uapps/UAppsSearchPanel";
-import UAppsActionPanel from "@/components/uapps/UAppsActionPanel";
-import UserAppsSection from "@/components/uapps/UserAppsSection";
+import {
+  getFeaturedUniqeApps,
+} from "@/lib/uapps/uniqe-apps";
 
 import {
   userApps,
@@ -13,12 +10,23 @@ import {
   uappsDemoData,
 } from "@/lib/uapps/demo-data";
 
+import UserAppsSection from "./UserAppsSection";
+import UAppsActionPanel from "./UAppsActionPanel";
+import UAppsSearchPanel from "./UAppsSearchPanel";
+import UAppsSection from "./UAppsSection";
+import UniqeAppsSection from "./UniqeAppsSection";
+
 export default function UAppsHome() {
-  const uniqeApps =
-    uappsDemoData.filter(
+  const publishedUserApps =
+    userApps.filter(
       (app) =>
-        app.source === "uniqe",
+        app.reviewStatus ===
+          "approved" &&
+        app.status !== "development",
     );
+
+  const uniqeApps =
+    getFeaturedUniqeApps();
 
   const externalApps =
     uappsDemoData.filter(
@@ -32,70 +40,37 @@ export default function UAppsHome() {
   return (
     <main className="uapps-page">
       <section className="uapps-hero">
-        <div className="uapps-container">
-          <div className="uapps-hero-content">
-            <span className="uapps-eyebrow">
-              UNIQE APPLICATION ECOSYSTEM
-            </span>
+        <span className="uapps-hero-eyebrow">
+          UApps
+        </span>
 
-            <h1>
-              کشف، ساخت و انتشار
-              <span>
-                {" "}
-                نرم‌افزار
-              </span>
-            </h1>
+        <h1>
+          همه نرم‌افزارها، یکجا
+        </h1>
 
-            <p>
-              UApps مرکز کشف، دسترسی، ساخت و
-              انتشار نرم‌افزارهای دیجیتال در
-              اکوسیستم Uniqe است.
-            </p>
-
-            <div className="uapps-hero-meta">
-              <span>
-                نرم‌افزارهای کاربران
-              </span>
-
-              <span>
-                نرم‌افزارهای Uniqe
-              </span>
-
-              <span>
-                Google Play
-              </span>
-
-              <span>
-                App Store
-              </span>
-            </div>
-          </div>
-        </div>
+        <p>
+          کشف، جستجو و دسترسی به نرم‌افزارهای
+          Uniqe، کاربران و فروشگاه‌های خارجی.
+        </p>
       </section>
 
-      <div className="uapps-container uapps-main">
-        <UserAppsSection
-          apps={userApps}
-        />
+      <UserAppsSection
+        apps={publishedUserApps}
+      />
 
-        <UAppsSection
-          title="ساخته‌شده توسط Uniqe"
-          subtitle="محصولات و نرم‌افزارهای رسمی اکوسیستم Uniqe."
-          icon="◆"
-          apps={uniqeApps}
-        />
+      <UniqeAppsSection
+        apps={uniqeApps}
+      />
 
-        <UAppsSection
-          title="نرم‌افزارهای جدید"
-          subtitle="نرم‌افزارهای موجود در منابع خارجی."
-          icon="🌍"
-          apps={externalApps}
-        />
+      <UAppsSection
+        title="اپلیکیشن‌های خارجی"
+        description="نمونه‌ای از اپلیکیشن‌های موجود در فروشگاه‌های خارجی."
+        apps={externalApps}
+      />
 
-        <UAppsSearchPanel />
+      <UAppsSearchPanel />
 
-        <UAppsActionPanel />
-      </div>
+      <UAppsActionPanel />
     </main>
   );
 }
