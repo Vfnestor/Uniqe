@@ -1,57 +1,160 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import {
+  FormEvent,
+  useState,
+} from "react";
+
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import Button from "@/components/ui/Button";
 
-export default function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+import { useAuth } from "./AuthProvider";
 
-  function handleSubmit(
-    event: FormEvent<HTMLFormElement>
+export default function LoginForm() {
+  const router =
+    useRouter();
+
+  const {
+    state,
+    login,
+  } = useAuth();
+
+  const [
+    email,
+    setEmail,
+  ] = useState("");
+
+  const [
+    password,
+    setPassword,
+  ] = useState("");
+
+  const [
+    error,
+    setError,
+  ] = useState("");
+
+  const [
+    loading,
+    setLoading,
+  ] = useState(false);
+
+  async function handleSubmit(
+    event: FormEvent<HTMLFormElement>,
   ) {
     event.preventDefault();
 
-    /*
-     * Authentication backend will be connected
-     * in the future.
-     *
-     * For now this form only represents the
-     * authentication architecture.
-     */
+    setError("");
 
-    console.log("Uniqe login", {
-      email,
-      password,
-    });
+    if (!email.trim()) {
+      setError(
+        "لطفاً ایمیل خود را وارد کنید.",
+      );
+
+      return;
+    }
+
+    if (!password) {
+      setError(
+        "لطفاً رمز عبور خود را وارد کنید.",
+      );
+
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const result =
+        await login(
+          email,
+          password,
+        );
+
+      if (!result.success) {
+        setError(
+          result.message ||
+            "ایمیل یا رمز عبور صحیح نیست.",
+        );
+
+        return;
+      }
+
+      /*
+       * Role-based redirect.
+       */
+
+      router.replace(
+        result.redirectTo ||
+          "/my",
+      );
+
+      router.refresh();
+    } catch {
+      setError(
+        "خطایی در ورود رخ داد. لطفاً دوباره تلاش کنید.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  if (
+    state.status ===
+    "loading"
+  ) {
+    return (
+      <div className="auth-form">
+        <div className="auth-form-header">
+          <span className="auth-form-eyebrow">
+            UNIQE
+          </span>
+
+          <h2>
+            Checking
+            <br />
+            session.
+          </h2>
+
+          <p>
+            در حال بررسی وضعیت حساب
+            کاربری...
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (
     <form
       className="auth-form"
-      onSubmit={handleSubmit}
+      onSubmit={
+        handleSubmit
+      }
     >
       <div className="auth-form-header">
         <span className="auth-form-eyebrow">
-          Welcome back
+          UNIQE / AUTHENTICATION
         </span>
 
         <h2>
           Sign in to
           <br />
-          <span>My U.</span>
+          <span>Uniqe.</span>
         </h2>
 
         <p>
-          Access your personal Uniqe space and
-          connected experiences.
+          با یک حساب کاربری به
+          فضای اختصاصی خود در
+          اکوسیستم Uniqe وارد شوید.
         </p>
       </div>
 
       <div className="auth-field">
         <label htmlFor="login-email">
-          Email
+          ایمیل
         </label>
 
         <input
@@ -62,8 +165,11 @@ export default function LoginForm() {
           placeholder="you@example.com"
           value={email}
           onChange={(event) =>
-            setEmail(event.target.value)
+            setEmail(
+              event.target.value,
+            )
           }
+          disabled={loading}
           required
         />
       </div>
@@ -71,12 +177,15 @@ export default function LoginForm() {
       <div className="auth-field">
         <div className="auth-field-row">
           <label htmlFor="login-password">
-            Password
+            رمز عبور
           </label>
 
-          <span className="auth-field-hint">
-            Future recovery
-          </span>
+          <Link
+            href="/auth/forgot-password"
+            className="auth-field-hint"
+          >
+            فراموشی رمز عبور
+          </Link>
         </div>
 
         <input
@@ -84,22 +193,50 @@ export default function LoginForm() {
           name="password"
           type="password"
           autoComplete="current-password"
-          placeholder="Enter your password"
+          placeholder="رمز عبور"
           value={password}
           onChange={(event) =>
-            setPassword(event.target.value)
+            setPassword(
+              event.target.value,
+            )
           }
+          disabled={loading}
           required
         />
       </div>
 
-      <Button type="submit">
-        Sign in
+      {error && (
+        <div
+          className="auth-form-error"
+          role="alert"
+        >
+          {error}
+        </div>
+      )}
+
+      <Button
+        type="submit"
+        disabled={loading}
+      >
+        {loading
+          ? "در حال ورود..."
+          : "ورود به Uniqe"}
       </Button>
 
+      <div className="auth-form-links">
+        <span>
+          حساب کاربری ندارید؟
+        </span>
+
+        <Link href="/auth/register">
+          ساخت حساب کاربری
+        </Link>
+      </div>
+
       <p className="auth-form-note">
-        Authentication is currently being prepared
-        for the next Uniqe architecture layer.
+        پس از ورود، سیستم بر اساس
+        نقش حساب شما را به پنل
+        مربوطه منتقل می‌کند.
       </p>
     </form>
   );
