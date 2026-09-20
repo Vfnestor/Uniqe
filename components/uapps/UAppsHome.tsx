@@ -10,7 +10,6 @@ import {
   uappsDemoData,
 } from "@/lib/uapps/demo-data";
 
-import GooglePlaySection from "./GooglePlaySection";
 import UserAppsSection from "./UserAppsSection";
 import UAppsActionPanel from "./UAppsActionPanel";
 import UAppsSearchPanel from "./UAppsSearchPanel";
@@ -55,26 +54,26 @@ export default function UAppsHome() {
         </p>
       </section>
 
-      <UserAppsSection
-        apps={publishedUserApps}
-      />
+      <div className="uapps-sections-container">
+        <UserAppsSection
+          apps={publishedUserApps}
+        />
 
-      <UniqeAppsSection
-        apps={uniqeApps}
-      />
+        <UniqeAppsSection
+          apps={uniqeApps}
+        />
 
-      <UAppsSection
-        title="اپلیکیشن‌های خارجی"
-        subtitle="نمونه‌ای از اپلیکیشن‌های موجود در فروشگاه‌های خارجی."
-        icon="🌐"
-        apps={externalApps}
-      />
+        <UAppsSection
+          title="اپلیکیشن‌های خارجی"
+          subtitle="محبوب‌ترین نرم‌افزارهای موجود در فروشگاه‌های خارجی."
+          icon="🌐"
+          apps={externalApps}
+        />
 
-      <GooglePlaySection />
+        <UAppsSearchPanel />
 
-      <UAppsSearchPanel />
-
-      <UAppsActionPanel />
+        <UAppsActionPanel />
+      </div>
     </main>
   );
 }
