@@ -35,38 +35,24 @@ export type UAppAccent =
 
 export type UApp = {
   id: string;
-
   name: string;
-
   description: string;
-
   category: string;
-
   source: UAppSource;
-
   sourceLabel: string;
-
   platform: UAppPlatform;
-
   platformLabel: string;
-
   type: UAppType;
-
   typeLabel: string;
-
   status: UAppStatus;
-
   statusLabel: string;
-
   icon: string;
-
   cover?: string;
-
   accent: UAppAccent;
-
   href: string;
-
   featured?: boolean;
-
   verified?: boolean;
+  version?: string;
+  official?: boolean;
+  releaseLabel?: string;
 };
