@@ -8,38 +8,27 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import Button from "@/components/ui/Button";
-
 import { useAuth } from "./AuthProvider";
 
 export default function LoginForm() {
-  const router =
-    useRouter();
+  const router = useRouter();
 
   const {
     state,
     login,
   } = useAuth();
 
-  const [
-    email,
-    setEmail,
-  ] = useState("");
+  const [email, setEmail] =
+    useState("");
 
-  const [
-    password,
-    setPassword,
-  ] = useState("");
+  const [password, setPassword] =
+    useState("");
 
-  const [
-    error,
-    setError,
-  ] = useState("");
+  const [error, setError] =
+    useState("");
 
-  const [
-    loading,
-    setLoading,
-  ] = useState(false);
+  const [loading, setLoading] =
+    useState(false);
 
   async function handleSubmit(
     event: FormEvent<HTMLFormElement>,
@@ -52,7 +41,6 @@ export default function LoginForm() {
       setError(
         "لطفاً ایمیل خود را وارد کنید.",
       );
-
       return;
     }
 
@@ -60,7 +48,6 @@ export default function LoginForm() {
       setError(
         "لطفاً رمز عبور خود را وارد کنید.",
       );
-
       return;
     }
 
@@ -78,13 +65,8 @@ export default function LoginForm() {
           result.message ||
             "ایمیل یا رمز عبور صحیح نیست.",
         );
-
         return;
       }
-
-      /*
-       * Role-based redirect.
-       */
 
       router.replace(
         result.redirectTo ||
@@ -214,14 +196,15 @@ export default function LoginForm() {
         </div>
       )}
 
-      <Button
+      <button
         type="submit"
+        className="button"
         disabled={loading}
       >
         {loading
           ? "در حال ورود..."
           : "ورود به Uniqe"}
-      </Button>
+      </button>
 
       <div className="auth-form-links">
         <span>
