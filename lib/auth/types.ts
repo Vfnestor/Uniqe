@@ -1,7 +1,9 @@
 export type AuthUserRole =
   | "user"
-  | "professional"
-  | "admin";
+  | "owner"
+  | "seller"
+  | "teacher"
+  | "professional";
 
 export type AuthUserStatus =
   | "active"
@@ -34,8 +36,19 @@ export type AuthState = {
   session: AuthSession | null;
 };
 
+export type AuthLoginResult = {
+  success: boolean;
+  role?: AuthUserRole;
+  user?: AuthUser;
+  redirectTo?: string;
+  message?: string;
+};
+
 export type AuthContextValue = {
   state: AuthState;
-  login: () => Promise<void>;
+  login: (
+    email: string,
+    password: string,
+  ) => Promise<AuthLoginResult>;
   logout: () => Promise<void>;
 };
