@@ -14,11 +14,16 @@ import {
   getUAppCollections,
 } from "@/lib/uapps/collections";
 
+import {
+  getVerifiedUApps,
+} from "@/lib/uapps/verification";
+
 import UserAppsSection from "./UserAppsSection";
 import UAppsActionPanel from "./UAppsActionPanel";
 import UAppsCollectionsSection from "./UAppsCollectionsSection";
 import UAppsSearchPanel from "./UAppsSearchPanel";
 import UAppsSection from "./UAppsSection";
+import UAppsVerifiedSection from "./UAppsVerifiedSection";
 import UniqeAppsSection from "./UniqeAppsSection";
 
 export default function UAppsHome() {
@@ -46,7 +51,18 @@ export default function UAppsHome() {
   const collections =
     getUAppCollections().filter(
       (collection) =>
-        collection.apps.length > 0,
+        collection.apps.length >
+        0,
+    );
+
+  const localApps = [
+    ...uniqeApps,
+    ...publishedUserApps,
+  ];
+
+  const verifiedApps =
+    getVerifiedUApps(
+      localApps,
     );
 
   return (
@@ -76,6 +92,12 @@ export default function UAppsHome() {
         <UniqeAppsSection
           apps={
             uniqeApps
+          }
+        />
+
+        <UAppsVerifiedSection
+          apps={
+            verifiedApps
           }
         />
 
