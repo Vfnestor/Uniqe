@@ -3,18 +3,17 @@
 import UAppsSection from "@/components/uapps/UAppsSection";
 import UAppsSearchPanel from "@/components/uapps/UAppsSearchPanel";
 import UAppsActionPanel from "@/components/uapps/UAppsActionPanel";
+import UserAppsSection from "@/components/uapps/UserAppsSection";
+
+import {
+  userApps,
+} from "@/lib/uapps/user-apps";
 
 import {
   uappsDemoData,
 } from "@/lib/uapps/demo-data";
 
 export default function UAppsHome() {
-  const userApps =
-    uappsDemoData.filter(
-      (app) =>
-        app.source === "user",
-    );
-
   const uniqeApps =
     uappsDemoData.filter(
       (app) =>
@@ -75,10 +74,7 @@ export default function UAppsHome() {
       </section>
 
       <div className="uapps-container uapps-main">
-        <UAppsSection
-          title="ساخته‌شده توسط کاربران"
-          subtitle="نرم‌افزارهایی که توسط اعضای اکوسیستم Uniqe ساخته شده‌اند."
-          icon="👥"
+        <UserAppsSection
           apps={userApps}
         />
 
