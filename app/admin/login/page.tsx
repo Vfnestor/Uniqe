@@ -14,11 +14,18 @@ import {
   useLanguage,
 } from "@/components/i18n/LanguageProvider";
 
+import {
+  authenticate,
+} from "@/lib/auth/authentication";
+
+import {
+  setStoredAuthSession,
+} from "@/lib/auth/auth-storage";
+
 import "./login.css";
 
 export default function AdminLoginPage() {
-  const router =
-    useRouter();
+  const router = useRouter();
 
   const searchParams =
     useSearchParams();
@@ -59,36 +66,37 @@ export default function AdminLoginPage() {
     setLoading(true);
 
     try {
-      const response =
-        await fetch(
-          "/api/admin/login",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type":
-                "application/json",
-            },
-            body: JSON.stringify({
-              email,
-              password,
-            }),
-          },
+      const result =
+        await authenticate(
+          email,
+          password,
         );
 
-      const data =
-        await response.json();
-
-      if (!response.ok) {
+      if (!result.success) {
         setError(
-          isRtl
-            ? "ایمیل یا رمز عبور صحیح نیست."
-            : "Invalid email or password.",
+          result.message ||
+            (
+              isRtl
+                ? "ایمیل یا رمز عبور صحیح نیست."
+                : "Invalid email or password."
+            ),
         );
 
         return;
       }
 
-      if (data?.success) {
+      /*
+       * =====================================================
+       * OWNER
+       * =====================================================
+       *
+       * Owner session is already created securely
+       * by /api/admin/login.
+       */
+      if (
+        result.role ===
+        "owner"
+      ) {
         const redirect =
           searchParams.get(
             "redirect",
@@ -104,12 +112,56 @@ export default function AdminLoginPage() {
         );
 
         router.refresh();
+
+        return;
       }
+
+      /*
+       * =====================================================
+       * USER
+       * =====================================================
+       *
+       * User session is stored in the existing
+       * client-side authentication foundation.
+       */
+      if (
+        result.user
+      ) {
+        setStoredAuthSession({
+          authenticated: true,
+          user: {
+            id:
+              result.user.id,
+
+            name:
+              result.user.name,
+
+            email:
+              result.user.email,
+
+            role:
+              result.user.role,
+          },
+        });
+      }
+
+      /*
+       * =====================================================
+       * ROLE REDIRECT
+       * =====================================================
+       */
+
+      router.replace(
+        result.redirectTo ||
+          "/my",
+      );
+
+      router.refresh();
     } catch {
       setError(
         isRtl
-          ? "خطایی در اتصال به سرور رخ داد."
-          : "A server connection error occurred.",
+          ? "خطایی در ورود رخ داد. دوباره تلاش کنید."
+          : "A login error occurred. Please try again.",
       );
     } finally {
       setLoading(false);
@@ -145,35 +197,35 @@ export default function AdminLoginPage() {
 
             <span>
               {isRtl
-                ? "پنل مدیریت"
-                : "Admin Panel"}
+                ? "ورود به Uniqe"
+                : "Uniqe Authentication"}
             </span>
           </div>
         </div>
 
         <div className="admin-login-heading">
           <span>
-            {isRtl
-              ? "SECURE ACCESS"
-              : "SECURE ACCESS"}
+            SECURE ACCESS
           </span>
 
           <h1>
             {isRtl
-              ? "ورود به پنل مدیریت"
-              : "Admin Sign In"}
+              ? "ورود به Uniqe"
+              : "Sign In to Uniqe"}
           </h1>
 
           <p>
             {isRtl
-              ? "برای دسترسی به مرکز کنترل Uniqe وارد شوید."
-              : "Sign in to access the Uniqe central control center."}
+              ? "با حساب کاربری خود وارد اکوسیستم Uniqe شوید."
+              : "Sign in to access your Uniqe account."}
           </p>
         </div>
 
         <form
           className="admin-login-form"
-          onSubmit={handleSubmit}
+          onSubmit={
+            handleSubmit
+          }
         >
           <label>
             <span>
@@ -192,11 +244,12 @@ export default function AdminLoginPage() {
               }
               placeholder={
                 isRtl
-                  ? "ایمیل مدیر"
-                  : "Admin email"
+                  ? "ایمیل"
+                  : "Email"
               }
               autoComplete="username"
               required
+              disabled={loading}
             />
           </label>
 
@@ -222,6 +275,7 @@ export default function AdminLoginPage() {
               }
               autoComplete="current-password"
               required
+              disabled={loading}
             />
           </label>
 
@@ -248,7 +302,7 @@ export default function AdminLoginPage() {
                   ? "در حال ورود..."
                   : "Signing in..."
                 : isRtl
-                  ? "ورود به پنل"
+                  ? "ورود"
                   : "Sign In"}
             </span>
 
@@ -265,8 +319,8 @@ export default function AdminLoginPage() {
 
           <p>
             {isRtl
-              ? "اتصال امن • دسترسی فقط برای مدیر مجاز"
-              : "Secure connection • Authorized administrators only"}
+              ? "اتصال امن • سیستم تشخیص خودکار نقش کاربر"
+              : "Secure connection • Automatic role detection"}
           </p>
         </div>
 
@@ -275,7 +329,7 @@ export default function AdminLoginPage() {
           <span>
             •
           </span>
-          Admin
+          Authentication
         </div>
       </section>
     </main>
