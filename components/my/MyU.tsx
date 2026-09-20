@@ -15,6 +15,11 @@ import {
   type StoredUserApp,
 } from "@/lib/uapps/user-app-storage";
 
+import {
+  getStoredUAppsOrders,
+  type UAppsOrder,
+} from "@/lib/uapps/order-storage";
+
 import type { MyUProduct } from "@/lib/my-u/types";
 
 import MyUNavigation from "./MyUNavigation";
@@ -141,6 +146,11 @@ export default function MyU({
     setUserApps,
   ] = useState<StoredUserApp[]>([]);
 
+  const [
+    uappsOrders,
+    setUAppsOrders,
+  ] = useState<UAppsOrder[]>([]);
+
   useEffect(() => {
     function loadProfile() {
       setProfile(
@@ -154,8 +164,15 @@ export default function MyU({
       );
     }
 
+    function loadOrders() {
+      setUAppsOrders(
+        getStoredUAppsOrders(),
+      );
+    }
+
     loadProfile();
     loadApps();
+    loadOrders();
 
     const storedCollapsed =
       window.localStorage.getItem(
@@ -177,6 +194,11 @@ export default function MyU({
     );
 
     window.addEventListener(
+      "uniqe-uapps-orders-updated",
+      loadOrders,
+    );
+
+    window.addEventListener(
       "storage",
       loadProfile,
     );
@@ -184,6 +206,11 @@ export default function MyU({
     window.addEventListener(
       "storage",
       loadApps,
+    );
+
+    window.addEventListener(
+      "storage",
+      loadOrders,
     );
 
     return () => {
@@ -198,6 +225,11 @@ export default function MyU({
       );
 
       window.removeEventListener(
+        "uniqe-uapps-orders-updated",
+        loadOrders,
+      );
+
+      window.removeEventListener(
         "storage",
         loadProfile,
       );
@@ -205,6 +237,11 @@ export default function MyU({
       window.removeEventListener(
         "storage",
         loadApps,
+      );
+
+      window.removeEventListener(
+        "storage",
+        loadOrders,
       );
     };
   }, []);
@@ -263,6 +300,26 @@ export default function MyU({
       (app) =>
         app.reviewStatus ===
         "pending-review",
+    ).length;
+
+  const pendingOrderCount =
+    uappsOrders.filter(
+      (order) =>
+        order.status ===
+        "pending-review",
+    ).length;
+
+  const activeOrderCount =
+    uappsOrders.filter(
+      (order) =>
+        order.status ===
+          "reviewing" ||
+        order.status ===
+          "quoted" ||
+        order.status ===
+          "approved" ||
+        order.status ===
+          "in-progress",
     ).length;
 
   const productApps =
@@ -526,6 +583,85 @@ export default function MyU({
                 </section>
               }
             />
+
+            <section className="my-u-uapps-orders-panel">
+              <div className="my-u-uapps-orders-header">
+                <div>
+                  <span className="section-eyebrow">
+                    UAPPS ORDERS
+                  </span>
+
+                  <h2>
+                    سفارش‌های ساخت نرم‌افزار
+                  </h2>
+
+                  <p>
+                    سفارش‌های ساخت یا توسعه نرم‌افزار
+                    خود را از اینجا پیگیری کنید.
+                  </p>
+                </div>
+
+                <Link
+                  href="/uapps/order"
+                  className="my-u-uapps-order-primary"
+                >
+                  سفارش جدید
+                  <span>
+                    ＋
+                  </span>
+                </Link>
+              </div>
+
+              <div className="my-u-uapps-orders-stats">
+                <div>
+                  <strong>
+                    {uappsOrders.length}
+                  </strong>
+
+                  <span>
+                    کل سفارش‌ها
+                  </span>
+                </div>
+
+                <div>
+                  <strong>
+                    {pendingOrderCount}
+                  </strong>
+
+                  <span>
+                    در انتظار بررسی
+                  </span>
+                </div>
+
+                <div>
+                  <strong>
+                    {activeOrderCount}
+                  </strong>
+
+                  <span>
+                    در حال پیگیری
+                  </span>
+                </div>
+              </div>
+
+              <div className="my-u-uapps-orders-footer">
+                <span>
+                  {uappsOrders.length === 0
+                    ? "هنوز سفارشی ثبت نکرده‌اید."
+                    : `${uappsOrders.length} سفارش ثبت شده است.`}
+                </span>
+
+                <Link
+                  href="/uapps/orders"
+                  className="my-u-uapps-orders-link"
+                >
+                  مشاهده سفارش‌ها
+                  <span>
+                    ←
+                  </span>
+                </Link>
+              </div>
+            </section>
           </div>
         </div>
       </Container>
