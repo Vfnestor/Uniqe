@@ -25,9 +25,13 @@ export default async function UAppCollectionPage({
   if (!collection) {
     return (
       <main className="uapps-page">
-        <section className="uapps-empty-state">
-          <span className="uapps-empty-state-icon">
+        <section className="uapps-collection-not-found">
+          <div className="uapps-collection-not-found-icon">
             📦
+          </div>
+
+          <span className="uapps-eyebrow">
+            UAPPS COLLECTION
           </span>
 
           <h1>
@@ -35,13 +39,14 @@ export default async function UAppCollectionPage({
           </h1>
 
           <p>
-            این مجموعه وجود ندارد یا دیگر در دسترس نیست.
+            این مجموعه وجود ندارد یا در حال حاضر در دسترس نیست.
           </p>
 
           <Link
             href="/uapps"
-            className="uapps-primary-button"
+            className="uapps-collection-back-button"
           >
+            <span>→</span>
             بازگشت به UApps
           </Link>
         </section>
@@ -50,39 +55,75 @@ export default async function UAppCollectionPage({
   }
 
   return (
-    <main className="uapps-page">
-      <section className="uapps-collection-hero">
-        <Link
-          href="/uapps"
-          className="uapps-back-link"
-        >
-          → بازگشت به UApps
-        </Link>
+    <main className="uapps-page uapps-collection-page">
+      <div className="uapps-collection-page-container">
+        <nav className="uapps-collection-breadcrumb">
+          <Link href="/uapps">
+            UApps
+          </Link>
 
-        <div className="uapps-collection-hero-icon">
-          {collection.icon}
-        </div>
+          <span>
+            /
+          </span>
 
-        <span className="uapps-hero-eyebrow">
-          COLLECTION
-        </span>
+          <span>
+            مجموعه‌ها
+          </span>
 
-        <h1>
-          {collection.title}
-        </h1>
+          <span>
+            /
+          </span>
 
-        <p>
-          {collection.description}
-        </p>
+          <strong>
+            {collection.title}
+          </strong>
+        </nav>
 
-        <span className="uapps-collection-meta">
-          {collection.apps.length} نرم‌افزار در این مجموعه
-        </span>
-      </section>
+        <section className="uapps-collection-header">
+          <div className="uapps-collection-header-main">
+            <div className="uapps-collection-large-icon">
+              {collection.icon}
+            </div>
 
-      {collection.apps.length > 0 ? (
-        <section className="uapps-collection-apps">
-          <div className="uapps-collection-apps-header">
+            <div className="uapps-collection-header-content">
+              <span className="uapps-eyebrow">
+                COLLECTION
+              </span>
+
+              <h1>
+                {collection.title}
+              </h1>
+
+              <p>
+                {collection.description}
+              </p>
+
+              <div className="uapps-collection-header-meta">
+                <span>
+                  {collection.apps.length}
+                </span>
+
+                <span>
+                  نرم‌افزار
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <Link
+            href="/uapps"
+            className="uapps-collection-back-button"
+          >
+            <span>
+              →
+            </span>
+
+            بازگشت به UApps
+          </Link>
+        </section>
+
+        <section className="uapps-collection-results">
+          <div className="uapps-collection-results-header">
             <div>
               <span className="uapps-eyebrow">
                 DISCOVER
@@ -93,37 +134,52 @@ export default async function UAppCollectionPage({
               </h2>
             </div>
 
-            <span>
-              {collection.apps.length} نتیجه
-            </span>
+            <div className="uapps-collection-results-count">
+              {collection.apps.length}
+              {" "}
+              نرم‌افزار
+            </div>
           </div>
 
-          <div className="uapps-collection-grid">
-            {collection.apps.map(
-              (app) => (
-                <UniversalAppCard
-                  key={app.id}
-                  app={app}
-                />
-              ),
-            )}
-          </div>
-        </section>
-      ) : (
-        <section className="uapps-empty-state">
-          <span className="uapps-empty-state-icon">
-            📦
-          </span>
+          {collection.apps.length > 0 ? (
+            <div className="uapps-collection-app-grid">
+              {collection.apps.map(
+                (app) => (
+                  <UniversalAppCard
+                    key={
+                      app.id
+                    }
+                    app={
+                      app
+                    }
+                  />
+                ),
+              )}
+            </div>
+          ) : (
+            <div className="uapps-collection-empty">
+              <div className="uapps-collection-empty-icon">
+                📦
+              </div>
 
-          <h2>
-            هنوز نرم‌افزاری در این مجموعه نیست
-          </h2>
+              <h3>
+                هنوز نرم‌افزاری در این مجموعه نیست
+              </h3>
 
-          <p>
-            با اضافه شدن نرم‌افزارهای جدید، این مجموعه به‌روزرسانی می‌شود.
-          </p>
+              <p>
+                با اضافه شدن نرم‌افزارهای جدید، این مجموعه به‌صورت خودکار به‌روزرسانی می‌شود.
+              </p>
+
+              <Link
+                href="/uapps"
+                className="uapps-collection-back-button"
+              >
+                مشاهده همه نرم‌افزارها
+              </Link>
+            </div>
+          )}
         </section>
-      )}
+      </div>
     </main>
   );
 }
