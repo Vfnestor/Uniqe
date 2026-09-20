@@ -4,7 +4,8 @@
    ============================================================ */
 
 .my-u-page {
-  padding: 40px 0 80px;
+  min-height: 100vh;
+  padding: 48px 0 120px;
 }
 
 .my-u-layout {
@@ -24,60 +25,30 @@
 
 .my-u-navigation {
   position: sticky;
-  top: 90px;
+  top: 24px;
 
   display: flex;
   flex-direction: column;
 
-  min-height: 560px;
+  min-height: calc(100vh - 48px);
+
   padding: 18px;
 
-  border: 1px solid
-    rgba(255, 255, 255, 0.08);
-
+  border: 1px solid var(--color-border);
   border-radius: 24px;
 
   background:
     linear-gradient(
-      145deg,
-      rgba(28, 31, 38, 0.72),
-      rgba(15, 17, 22, 0.62)
-    );
-
-  backdrop-filter:
-    blur(22px)
-    saturate(130%);
-
-  -webkit-backdrop-filter:
-    blur(22px)
-    saturate(130%);
-
-  box-shadow:
-    0 20px 55px
-      rgba(0, 0, 0, 0.12),
-    inset 0 1px 0
-      rgba(255, 255, 255, 0.04);
-
-  overflow: hidden;
-}
-
-[data-theme="light"]
-  .my-u-navigation {
-  border-color:
-    rgba(15, 23, 42, 0.10);
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.86),
-      rgba(244, 246, 249, 0.78)
+      180deg,
+      var(--color-surface),
+      var(--color-bg-soft)
     );
 
   box-shadow:
-    0 20px 55px
-      rgba(15, 23, 42, 0.08),
-    inset 0 1px 0
-      rgba(255, 255, 255, 0.72);
+    0 18px 45px
+    rgba(0, 0, 0, 0.06);
+
+  z-index: 100;
 }
 
 /* ============================================================
@@ -85,85 +56,71 @@
    ============================================================ */
 
 .my-u-navigation-header {
-  padding-bottom: 16px;
-  margin-bottom: 10px;
+  padding-bottom: 18px;
 
   border-bottom: 1px solid
-    rgba(255, 255, 255, 0.08);
-}
-
-[data-theme="light"]
-  .my-u-navigation-header {
-  border-bottom-color:
-    rgba(15, 23, 42, 0.08);
+    var(--color-border);
 }
 
 .my-u-user-card {
-  position: relative;
-
   display: flex;
   align-items: center;
-  gap: 12px;
+
+  gap: 11px;
 
   min-width: 0;
 }
 
 .my-u-user-avatar {
   display: flex;
-  align-items: center;
-  justify-content: center;
-
-  flex: 0 0 44px;
 
   width: 44px;
   height: 44px;
+
+  flex-shrink: 0;
+
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid
+    var(--color-border);
 
   border-radius: 14px;
 
   background:
     linear-gradient(
-      135deg,
-      #ffffff,
-      #cfd4dc
+      145deg,
+      var(--color-bg-soft),
+      var(--color-surface)
     );
 
-  color: #111827;
+  color:
+    var(--color-text-primary);
 
-  font-size: 17px;
-  font-weight: 800;
-
-  box-shadow:
-    0 8px 20px
-      rgba(0, 0, 0, 0.16);
-}
-
-[data-theme="light"]
-  .my-u-user-avatar {
-  background:
-    linear-gradient(
-      135deg,
-      #111827,
-      #475569
-    );
-
-  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
 }
 
 .my-u-user-info {
   display: flex;
-  flex-direction: column;
+
+  flex: 1;
 
   min-width: 0;
-  gap: 3px;
+
+  flex-direction: column;
+
+  gap: 4px;
 }
 
 .my-u-user-info strong {
   overflow: hidden;
 
-  color: #ffffff;
+  color:
+    var(--color-text-primary);
 
-  font-size: 14px;
-  font-weight: 750;
+  font-size: 12px;
+  font-weight: 700;
 
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -172,22 +129,13 @@
 .my-u-user-info span {
   overflow: hidden;
 
-  color: rgba(255, 255, 255, 0.58);
+  color:
+    var(--color-text-muted);
 
-  font-size: 11px;
+  font-size: 9px;
 
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-[data-theme="light"]
-  .my-u-user-info strong {
-  color: #111827;
-}
-
-[data-theme="light"]
-  .my-u-user-info span {
-  color: rgba(15, 23, 42, 0.58);
 }
 
 /* ============================================================
@@ -196,19 +144,17 @@
 
 .my-u-account-status {
   display: flex;
+
   align-items: center;
+
   gap: 7px;
 
   margin-top: 12px;
 
-  color: rgba(255, 255, 255, 0.56);
+  color:
+    var(--color-text-muted);
 
-  font-size: 11px;
-}
-
-[data-theme="light"]
-  .my-u-account-status {
-  color: rgba(15, 23, 42, 0.56);
+  font-size: 9px;
 }
 
 .my-u-status-dot {
@@ -217,11 +163,11 @@
 
   border-radius: 50%;
 
-  background: #4ade80;
+  background: #22c55e;
 
   box-shadow:
     0 0 0 4px
-      rgba(74, 222, 128, 0.10);
+    rgba(34, 197, 94, 0.09);
 }
 
 /* ============================================================
@@ -229,135 +175,122 @@
    ============================================================ */
 
 .my-u-navigation-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+  display: grid;
 
-  flex: 1;
+  gap: 4px;
+
+  padding: 18px 0;
 }
 
 .my-u-navigation-label {
-  padding: 8px 10px 7px;
+  padding: 0 8px 8px;
 
-  color: rgba(255, 255, 255, 0.38);
+  color:
+    var(--color-text-muted);
 
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
+  font-size: 8px;
+  font-weight: 600;
 
-[data-theme="light"]
-  .my-u-navigation-label {
-  color: rgba(15, 23, 42, 0.42);
+  letter-spacing: 0.08em;
 }
 
 .my-u-navigation-item {
   position: relative;
 
   display: flex;
+
   align-items: center;
+
   gap: 11px;
 
   min-height: 44px;
-  padding: 0 12px;
 
-  border: 1px solid transparent;
-  border-radius: 13px;
+  padding: 10px 11px;
 
-  color: rgba(255, 255, 255, 0.62);
+  border-radius: 12px;
+
+  color:
+    var(--color-text-secondary);
 
   text-decoration: none;
 
+  font-size: 11px;
+
   transition:
     background 0.2s ease,
-    border-color 0.2s ease,
     color 0.2s ease,
     transform 0.2s ease;
 }
 
 .my-u-navigation-item:hover {
   background:
-    rgba(255, 255, 255, 0.055);
+    var(--color-bg-soft);
 
-  border-color:
-    rgba(255, 255, 255, 0.07);
+  color:
+    var(--color-text-primary);
 
-  color: #ffffff;
-
-  transform: translateX(-2px);
-}
-
-[data-theme="light"]
-  .my-u-navigation-item {
-  color: rgba(15, 23, 42, 0.62);
-}
-
-[data-theme="light"]
-  .my-u-navigation-item:hover {
-  background:
-    rgba(15, 23, 42, 0.045);
-
-  border-color:
-    rgba(15, 23, 42, 0.06);
-
-  color: #111827;
+  transform:
+    translateX(-2px);
 }
 
 .my-u-navigation-item-active {
   background:
-    rgba(255, 255, 255, 0.085);
+    linear-gradient(
+      90deg,
+      var(--color-bg-soft),
+      transparent
+    );
 
-  border-color:
-    rgba(255, 255, 255, 0.09);
+  color:
+    var(--color-text-primary);
 
-  color: #ffffff;
-
-  box-shadow:
-    inset 0 1px 0
-      rgba(255, 255, 255, 0.035);
-}
-
-[data-theme="light"]
-  .my-u-navigation-item-active {
-  background:
-    rgba(15, 23, 42, 0.055);
-
-  border-color:
-    rgba(15, 23, 42, 0.07);
-
-  color: #111827;
+  font-weight: 700;
 }
 
 .my-u-navigation-icon {
   display: flex;
+
+  width: 28px;
+  height: 28px;
+
+  flex-shrink: 0;
+
   align-items: center;
   justify-content: center;
 
-  width: 22px;
+  border-radius: 9px;
 
-  font-size: 16px;
-  line-height: 1;
+  background: transparent;
+
+  font-size: 14px;
+
+  transition:
+    background 0.2s ease;
+}
+
+.my-u-navigation-item-active
+  .my-u-navigation-icon {
+  background:
+    var(--color-surface);
 }
 
 .my-u-navigation-title {
   flex: 1;
-
-  font-size: 12px;
-  font-weight: 650;
 }
 
 .my-u-navigation-active-line {
+  position: absolute;
+
+  top: 8px;
+  right: 0;
+  bottom: 8px;
+
   width: 3px;
-  height: 20px;
 
-  border-radius: 999px;
+  border-radius: 99px;
 
-  background: #ffffff;
-}
-
-[data-theme="light"]
-  .my-u-navigation-active-line {
-  background: #111827;
+  background:
+    var(--color-brand);
 }
 
 /* ============================================================
@@ -365,104 +298,88 @@
    ============================================================ */
 
 .my-u-navigation-footer {
-  margin-top: 16px;
-  padding-top: 14px;
+  margin-top: auto;
+
+  padding-top: 16px;
 
   border-top: 1px solid
-    rgba(255, 255, 255, 0.08);
-}
-
-[data-theme="light"]
-  .my-u-navigation-footer {
-  border-top-color:
-    rgba(15, 23, 42, 0.08);
+    var(--color-border);
 }
 
 .my-u-logout-button {
   display: flex;
-  align-items: center;
-  gap: 9px;
 
   width: 100%;
-  min-height: 42px;
 
-  padding: 0 12px;
+  align-items: center;
 
-  border: 1px solid transparent;
+  gap: 11px;
+
+  min-height: 43px;
+
+  padding: 10px 11px;
+
+  border: 0;
+
   border-radius: 12px;
 
   background: transparent;
 
-  color: rgba(255, 255, 255, 0.58);
+  color:
+    var(--color-text-secondary);
 
-  font: inherit;
-  font-size: 12px;
-  font-weight: 650;
+  font-family: inherit;
+
+  font-size: 11px;
 
   cursor: pointer;
 
+  text-align: right;
+
   transition:
     background 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease;
+    color 0.2s ease;
 }
 
 .my-u-logout-button:hover {
   background:
-    rgba(239, 68, 68, 0.08);
+    rgba(220, 38, 38, 0.07);
 
-  border-color:
-    rgba(239, 68, 68, 0.12);
-
-  color: #fca5a5;
-}
-
-[data-theme="light"]
-  .my-u-logout-button {
-  color: rgba(15, 23, 42, 0.58);
-}
-
-[data-theme="light"]
-  .my-u-logout-button:hover {
   color: #dc2626;
 }
 
 .my-u-navigation-brand {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
 
-  margin-top: 18px;
-  padding: 0 10px;
+  flex-direction: column;
+
+  gap: 3px;
+
+  margin-top: 16px;
+
+  padding: 0 8px;
 }
 
 .my-u-navigation-brand span {
-  color: rgba(255, 255, 255, 0.38);
+  color:
+    var(--color-text-primary);
 
   font-size: 9px;
+
   font-weight: 800;
-  letter-spacing: 0.12em;
+
+  letter-spacing: 0.16em;
 }
 
 .my-u-navigation-brand small {
-  color: rgba(255, 255, 255, 0.26);
+  color:
+    var(--color-text-muted);
 
-  font-size: 9px;
-}
-
-[data-theme="light"]
-  .my-u-navigation-brand span {
-  color: rgba(15, 23, 42, 0.38);
-}
-
-[data-theme="light"]
-  .my-u-navigation-brand small {
-  color: rgba(15, 23, 42, 0.30);
+  font-size: 7px;
 }
 
 /* ============================================================
-   MOBILE MENU CONTROLS
-   Hidden on desktop
+   MOBILE CONTROLS
    ============================================================ */
 
 .my-u-mobile-menu-button,
@@ -477,130 +394,298 @@
 
 .my-u-hero {
   display: flex;
+
   align-items: flex-end;
+
   justify-content: space-between;
+
   gap: 28px;
 
-  margin-bottom: 30px;
-  padding: 34px;
+  margin-bottom: 42px;
 
-  border: 1px solid
-    rgba(255, 255, 255, 0.07);
-
-  border-radius: 26px;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.045),
-      rgba(255, 255, 255, 0.018)
-    );
-
-  backdrop-filter:
-    blur(16px);
-
-  -webkit-backdrop-filter:
-    blur(16px);
-}
-
-[data-theme="light"]
-  .my-u-hero {
-  border-color:
-    rgba(15, 23, 42, 0.08);
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.76),
-      rgba(244, 246, 249, 0.62)
-    );
+  padding: 10px 0;
 }
 
 .my-u-hero h1 {
-  margin: 8px 0 10px;
+  max-width: 760px;
 
-  color: inherit;
+  margin: 10px 0 13px;
 
-  font-size: clamp(
-    28px,
-    4vw,
-    46px
-  );
+  font-size:
+    clamp(
+      36px,
+      5vw,
+      62px
+    );
 
-  line-height: 1.15;
+  line-height: 1.03;
+
+  letter-spacing: -0.05em;
 }
 
 .my-u-hero p {
-  max-width: 620px;
+  max-width: 680px;
 
   margin: 0;
 
-  color: var(--muted);
+  color:
+    var(--color-text-secondary);
 
   font-size: 14px;
+
   line-height: 1.9;
 }
 
 .my-u-primary-action {
   display: inline-flex;
+
   align-items: center;
-  justify-content: center;
-  gap: 12px;
+
+  gap: 11px;
 
   flex-shrink: 0;
 
-  min-height: 48px;
+  padding: 13px 17px;
 
-  padding: 0 20px;
+  border-radius: 13px;
 
-  border-radius: 14px;
+  background:
+    var(--color-brand);
 
-  background: #ffffff;
-
-  color: #111827;
-
-  font-size: 12px;
-  font-weight: 750;
+  color:
+    var(--color-brand-dark);
 
   text-decoration: none;
 
+  font-size: 12px;
+
+  white-space: nowrap;
+
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    transform 0.2s ease;
 }
 
 .my-u-primary-action:hover {
-  transform: translateY(-2px);
-
-  box-shadow:
-    0 12px 28px
-      rgba(0, 0, 0, 0.14);
+  transform:
+    translateY(-2px);
 }
 
-[data-theme="light"]
-  .my-u-primary-action {
-  background: #111827;
-  color: #ffffff;
+/* ============================================================
+   PRODUCTS / SERVICES
+   ============================================================ */
+
+.my-u-products-section {
+  margin-top: 8px;
+}
+
+.my-u-section-header {
+  margin-bottom: 20px;
+}
+
+.my-u-section-header h2 {
+  margin: 8px 0;
+
+  font-size: 28px;
+
+  letter-spacing: -0.03em;
+}
+
+.my-u-section-header p {
+  margin: 0;
+
+  color:
+    var(--color-text-secondary);
+
+  font-size: 12px;
+
+  line-height: 1.8;
+}
+
+/* ============================================================
+   PRODUCT GRID
+   ============================================================ */
+
+.my-u-product-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 14px;
+}
+
+/* ============================================================
+   PRODUCT CARD
+   ============================================================ */
+
+.my-u-product-card {
+  display: flex;
+
+  min-height: 260px;
+
+  flex-direction: column;
+
+  padding: 23px;
+
+  border: 1px solid
+    var(--color-border);
+
+  border-radius: 22px;
+
+  background:
+    var(--color-surface);
+
+  box-shadow:
+    var(--shadow-sm);
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.my-u-product-card-active:hover {
+  transform:
+    translateY(-3px);
+
+  background:
+    var(--color-surface-hover);
+}
+
+.my-u-product-card-coming {
+  opacity: 0.72;
+}
+
+.my-u-product-card-top {
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  gap: 12px;
+}
+
+.my-u-product-icon {
+  display: flex;
+
+  width: 48px;
+  height: 48px;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 15px;
+
+  background:
+    var(--color-bg-soft);
+
+  font-size: 22px;
+}
+
+.my-u-product-status {
+  padding: 6px 9px;
+
+  border-radius: 999px;
+
+  background:
+    var(--color-bg-soft);
+
+  color:
+    var(--color-text-tertiary);
+
+  font-size: 9px;
+}
+
+.my-u-product-status-active {
+  color: #15803d;
+}
+
+.my-u-product-card-content {
+  flex: 1;
+
+  padding-top: 24px;
+}
+
+.my-u-product-name {
+  color:
+    var(--color-text-muted);
+
+  font-size: 10px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.08em;
+}
+
+.my-u-product-card h3 {
+  margin: 8px 0 9px;
+
+  font-size: 19px;
+}
+
+.my-u-product-card p {
+  max-width: 470px;
+
+  margin: 0;
+
+  color:
+    var(--color-text-secondary);
+
+  font-size: 11px;
+
+  line-height: 1.85;
+}
+
+.my-u-product-action {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-top: 20px;
+
+  padding: 11px 13px;
+
+  border-radius: 11px;
+
+  background:
+    var(--color-bg-soft);
+
+  color:
+    var(--color-text-primary);
+
+  text-decoration: none;
+
+  font-size: 11px;
+}
+
+.my-u-product-action-disabled {
+  color:
+    var(--color-text-muted);
+
+  cursor: default;
 }
 
 /* ============================================================
    TABLET
    ============================================================ */
 
-@media (max-width: 1100px) {
+@media (max-width: 950px) {
   .my-u-layout {
     grid-template-columns:
-      240px minmax(0, 1fr);
+      230px minmax(0, 1fr);
 
-    gap: 22px;
+    gap: 20px;
   }
 
-  .my-u-navigation {
-    padding: 15px;
-  }
-
-  .my-u-hero {
-    padding: 28px;
+  .my-u-product-grid {
+    grid-template-columns:
+      1fr;
   }
 }
 
@@ -610,24 +695,24 @@
 
 @media (max-width: 760px) {
   /*
-     GlobalHeader currently has a mobile height of 58px.
-
-     IMPORTANT:
-     My U mobile controls intentionally start BELOW
-     the global header so they never cover it.
-  */
+   * GlobalHeader:
+   * mobile height = 58px
+   *
+   * My U sidebar starts at 58px,
+   * therefore it never covers the header.
+   */
 
   .my-u-page {
-    padding-top: 76px;
+    padding-top: 78px;
   }
 
   .my-u-layout {
     display: block;
   }
 
-  /* ----------------------------------------------------------
+  /* ==========================================================
      MOBILE SIDEBAR
-     ---------------------------------------------------------- */
+     ========================================================== */
 
   .my-u-navigation {
     position: fixed;
@@ -636,12 +721,14 @@
     right: 0;
     bottom: 0;
 
-    width: min(
-      320px,
-      86vw
-    );
+    width:
+      min(
+        320px,
+        86vw
+      );
 
-    min-height: calc(100vh - 58px);
+    min-height:
+      calc(100vh - 58px);
 
     padding: 18px;
 
@@ -649,7 +736,9 @@
       rgba(255, 255, 255, 0.12);
 
     border-top: 0;
+
     border-bottom: 0;
+
     border-left:
       1px solid
       rgba(255, 255, 255, 0.14);
@@ -659,8 +748,8 @@
     background:
       linear-gradient(
         145deg,
-        rgba(28, 31, 38, 0.94),
-        rgba(15, 17, 22, 0.91)
+        rgba(28, 31, 38, 0.96),
+        rgba(15, 17, 22, 0.94)
       );
 
     backdrop-filter:
@@ -674,6 +763,7 @@
     box-shadow:
       -18px 0 55px
       rgba(0, 0, 0, 0.24),
+
       inset 1px 0 0
       rgba(255, 255, 255, 0.04);
 
@@ -688,10 +778,15 @@
     overflow-y: auto;
 
     /*
-      Above page content, but it starts below the header.
-    */
+     * Sidebar is above the page,
+     * but below the Global Header geometrically.
+     */
     z-index: 1200;
   }
+
+  /* ==========================================================
+     LIGHT MODE SIDEBAR
+     ========================================================== */
 
   [data-theme="light"]
     .my-u-navigation {
@@ -701,18 +796,23 @@
     background:
       linear-gradient(
         145deg,
-        rgba(255, 255, 255, 0.96),
-        rgba(244, 246, 249, 0.92)
+        rgba(255, 255, 255, 0.97),
+        rgba(244, 246, 249, 0.94)
       );
 
     box-shadow:
       -18px 0 55px
       rgba(15, 23, 42, 0.12),
+
       inset 1px 0 0
       rgba(255, 255, 255, 0.72);
 
     color: #111827;
   }
+
+  /* ==========================================================
+     SIDEBAR OPEN
+     ========================================================== */
 
   .my-u-sidebar-open
     .my-u-navigation {
@@ -720,10 +820,10 @@
       translateX(0);
   }
 
-  /* ----------------------------------------------------------
-     MOBILE SIDEBAR OVERLAY
-     Only covers the area BELOW the header.
-     ---------------------------------------------------------- */
+  /* ==========================================================
+     OVERLAY
+     ONLY BELOW HEADER
+     ========================================================== */
 
   .my-u-sidebar-overlay {
     position: fixed;
@@ -752,13 +852,13 @@
   .my-u-sidebar-open
     .my-u-sidebar-overlay {
     visibility: visible;
+
     opacity: 1;
   }
 
-  /* ----------------------------------------------------------
-     MOBILE HAMBURGER
-     Positioned BELOW the header.
-     ---------------------------------------------------------- */
+  /* ==========================================================
+     HAMBURGER
+     ========================================================== */
 
   .my-u-mobile-menu-button {
     position: fixed;
@@ -767,13 +867,16 @@
     right: 18px;
 
     display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 5px;
 
     width: 46px;
     height: 46px;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
 
     padding: 0;
 
@@ -783,7 +886,7 @@
     border-radius: 14px;
 
     background:
-      rgba(28, 31, 38, 0.78);
+      rgba(28, 31, 38, 0.82);
 
     backdrop-filter:
       blur(18px)
@@ -799,7 +902,15 @@
 
     cursor: pointer;
 
-    z-index: 1250;
+    /*
+     * IMPORTANT:
+     * Sidebar = 1200
+     * Hamburger = 1100
+     *
+     * Therefore when sidebar opens,
+     * hamburger goes UNDER the sidebar.
+     */
+    z-index: 1100;
   }
 
   .my-u-mobile-menu-button span {
@@ -811,11 +922,11 @@
     border-radius: 999px;
 
     background: #ffffff;
-
-    transition:
-      transform 0.2s ease,
-      opacity 0.2s ease;
   }
+
+  /* ==========================================================
+     LIGHT MODE HAMBURGER
+     ========================================================== */
 
   [data-theme="light"]
     .my-u-mobile-menu-button {
@@ -823,7 +934,7 @@
       rgba(15, 23, 42, 0.10);
 
     background:
-      rgba(255, 255, 255, 0.88);
+      rgba(255, 255, 255, 0.90);
 
     box-shadow:
       0 10px 30px
@@ -832,39 +943,39 @@
 
   [data-theme="light"]
     .my-u-mobile-menu-button span {
-    background: #111827;
+    background:
+      #111827;
   }
 
-  /* ----------------------------------------------------------
+  /* ==========================================================
      MOBILE CLOSE BUTTON
-     ---------------------------------------------------------- */
+     ========================================================== */
 
   .my-u-mobile-close {
     display: flex;
+
+    width: 30px;
+    height: 30px;
+
+    flex-shrink: 0;
+
     align-items: center;
     justify-content: center;
 
-    flex: 0 0 34px;
-
-    width: 34px;
-    height: 34px;
-
-    margin-right: auto;
-
-    padding: 0;
-
     border: 1px solid
-      rgba(255, 255, 255, 0.08);
+      rgba(255, 255, 255, 0.14);
 
-    border-radius: 10px;
+    border-radius: 9px;
 
     background:
-      rgba(255, 255, 255, 0.055);
+      rgba(255, 255, 255, 0.08);
 
     color: #ffffff;
 
-    font-size: 23px;
-    font-weight: 300;
+    font-family: inherit;
+
+    font-size: 20px;
+
     line-height: 1;
 
     cursor: pointer;
@@ -873,140 +984,204 @@
   [data-theme="light"]
     .my-u-mobile-close {
     border-color:
-      rgba(15, 23, 42, 0.08);
+      rgba(17, 24, 39, 0.12);
 
     background:
-      rgba(15, 23, 42, 0.045);
+      rgba(17, 24, 39, 0.06);
 
     color: #111827;
   }
 
-  /* ----------------------------------------------------------
-     MOBILE SIDEBAR USER CARD
-     ---------------------------------------------------------- */
+  /* ==========================================================
+     MOBILE DARK SIDEBAR TEXT
+     ========================================================== */
 
-  .my-u-user-info strong {
+  .my-u-navigation
+    .my-u-user-info strong {
     color: #ffffff;
   }
 
-  .my-u-user-info span {
-    color:
-      rgba(255, 255, 255, 0.58);
-  }
-
-  .my-u-account-status {
-    color:
-      rgba(255, 255, 255, 0.56);
-  }
-
-  .my-u-navigation-label {
-    color:
-      rgba(255, 255, 255, 0.38);
-  }
-
-  .my-u-navigation-item {
+  .my-u-navigation
+    .my-u-user-info span {
     color:
       rgba(255, 255, 255, 0.62);
   }
 
-  .my-u-navigation-item:hover,
-  .my-u-navigation-item-active {
+  .my-u-navigation
+    .my-u-account-status {
+    color:
+      rgba(255, 255, 255, 0.56);
+  }
+
+  .my-u-navigation
+    .my-u-navigation-label {
+    color:
+      rgba(255, 255, 255, 0.40);
+  }
+
+  .my-u-navigation
+    .my-u-navigation-item {
+    color:
+      rgba(255, 255, 255, 0.78);
+  }
+
+  .my-u-navigation
+    .my-u-navigation-item:hover {
+    background:
+      rgba(255, 255, 255, 0.08);
+
     color: #ffffff;
   }
 
-  .my-u-logout-button {
-    color:
-      rgba(255, 255, 255, 0.58);
+  .my-u-navigation
+    .my-u-navigation-item-active {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.10),
+        rgba(255, 255, 255, 0.025)
+      );
+
+    color: #ffffff;
   }
 
-  .my-u-navigation-brand span {
+  .my-u-navigation
+    .my-u-navigation-item-active
+    .my-u-navigation-icon {
+    background:
+      rgba(255, 255, 255, 0.12);
+  }
+
+  .my-u-navigation
+    .my-u-logout-button {
+    color:
+      rgba(255, 255, 255, 0.78);
+  }
+
+  .my-u-navigation
+    .my-u-navigation-brand span {
     color:
       rgba(255, 255, 255, 0.38);
   }
 
-  .my-u-navigation-brand small {
+  .my-u-navigation
+    .my-u-navigation-brand small {
     color:
       rgba(255, 255, 255, 0.26);
   }
 
-  /* ----------------------------------------------------------
-     MOBILE LIGHT THEME
-     ---------------------------------------------------------- */
+  /* ==========================================================
+     MOBILE LIGHT SIDEBAR TEXT
+     ========================================================== */
 
   [data-theme="light"]
+    .my-u-navigation
     .my-u-user-info strong {
     color: #111827;
   }
 
   [data-theme="light"]
+    .my-u-navigation
     .my-u-user-info span {
     color:
-      rgba(15, 23, 42, 0.58);
+      rgba(17, 24, 39, 0.58);
   }
 
   [data-theme="light"]
+    .my-u-navigation
     .my-u-account-status {
     color:
-      rgba(15, 23, 42, 0.56);
+      rgba(17, 24, 39, 0.56);
   }
 
   [data-theme="light"]
+    .my-u-navigation
     .my-u-navigation-label {
     color:
-      rgba(15, 23, 42, 0.42);
+      rgba(17, 24, 39, 0.42);
   }
 
   [data-theme="light"]
+    .my-u-navigation
     .my-u-navigation-item {
     color:
-      rgba(15, 23, 42, 0.62);
+      rgba(17, 24, 39, 0.76);
   }
 
   [data-theme="light"]
-    .my-u-navigation-item:hover,
-  [data-theme="light"]
-    .my-u-navigation-item-active {
+    .my-u-navigation
+    .my-u-navigation-item:hover {
+    background:
+      rgba(17, 24, 39, 0.06);
+
     color: #111827;
   }
 
   [data-theme="light"]
+    .my-u-navigation
+    .my-u-navigation-item-active {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(17, 24, 39, 0.07),
+        rgba(17, 24, 39, 0.02)
+      );
+
+    color: #111827;
+  }
+
+  [data-theme="light"]
+    .my-u-navigation
+    .my-u-navigation-item-active
+    .my-u-navigation-icon {
+    background:
+      rgba(17, 24, 39, 0.07);
+  }
+
+  [data-theme="light"]
+    .my-u-navigation
     .my-u-logout-button {
     color:
-      rgba(15, 23, 42, 0.58);
+      rgba(17, 24, 39, 0.76);
   }
 
   [data-theme="light"]
+    .my-u-navigation
     .my-u-navigation-brand span {
     color:
-      rgba(15, 23, 42, 0.38);
+      rgba(17, 24, 39, 0.38);
   }
 
   [data-theme="light"]
+    .my-u-navigation
     .my-u-navigation-brand small {
     color:
-      rgba(15, 23, 42, 0.30);
+      rgba(17, 24, 39, 0.30);
   }
 
-  /* ----------------------------------------------------------
+  /* ==========================================================
      MOBILE HERO
-     ---------------------------------------------------------- */
+     ========================================================== */
 
   .my-u-hero {
     align-items: flex-start;
+
     flex-direction: column;
-
-    margin-bottom: 22px;
-    padding: 24px 20px;
-
-    border-radius: 22px;
-  }
-
-  .my-u-hero h1 {
-    font-size: 28px;
   }
 
   .my-u-primary-action {
     width: 100%;
+
+    justify-content: space-between;
+  }
+
+  /* ==========================================================
+     MOBILE PRODUCT GRID
+     ========================================================== */
+
+  .my-u-product-grid {
+    grid-template-columns:
+      1fr;
   }
 }
 
@@ -1016,8 +1191,16 @@
 
 @media (max-width: 500px) {
   .my-u-page {
-    padding-top: 74px;
-    padding-bottom: 50px;
+    padding:
+      72px
+      0
+      80px;
+  }
+
+  .my-u-navigation {
+    width: 88vw;
+
+    padding: 15px;
   }
 
   .my-u-mobile-menu-button {
@@ -1026,27 +1209,20 @@
 
     width: 44px;
     height: 44px;
-  }
 
-  .my-u-navigation {
-    width: min(
-      310px,
-      88vw
-    );
-
-    padding: 16px;
+    /*
+     * Keep below sidebar.
+     */
+    z-index: 1100;
   }
 
   .my-u-hero {
-    padding: 22px 17px;
+    margin-bottom: 32px;
   }
 
-  .my-u-hero h1 {
-    font-size: 25px;
-  }
+  .my-u-product-card {
+    min-height: 235px;
 
-  .my-u-hero p {
-    font-size: 13px;
-    line-height: 1.85;
+    padding: 19px;
   }
 }
