@@ -2322,3 +2322,792 @@
     font-size: 9px;
   }
 }
+
+/* =========================================================
+   U11 - BUILD / SUBMIT APP
+   ========================================================= */
+
+.uapps-build-page,
+.uapps-my-apps-page {
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.uapps-build-container,
+.uapps-my-apps-container {
+  width: min(
+    1080px,
+    calc(100% - 40px)
+  );
+  margin-inline: auto;
+  padding: 34px 0 90px;
+}
+
+.uapps-build-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 38px;
+}
+
+.uapps-build-topbar .uapps-back-link {
+  margin-bottom: 0;
+}
+
+.uapps-build-my-apps-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--foreground);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.uapps-build-my-apps-link:hover {
+  border-color: var(--foreground);
+}
+
+.uapps-build-hero,
+.uapps-my-apps-hero {
+  max-width: 780px;
+  margin-bottom: 38px;
+}
+
+.uapps-build-hero h1,
+.uapps-my-apps-hero h1 {
+  margin: 0;
+  font-size: clamp(
+    34px,
+    5vw,
+    58px
+  );
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+}
+
+.uapps-build-hero p,
+.uapps-my-apps-hero p {
+  max-width: 680px;
+  margin: 20px 0 0;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 2;
+}
+
+.uapps-build-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.uapps-build-card {
+  padding: 25px;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: var(--surface);
+}
+
+.uapps-build-card-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 25px;
+  margin-bottom: 26px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.uapps-build-card-header > div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.uapps-build-card-header > div > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--background);
+  color: var(--muted-foreground);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.uapps-build-card-header h2 {
+  margin: 0;
+  font-size: 19px;
+}
+
+.uapps-build-card-header p {
+  max-width: 360px;
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 1.8;
+  text-align: left;
+}
+
+.uapps-build-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    2,
+    minmax(0, 1fr)
+  );
+  gap: 18px;
+}
+
+.uapps-build-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.uapps-build-field-wide {
+  grid-column: 1 / -1;
+}
+
+.uapps-build-field > span,
+.uapps-build-option-group > span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.uapps-build-field > span small {
+  color: var(--muted-foreground);
+  font-size: 9px;
+  font-weight: 500;
+}
+
+.uapps-build-field input,
+.uapps-build-field textarea,
+.uapps-build-field select {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  outline: none;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: 13px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.uapps-build-field input,
+.uapps-build-field select {
+  height: 46px;
+  padding: 0 13px;
+}
+
+.uapps-build-field textarea {
+  min-height: 125px;
+  padding: 12px 13px;
+  resize: vertical;
+  line-height: 1.8;
+}
+
+.uapps-build-field input:focus,
+.uapps-build-field textarea:focus,
+.uapps-build-field select:focus {
+  border-color: var(--foreground);
+  box-shadow:
+    0 0 0 3px
+    color-mix(
+      in srgb,
+      var(--foreground) 8%,
+      transparent
+    );
+}
+
+.uapps-build-field > small {
+  align-self: flex-end;
+  margin-top: -4px;
+  color: var(--muted-foreground);
+  font-size: 9px;
+}
+
+.uapps-build-option-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.uapps-build-option-group:first-of-type {
+  margin-top: 0;
+}
+
+.uapps-build-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.uapps-build-option {
+  min-height: 40px;
+  padding: 0 13px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--background);
+  color: var(--muted-foreground);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.uapps-build-option:hover {
+  transform: translateY(-1px);
+  color: var(--foreground);
+}
+
+.uapps-build-option.is-active {
+  border-color: var(--foreground);
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.uapps-build-accent-options {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 46px;
+}
+
+.uapps-build-accent {
+  width: 30px;
+  height: 30px;
+  border: 3px solid var(--surface);
+  border-radius: 50%;
+  outline: 1px solid var(--border);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    outline-color 0.2s ease;
+}
+
+.uapps-build-accent:hover {
+  transform: scale(1.08);
+}
+
+.uapps-build-accent.is-active {
+  transform: scale(1.12);
+  outline: 2px solid var(--foreground);
+}
+
+.uapps-build-accent-blue {
+  background: #5b7cff;
+}
+
+.uapps-build-accent-purple {
+  background: #9b5cff;
+}
+
+.uapps-build-accent-green {
+  background: #22c55e;
+}
+
+.uapps-build-accent-orange {
+  background: #f97316;
+}
+
+.uapps-build-accent-black {
+  background: #171717;
+}
+
+.uapps-build-accent-pink {
+  background: #ec4899;
+}
+
+.uapps-build-accent-red {
+  background: #ef4444;
+}
+
+.uapps-build-message {
+  padding: 13px 15px;
+  border-radius: 12px;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.uapps-build-message-error {
+  border: 1px solid rgba(
+    239,
+    68,
+    68,
+    0.25
+  );
+  background: rgba(
+    239,
+    68,
+    68,
+    0.07
+  );
+  color: #dc2626;
+}
+
+.uapps-build-message-success {
+  border: 1px solid rgba(
+    34,
+    197,
+    94,
+    0.25
+  );
+  background: rgba(
+    34,
+    197,
+    94,
+    0.07
+  );
+  color: #16a34a;
+}
+
+.uapps-build-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.uapps-build-primary-button,
+.uapps-build-secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 46px;
+  padding: 0 18px;
+  border-radius: 11px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.uapps-build-primary-button {
+  border: 1px solid var(--foreground);
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.uapps-build-secondary-button {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--foreground);
+}
+
+.uapps-build-primary-button:hover,
+.uapps-build-secondary-button:hover {
+  transform: translateY(-1px);
+}
+
+.uapps-build-primary-button span,
+.uapps-build-review-link span {
+  font-size: 16px;
+}
+
+.uapps-build-next-step {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background: var(--surface);
+}
+
+.uapps-build-next-step > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.uapps-build-next-step strong {
+  font-size: 13px;
+}
+
+.uapps-build-next-step span {
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+
+.uapps-build-review-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--foreground);
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.uapps-build-review-link:hover {
+  text-decoration: underline;
+}
+
+/* =========================================================
+   U11 - MY APPS
+   ========================================================= */
+
+.uapps-my-apps-hero {
+  margin-bottom: 30px;
+}
+
+.uapps-my-apps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.uapps-my-app-card {
+  display: flex;
+  gap: 18px;
+  padding: 19px;
+  border: 1px solid var(--border);
+  border-radius: 19px;
+  background: var(--surface);
+}
+
+.uapps-my-app-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 68px;
+  width: 68px;
+  height: 68px;
+  border-radius: 17px;
+  color: white;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.uapps-my-app-icon.uapps-build-accent-blue {
+  background: #5b7cff;
+}
+
+.uapps-my-app-icon.uapps-build-accent-purple {
+  background: #9b5cff;
+}
+
+.uapps-my-app-icon.uapps-build-accent-green {
+  background: #22c55e;
+}
+
+.uapps-my-app-icon.uapps-build-accent-orange {
+  background: #f97316;
+}
+
+.uapps-my-app-icon.uapps-build-accent-black {
+  background: #171717;
+}
+
+.uapps-my-app-icon.uapps-build-accent-pink {
+  background: #ec4899;
+}
+
+.uapps-my-app-icon.uapps-build-accent-red {
+  background: #ef4444;
+}
+
+.uapps-my-app-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.uapps-my-app-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.uapps-my-app-heading h2 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.uapps-my-app-heading > div > span {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted-foreground);
+  font-size: 10px;
+}
+
+.uapps-my-app-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 27px;
+  padding: 0 9px;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.uapps-my-app-status-draft {
+  background: var(--background);
+  color: var(--muted-foreground);
+}
+
+.uapps-my-app-status-pending {
+  background: rgba(
+    245,
+    158,
+    11,
+    0.1
+  );
+  color: #d97706;
+}
+
+.uapps-my-app-status-approved {
+  background: rgba(
+    34,
+    197,
+    94,
+    0.1
+  );
+  color: #16a34a;
+}
+
+.uapps-my-app-status-rejected {
+  background: rgba(
+    239,
+    68,
+    68,
+    0.1
+  );
+  color: #dc2626;
+}
+
+.uapps-my-app-content > p {
+  max-width: 800px;
+  margin: 11px 0;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 1.9;
+}
+
+.uapps-my-app-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.uapps-my-app-meta span,
+.uapps-my-app-meta a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 25px;
+  padding: 0 8px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--muted-foreground);
+  font-size: 9px;
+  text-decoration: none;
+}
+
+.uapps-my-app-meta a {
+  color: var(--foreground);
+}
+
+.uapps-my-app-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.uapps-my-app-actions .uapps-build-primary-button {
+  min-height: 37px;
+  padding: 0 13px;
+  font-size: 10px;
+}
+
+.uapps-my-app-delete {
+  min-height: 37px;
+  padding: 0 13px;
+  border: 1px solid rgba(
+    239,
+    68,
+    68,
+    0.2
+  );
+  border-radius: 9px;
+  background: transparent;
+  color: #dc2626;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.uapps-my-apps-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 390px;
+  padding: 40px 20px;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: var(--surface);
+  text-align: center;
+}
+
+.uapps-my-apps-empty > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 68px;
+  height: 68px;
+  margin-bottom: 18px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--background);
+  color: var(--foreground);
+  font-size: 28px;
+}
+
+.uapps-my-apps-empty h2 {
+  margin: 0 0 9px;
+  font-size: 20px;
+}
+
+.uapps-my-apps-empty p {
+  max-width: 460px;
+  margin: 0 0 22px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+@media (max-width: 700px) {
+  .uapps-build-container,
+  .uapps-my-apps-container {
+    width: min(
+      100% - 28px,
+      1080px
+    );
+    padding-top: 22px;
+  }
+
+  .uapps-build-topbar {
+    align-items: flex-start;
+  }
+
+  .uapps-build-card {
+    padding: 18px;
+    border-radius: 18px;
+  }
+
+  .uapps-build-card-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .uapps-build-card-header p {
+    text-align: right;
+  }
+
+  .uapps-build-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .uapps-build-field-wide {
+    grid-column: auto;
+  }
+
+  .uapps-build-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .uapps-build-next-step {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .uapps-my-app-card {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .uapps-my-app-icon {
+    flex-basis: 58px;
+    width: 58px;
+    height: 58px;
+  }
+
+  .uapps-my-app-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .uapps-my-app-status {
+    order: -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .uapps-build-topbar {
+    flex-direction: column;
+  }
+
+  .uapps-build-my-apps-link {
+    width: 100%;
+  }
+
+  .uapps-build-hero h1,
+  .uapps-my-apps-hero h1 {
+    font-size: 34px;
+  }
+
+  .uapps-build-hero p,
+  .uapps-my-apps-hero p {
+    font-size: 12px;
+  }
+
+  .uapps-build-options {
+    display: grid;
+    grid-template-columns: repeat(
+      2,
+      minmax(0, 1fr)
+    );
+  }
+
+  .uapps-build-option {
+    width: 100%;
+  }
+}
