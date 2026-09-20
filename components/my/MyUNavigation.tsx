@@ -16,7 +16,7 @@ import type {
 } from "@/lib/my-u/types";
 
 type Props = {
-  items: MyUNavigationItem[];
+  items: readonly MyUNavigationItem[];
 };
 
 export default function MyUNavigation({
