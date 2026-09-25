@@ -51,6 +51,18 @@ export async function authenticate(
     const user =
       response.user;
 
+    if (
+      !user ||
+      !response.tokens?.accessToken ||
+      !response.tokens?.refreshToken
+    ) {
+      return {
+        success: false,
+        message:
+          "Invalid authentication response.",
+      };
+    }
+
     setStoredAuthSession({
       authenticated: true,
       user,
