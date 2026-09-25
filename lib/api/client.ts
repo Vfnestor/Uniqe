@@ -5,6 +5,10 @@ import type {
   ApiRequestOptions,
 } from "./types";
 
+import {
+  getAccessToken,
+} from "@/lib/auth/auth-storage";
+
 export class ApiError extends Error {
   status: number;
   code?: string;
@@ -14,27 +18,43 @@ export class ApiError extends Error {
     message: string,
     status = 0,
     code?: string,
-    details?: unknown
+    details?: unknown,
   ) {
     super(message);
 
-    this.name = "ApiError";
-    this.status = status;
-    this.code = code;
-    this.details = details;
+    this.name =
+      "ApiError";
+
+    this.status =
+      status;
+
+    this.code =
+      code;
+
+    this.details =
+      details;
   }
 }
 
-function buildUrl(path: string): string {
+function buildUrl(
+  path: string,
+): string {
   if (
-    path.startsWith("http://") ||
-    path.startsWith("https://")
+    path.startsWith(
+      "http://",
+    ) ||
+    path.startsWith(
+      "https://",
+    )
   ) {
     return path;
   }
 
   const baseUrl =
-    apiConfig.baseUrl.replace(/\/$/, "");
+    apiConfig.baseUrl.replace(
+      /\/$/,
+      "",
+    );
 
   const normalizedPath =
     path.startsWith("/")
@@ -45,7 +65,7 @@ function buildUrl(path: string): string {
 }
 
 function serializeBody(
-  body: unknown
+  body: unknown,
 ): BodyInit | undefined {
   if (
     body === undefined ||
@@ -54,32 +74,47 @@ function serializeBody(
     return undefined;
   }
 
-  if (typeof body === "string") {
+  if (
+    typeof body ===
+    "string"
+  ) {
     return body;
   }
 
-  if (body instanceof FormData) {
+  if (
+    body instanceof FormData
+  ) {
     return body;
   }
 
-  if (body instanceof Blob) {
+  if (
+    body instanceof Blob
+  ) {
     return body;
   }
 
-  if (body instanceof URLSearchParams) {
+  if (
+    body instanceof URLSearchParams
+  ) {
     return body;
   }
 
-  if (body instanceof ArrayBuffer) {
-    return new Uint8Array(body);
+  if (
+    body instanceof ArrayBuffer
+  ) {
+    return new Uint8Array(
+      body,
+    );
   }
 
-  return JSON.stringify(body);
+  return JSON.stringify(
+    body,
+  );
 }
 
 async function request<T>(
   path: string,
-  options: ApiRequestOptions = {}
+  options: ApiRequestOptions = {},
 ): Promise<T> {
   const {
     timeout = apiConfig.timeout,
@@ -90,90 +125,125 @@ async function request<T>(
   const controller =
     new AbortController();
 
-  const timeoutId = setTimeout(
-    () => controller.abort(),
-    timeout
-  );
+  const timeoutId =
+    setTimeout(
+      () =>
+        controller.abort(),
+      timeout,
+    );
 
-  const headers = new Headers(
-    requestInit.headers
-  );
+  const headers =
+    new Headers(
+      requestInit.headers,
+    );
 
   headers.set(
     "Accept",
-    "application/json"
+    "application/json",
   );
+
+  const accessToken =
+    getAccessToken();
+
+  if (
+    accessToken &&
+    !headers.has(
+      "Authorization",
+    )
+  ) {
+    headers.set(
+      "Authorization",
+      `Bearer ${accessToken}`,
+    );
+  }
 
   const serializedBody =
     serializeBody(body);
 
   if (
-    serializedBody !== undefined &&
+    serializedBody !==
+      undefined &&
     !(body instanceof FormData) &&
-    !headers.has("Content-Type")
+    !headers.has(
+      "Content-Type",
+    )
   ) {
     headers.set(
       "Content-Type",
-      "application/json"
+      "application/json",
     );
   }
 
-  const fetchOptions: RequestInit = {
+  const fetchOptions:
+    RequestInit = {
     ...requestInit,
     headers,
     body: serializedBody,
-    signal: controller.signal,
+    signal:
+      controller.signal,
   };
 
   let response: Response;
 
   try {
-    response = await fetch(
-      buildUrl(path),
-      fetchOptions
-    );
+    response =
+      await fetch(
+        buildUrl(path),
+        fetchOptions,
+      );
   } catch (error) {
     if (
-      error instanceof DOMException &&
-      error.name === "AbortError"
+      error instanceof
+        DOMException &&
+      error.name ===
+        "AbortError"
     ) {
       throw new ApiError(
-        "API request timed out."
+        "API request timed out.",
       );
     }
 
     throw new ApiError(
-      "Unable to connect to the API."
+      "Unable to connect to the API.",
     );
   } finally {
-    clearTimeout(timeoutId);
+    clearTimeout(
+      timeoutId,
+    );
   }
 
   const contentType =
     response.headers.get(
-      "content-type"
+      "content-type",
     ) || "";
 
-  let responseData: unknown = null;
+  let responseData:
+    | unknown
+    | null = null;
 
-  if (response.status !== 204) {
+  if (
+    response.status !==
+    204
+  ) {
     if (
       contentType.includes(
-        "application/json"
+        "application/json",
       )
     ) {
       try {
         responseData =
           await response.json();
       } catch {
-        responseData = null;
+        responseData =
+          null;
       }
     } else {
       try {
         responseData =
           await response.text();
       } catch {
-        responseData = null;
+        responseData =
+          null;
       }
     }
   }
@@ -189,7 +259,7 @@ async function request<T>(
         "API request failed.",
       response.status,
       errorBody?.code,
-      errorBody?.details
+      errorBody?.details,
     );
   }
 
@@ -201,21 +271,21 @@ export const apiClient = {
 
   get<T>(
     path: string,
-    options: ApiRequestOptions = {}
+    options: ApiRequestOptions = {},
   ) {
     return request<T>(
       path,
       {
         ...options,
         method: "GET",
-      }
+      },
     );
   },
 
   post<T>(
     path: string,
     body?: unknown,
-    options: ApiRequestOptions = {}
+    options: ApiRequestOptions = {},
   ) {
     return request<T>(
       path,
@@ -223,14 +293,14 @@ export const apiClient = {
         ...options,
         method: "POST",
         body,
-      }
+      },
     );
   },
 
   put<T>(
     path: string,
     body?: unknown,
-    options: ApiRequestOptions = {}
+    options: ApiRequestOptions = {},
   ) {
     return request<T>(
       path,
@@ -238,14 +308,14 @@ export const apiClient = {
         ...options,
         method: "PUT",
         body,
-      }
+      },
     );
   },
 
   patch<T>(
     path: string,
     body?: unknown,
-    options: ApiRequestOptions = {}
+    options: ApiRequestOptions = {},
   ) {
     return request<T>(
       path,
@@ -253,20 +323,20 @@ export const apiClient = {
         ...options,
         method: "PATCH",
         body,
-      }
+      },
     );
   },
 
   delete<T>(
     path: string,
-    options: ApiRequestOptions = {}
+    options: ApiRequestOptions = {},
   ) {
     return request<T>(
       path,
       {
         ...options,
         method: "DELETE",
-      }
+      },
     );
   },
 };
