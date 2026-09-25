@@ -15,17 +15,14 @@ import {
 } from "@/components/i18n/LanguageProvider";
 
 import {
-  authenticate,
-} from "@/lib/auth/authentication";
-
-import {
-  setStoredAuthSession,
-} from "@/lib/auth/auth-storage";
+  useAuth,
+} from "@/components/auth/AuthProvider";
 
 import "./login.css";
 
 export default function AdminLoginPage() {
-  const router = useRouter();
+  const router =
+    useRouter();
 
   const searchParams =
     useSearchParams();
@@ -33,6 +30,10 @@ export default function AdminLoginPage() {
   const {
     language,
   } = useLanguage();
+
+  const {
+    login,
+  } = useAuth();
 
   const isRtl =
     language === "fa";
@@ -67,7 +68,7 @@ export default function AdminLoginPage() {
 
     try {
       const result =
-        await authenticate(
+        await login(
           email,
           password,
         );
@@ -85,23 +86,15 @@ export default function AdminLoginPage() {
         return;
       }
 
-      /*
-       * =====================================================
-       * OWNER
-       * =====================================================
-       *
-       * Owner session is already created securely
-       * by /api/admin/login.
-       */
+      const redirect =
+        searchParams.get(
+          "redirect",
+        );
+
       if (
         result.role ===
         "owner"
       ) {
-        const redirect =
-          searchParams.get(
-            "redirect",
-          );
-
         router.replace(
           redirect &&
             redirect.startsWith(
@@ -115,41 +108,6 @@ export default function AdminLoginPage() {
 
         return;
       }
-
-      /*
-       * =====================================================
-       * USER
-       * =====================================================
-       *
-       * User session is stored in the existing
-       * client-side authentication foundation.
-       */
-      if (
-        result.user
-      ) {
-        setStoredAuthSession({
-          authenticated: true,
-          user: {
-            id:
-              result.user.id,
-
-            name:
-              result.user.name,
-
-            email:
-              result.user.email,
-
-            role:
-              result.user.role,
-          },
-        });
-      }
-
-      /*
-       * =====================================================
-       * ROLE REDIRECT
-       * =====================================================
-       */
 
       router.replace(
         result.redirectTo ||
@@ -184,7 +142,6 @@ export default function AdminLoginPage() {
       </div>
 
       <section className="admin-login-card">
-
         <div className="admin-login-brand">
           <div className="admin-login-mark">
             U
