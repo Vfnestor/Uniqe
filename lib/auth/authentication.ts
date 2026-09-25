@@ -1,10 +1,22 @@
+import {
+  apiClient,
+} from "@/lib/api/client";
+
+import {
+  apiEndpoints,
+} from "@/lib/api/endpoints";
+
 import type {
   AuthLoginResult,
-  AuthUserRole,
+  AuthResult,
 } from "./types";
 
+import {
+  setStoredAuthSession,
+} from "./auth-storage";
+
 function getRedirectPath(
-  role: AuthUserRole,
+  role: AuthLoginResult["role"],
 ) {
   switch (role) {
     case "owner":
@@ -12,15 +24,6 @@ function getRedirectPath(
 
     case "user":
       return "/my";
-
-    case "seller":
-      return "/seller";
-
-    case "teacher":
-      return "/teacher";
-
-    case "professional":
-      return "/professional";
 
     default:
       return "/my";
@@ -34,96 +37,45 @@ export async function authenticate(
   const normalizedEmail =
     email.trim().toLowerCase();
 
-  /*
-   * =========================================================
-   * OWNER
-   * =========================================================
-   *
-   * Owner authentication continues to use
-   * the existing Admin authentication system.
-   *
-   * We intentionally do not modify the Admin
-   * login page or Admin session implementation.
-   */
-
   try {
-    const adminResponse =
-      await fetch(
-        "/api/admin/login",
+    const response =
+      await apiClient.post<AuthResult>(
+        apiEndpoints.auth.login,
         {
-          method: "POST",
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-          body: JSON.stringify({
-            email:
-              normalizedEmail,
-            password,
-          }),
+          email:
+            normalizedEmail,
+          password,
         },
       );
 
-    if (adminResponse.ok) {
-      const data =
-        await adminResponse.json();
+    const user =
+      response.user;
 
-      if (
-        data?.success &&
-        data?.role === "owner"
-      ) {
-        return {
-          success: true,
-          role: "owner",
-          redirectTo: "/admin",
-        };
-      }
-    }
-  } catch {
-    /*
-     * If Admin authentication is unavailable,
-     * continue with normal user authentication.
-     */
-  }
-
-  /*
-   * =========================================================
-   * DEMO USER
-   * =========================================================
-   *
-   * Temporary authentication layer.
-   *
-   * This will later be replaced with the
-   * real user authentication API/database.
-   */
-
-  if (
-    normalizedEmail ===
-      "user@uniqe.local" &&
-    password === "uniqe-demo"
-  ) {
-    const user = {
-      id: "user-demo-01",
-      name: "کاربر نمونه",
-      email: normalizedEmail,
-      role: "user" as const,
-      status: "active" as const,
-      createdAt:
-        new Date().toISOString(),
-    };
+    setStoredAuthSession({
+      authenticated: true,
+      user,
+      tokens:
+        response.tokens,
+    });
 
     return {
       success: true,
-      role: "user",
+      role: user.role,
       user,
       redirectTo:
-        getRedirectPath("user"),
+        getRedirectPath(
+          user.role,
+        ),
+    };
+  } catch (error) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Invalid email or password.";
+
+    return {
+      success: false,
+      message,
     };
   }
-
-  return {
-    success: false,
-    message:
-      "ایمیل یا رمز عبور صحیح نیست.",
-  };
 }
