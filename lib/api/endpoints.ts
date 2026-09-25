@@ -2,6 +2,7 @@ export const apiEndpoints = {
   auth: {
     login: "/auth/login",
     register: "/auth/register",
+    refresh: "/auth/refresh",
     session: "/auth/session",
     logout: "/auth/logout",
   },
@@ -9,6 +10,7 @@ export const apiEndpoints = {
   user: {
     me: "/users/me",
     profile: "/users/me/profile",
+    preferences: "/users/me/preferences",
   },
 
   activity: {
