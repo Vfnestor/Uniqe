@@ -10,19 +10,32 @@ import {
 } from "react";
 
 import {
+  apiClient,
+} from "@/lib/api/client";
+
+import {
+  apiEndpoints,
+} from "@/lib/api/endpoints";
+
+import {
   authenticate,
 } from "@/lib/auth/authentication";
 
 import {
   clearStoredAuthSession,
+  getRefreshToken,
   getStoredAuthSession,
   setStoredAuthSession,
+  updateStoredTokens,
 } from "@/lib/auth/auth-storage";
 
 import type {
   AuthContextValue,
   AuthLoginResult,
+  AuthSession,
   AuthState,
+  AuthTokens,
+  AuthUser,
 } from "@/lib/auth/types";
 
 const AuthContext =
@@ -32,6 +45,16 @@ const AuthContext =
 
 type AuthProviderProps = {
   children: ReactNode;
+};
+
+type SessionResponse = {
+  authenticated: true;
+  user: AuthUser;
+};
+
+type RefreshResponse = {
+  user: AuthUser;
+  tokens: AuthTokens;
 };
 
 export default function AuthProvider({
@@ -45,37 +68,110 @@ export default function AuthProvider({
     });
 
   useEffect(() => {
-    const stored =
-      getStoredAuthSession();
+    async function restoreSession() {
+      const stored =
+        getStoredAuthSession();
 
-    if (
-      stored?.authenticated &&
-      stored.user
-    ) {
-      const user = {
-        ...stored.user,
-        status: "active" as const,
-        createdAt:
-          new Date().toISOString(),
-      };
+      if (
+        !stored?.authenticated ||
+        !stored.tokens
+      ) {
+        setState({
+          status:
+            "unauthenticated",
+          user: null,
+          session: null,
+        });
 
-      setState({
-        status: "authenticated",
-        user,
-        session: {
-          user,
-          authenticated: true,
-        },
-      });
+        return;
+      }
 
-      return;
+      try {
+        const response =
+          await apiClient.get<SessionResponse>(
+            apiEndpoints.auth.session,
+          );
+
+        const session: AuthSession = {
+          authenticated:
+            true,
+          user:
+            response.user,
+        };
+
+        setState({
+          status:
+            "authenticated",
+          user:
+            response.user,
+          session,
+        });
+      } catch {
+        const refreshToken =
+          getRefreshToken();
+
+        if (!refreshToken) {
+          clearStoredAuthSession();
+
+          setState({
+            status:
+              "unauthenticated",
+            user: null,
+            session: null,
+          });
+
+          return;
+        }
+
+        try {
+          const response =
+            await apiClient.post<RefreshResponse>(
+              apiEndpoints.auth.refresh,
+              {
+                refreshToken,
+              },
+            );
+
+          updateStoredTokens(
+            response.tokens,
+          );
+
+          setStoredAuthSession({
+            authenticated: true,
+            user:
+              response.user,
+            tokens:
+              response.tokens,
+          });
+
+          const session: AuthSession = {
+            authenticated:
+              true,
+            user:
+              response.user,
+          };
+
+          setState({
+            status:
+              "authenticated",
+            user:
+              response.user,
+            session,
+          });
+        } catch {
+          clearStoredAuthSession();
+
+          setState({
+            status:
+              "unauthenticated",
+            user: null,
+            session: null,
+          });
+        }
+      }
     }
 
-    setState({
-      status: "unauthenticated",
-      user: null,
-      session: null,
-    });
+    void restoreSession();
   }, []);
 
   async function login(
@@ -92,47 +188,20 @@ export default function AuthProvider({
       return result;
     }
 
-    /*
-     * Owner uses the existing
-     * secure Admin session.
-     *
-     * We do not overwrite it
-     * with localStorage.
-     */
-
-    if (
-      result.role === "owner"
-    ) {
-      return result;
-    }
-
-    if (
-      result.user
-    ) {
-      const user = {
-        ...result.user,
-        status: "active" as const,
-        createdAt:
-          new Date().toISOString(),
+    if (result.user) {
+      const session: AuthSession = {
+        authenticated:
+          true,
+        user:
+          result.user,
       };
 
-      setStoredAuthSession({
-        authenticated: true,
-        user: {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-        },
-      });
-
       setState({
-        status: "authenticated",
-        user,
-        session: {
-          user,
-          authenticated: true,
-        },
+        status:
+          "authenticated",
+        user:
+          result.user,
+        session,
       });
     }
 
@@ -140,10 +209,27 @@ export default function AuthProvider({
   }
 
   async function logout(): Promise<void> {
+    const refreshToken =
+      getRefreshToken();
+
+    if (refreshToken) {
+      try {
+        await apiClient.post(
+          apiEndpoints.auth.logout,
+          {
+            refreshToken,
+          },
+        );
+      } catch {
+        return;
+      }
+    }
+
     clearStoredAuthSession();
 
     setState({
-      status: "unauthenticated",
+      status:
+        "unauthenticated",
       user: null,
       session: null,
     });
@@ -168,10 +254,11 @@ export default function AuthProvider({
   );
 }
 
-export function useAuth():
-  AuthContextValue {
+export function useAuth(): AuthContextValue {
   const context =
-    useContext(AuthContext);
+    useContext(
+      AuthContext,
+    );
 
   if (!context) {
     throw new Error(
