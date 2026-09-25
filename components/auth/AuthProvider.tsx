@@ -26,7 +26,6 @@ import {
   getRefreshToken,
   getStoredAuthSession,
   setStoredAuthSession,
-  updateStoredTokens,
 } from "@/lib/auth/auth-storage";
 
 import type {
@@ -92,9 +91,9 @@ export default function AuthProvider({
             apiEndpoints.auth.session,
           );
 
-        const session: AuthSession = {
-          authenticated:
-            true,
+        const session:
+          AuthSession = {
+          authenticated: true,
           user:
             response.user,
         };
@@ -132,10 +131,6 @@ export default function AuthProvider({
               },
             );
 
-          updateStoredTokens(
-            response.tokens,
-          );
-
           setStoredAuthSession({
             authenticated: true,
             user:
@@ -144,9 +139,9 @@ export default function AuthProvider({
               response.tokens,
           });
 
-          const session: AuthSession = {
-            authenticated:
-              true,
+          const session:
+            AuthSession = {
+            authenticated: true,
             user:
               response.user,
           };
@@ -189,9 +184,9 @@ export default function AuthProvider({
     }
 
     if (result.user) {
-      const session: AuthSession = {
-        authenticated:
-          true,
+      const session:
+        AuthSession = {
+        authenticated: true,
         user:
           result.user,
       };
@@ -220,9 +215,7 @@ export default function AuthProvider({
             refreshToken,
           },
         );
-      } catch {
-        return;
-      }
+      } catch {}
     }
 
     clearStoredAuthSession();
