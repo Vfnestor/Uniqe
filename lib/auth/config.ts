@@ -3,5 +3,6 @@ export const authConfig = {
   registerPath: "/auth/register",
   dashboardPath: "/my",
   profilePath: "/my/profile",
-  sessionKey: "uniqe-auth-session",
+  sessionKey:
+    "uniqe-auth-session",
 } as const;
