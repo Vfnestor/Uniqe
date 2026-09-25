@@ -1,14 +1,11 @@
 export type AuthUserRole =
   | "user"
-  | "owner"
-  | "seller"
-  | "teacher"
-  | "professional";
+  | "owner";
 
 export type AuthUserStatus =
   | "active"
-  | "suspended"
-  | "pending";
+  | "inactive"
+  | "suspended";
 
 export type AuthUser = {
   id: string;
@@ -16,14 +13,19 @@ export type AuthUser = {
   email: string;
   role: AuthUserRole;
   status: AuthUserStatus;
-  avatar?: string;
+  avatarUrl: string | null;
   createdAt: string;
+  updatedAt: string;
+};
+
+export type AuthTokens = {
+  accessToken: string;
+  refreshToken: string;
 };
 
 export type AuthSession = {
   user: AuthUser;
   authenticated: boolean;
-  expiresAt?: string;
 };
 
 export type AuthState = {
