@@ -1,8 +1,11 @@
-import { apiConfig } from "./config";
+import {
+  apiConfig,
+} from "./config";
 
 import type {
   ApiErrorBody,
   ApiRequestOptions,
+  ApiResponse,
 } from "./types";
 
 import {
@@ -261,6 +264,21 @@ async function request<T>(
       errorBody?.code,
       errorBody?.details,
     );
+  }
+
+  if (
+    responseData &&
+    typeof responseData ===
+      "object" &&
+    "success" in
+      responseData &&
+    "data" in
+      responseData
+  ) {
+    return (
+      responseData as
+        ApiResponse<T>
+    ).data;
   }
 
   return responseData as T;
