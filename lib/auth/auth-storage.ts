@@ -1,25 +1,24 @@
+import type {
+  AuthTokens,
+  AuthUser,
+} from "./types";
+
 const AUTH_STORAGE_KEY =
   "uniqe-auth-session";
 
 export type StoredAuthSession = {
   authenticated: boolean;
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    role:
-      | "user"
-      | "owner"
-      | "seller"
-      | "teacher"
-      | "professional";
-  };
+  user: AuthUser;
+  tokens: AuthTokens;
 };
 
 export function getStoredAuthSession():
   | StoredAuthSession
   | null {
-  if (typeof window === "undefined") {
+  if (
+    typeof window ===
+    "undefined"
+  ) {
     return null;
   }
 
@@ -44,30 +43,64 @@ export function getStoredAuthSession():
 export function setStoredAuthSession(
   session: StoredAuthSession,
 ): void {
-  if (typeof window === "undefined") {
+  if (
+    typeof window ===
+    "undefined"
+  ) {
     return;
   }
 
-  try {
-    localStorage.setItem(
-      AUTH_STORAGE_KEY,
-      JSON.stringify(session),
-    );
-  } catch {
-    // Storage may be unavailable.
+  localStorage.setItem(
+    AUTH_STORAGE_KEY,
+    JSON.stringify(session),
+  );
+}
+
+export function updateStoredTokens(
+  tokens: AuthTokens,
+): void {
+  const session =
+    getStoredAuthSession();
+
+  if (!session) {
+    return;
   }
+
+  setStoredAuthSession({
+    ...session,
+    tokens,
+  });
 }
 
 export function clearStoredAuthSession(): void {
-  if (typeof window === "undefined") {
+  if (
+    typeof window ===
+    "undefined"
+  ) {
     return;
   }
 
-  try {
-    localStorage.removeItem(
-      AUTH_STORAGE_KEY,
-    );
-  } catch {
-    // Storage may be unavailable.
-  }
+  localStorage.removeItem(
+    AUTH_STORAGE_KEY,
+  );
+}
+
+export function getAccessToken():
+  | string
+  | null {
+  return (
+    getStoredAuthSession()
+      ?.tokens.accessToken ??
+    null
+  );
+}
+
+export function getRefreshToken():
+  | string
+  | null {
+  return (
+    getStoredAuthSession()
+      ?.tokens.refreshToken ??
+    null
+  );
 }
