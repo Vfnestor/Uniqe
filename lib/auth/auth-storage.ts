@@ -32,9 +32,21 @@ export function getStoredAuthSession():
       return null;
     }
 
-    return JSON.parse(
-      value,
-    ) as StoredAuthSession;
+    const parsed =
+      JSON.parse(value) as
+        Partial<StoredAuthSession>;
+
+    if (
+      parsed.authenticated !==
+        true ||
+      !parsed.user ||
+      !parsed.tokens?.accessToken ||
+      !parsed.tokens?.refreshToken
+    ) {
+      return null;
+    }
+
+    return parsed as StoredAuthSession;
   } catch {
     return null;
   }
@@ -50,10 +62,12 @@ export function setStoredAuthSession(
     return;
   }
 
-  localStorage.setItem(
-    AUTH_STORAGE_KEY,
-    JSON.stringify(session),
-  );
+  try {
+    localStorage.setItem(
+      AUTH_STORAGE_KEY,
+      JSON.stringify(session),
+    );
+  } catch {}
 }
 
 export function updateStoredTokens(
@@ -80,9 +94,11 @@ export function clearStoredAuthSession(): void {
     return;
   }
 
-  localStorage.removeItem(
-    AUTH_STORAGE_KEY,
-  );
+  try {
+    localStorage.removeItem(
+      AUTH_STORAGE_KEY,
+    );
+  } catch {}
 }
 
 export function getAccessToken():
