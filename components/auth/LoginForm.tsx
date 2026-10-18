@@ -1,17 +1,28 @@
 "use client";
 
 import {
-  FormEvent,
   useState,
+  type FormEvent,
 } from "react";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
-import { useAuth } from "./AuthProvider";
+import {
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
+
+import {
+  useAuth,
+} from "./AuthProvider";
+
+import {
+  getSafeNextPath,
+} from "@/lib/auth/redirects";
 
 export default function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const {
     state,
@@ -35,6 +46,10 @@ export default function LoginForm() {
   ) {
     event.preventDefault();
 
+    if (loading) {
+      return;
+    }
+
     setError("");
 
     if (!email.trim()) {
@@ -54,11 +69,10 @@ export default function LoginForm() {
     setLoading(true);
 
     try {
-      const result =
-        await login(
-          email,
-          password,
-        );
+      const result = await login(
+        email,
+        password,
+      );
 
       if (!result.success) {
         setError(
@@ -68,11 +82,13 @@ export default function LoginForm() {
         return;
       }
 
-      router.replace(
-        result.redirectTo ||
-          "/my",
-      );
+      const requestedPath =
+        getSafeNextPath(
+          searchParams.get("next"),
+          result.redirectTo || "/my-u",
+        );
 
+      router.replace(requestedPath);
       router.refresh();
     } catch {
       setError(
@@ -83,10 +99,7 @@ export default function LoginForm() {
     }
   }
 
-  if (
-    state.status ===
-    "loading"
-  ) {
+  if (state.status === "loading") {
     return (
       <div className="auth-form">
         <div className="auth-form-header">
@@ -101,8 +114,7 @@ export default function LoginForm() {
           </h2>
 
           <p>
-            در حال بررسی وضعیت حساب
-            کاربری...
+            در حال بررسی وضعیت حساب کاربری...
           </p>
         </div>
       </div>
@@ -112,9 +124,7 @@ export default function LoginForm() {
   return (
     <form
       className="auth-form"
-      onSubmit={
-        handleSubmit
-      }
+      onSubmit={handleSubmit}
     >
       <div className="auth-form-header">
         <span className="auth-form-eyebrow">
@@ -128,9 +138,8 @@ export default function LoginForm() {
         </h2>
 
         <p>
-          با یک حساب کاربری به
-          فضای اختصاصی خود در
-          اکوسیستم Uniqe وارد شوید.
+          با یک حساب کاربری به فضای اختصاصی
+          خود در اکوسیستم Uniqe وارد شوید.
         </p>
       </div>
 
@@ -147,9 +156,7 @@ export default function LoginForm() {
           placeholder="you@example.com"
           value={email}
           onChange={(event) =>
-            setEmail(
-              event.target.value,
-            )
+            setEmail(event.target.value)
           }
           disabled={loading}
           required
@@ -178,9 +185,7 @@ export default function LoginForm() {
           placeholder="رمز عبور"
           value={password}
           onChange={(event) =>
-            setPassword(
-              event.target.value,
-            )
+            setPassword(event.target.value)
           }
           disabled={loading}
           required
@@ -217,9 +222,8 @@ export default function LoginForm() {
       </div>
 
       <p className="auth-form-note">
-        پس از ورود، سیستم بر اساس
-        نقش حساب شما را به پنل
-        مربوطه منتقل می‌کند.
+        پس از ورود، مقصد شما بر اساس نقش
+        حساب و مسیر درخواستی تعیین می‌شود.
       </p>
     </form>
   );
