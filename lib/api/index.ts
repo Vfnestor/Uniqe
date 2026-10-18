@@ -13,6 +13,8 @@ export {
 
 export {
   getAccount,
+  updateProfile,
+  updatePreferences,
 } from "./account";
 
 export type {
@@ -20,6 +22,8 @@ export type {
   AccountProfile,
   AccountPreferences,
   AccountResponse,
+  UpdateProfileInput,
+  UpdatePreferencesInput,
 } from "./account";
 
 export {
