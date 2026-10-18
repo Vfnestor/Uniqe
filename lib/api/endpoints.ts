@@ -22,6 +22,8 @@ export const apiEndpoints = {
 
     read: "/notifications/read",
 
+    readAll: "/notifications/read",
+
     readOne: (id: string) =>
       `/notifications/${encodeURIComponent(id)}/read`,
   },
