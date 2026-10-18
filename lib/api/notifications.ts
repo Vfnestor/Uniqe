@@ -51,9 +51,7 @@ const CATEGORY_LABELS: Record<
 
 type UnknownRecord = Record<string, unknown>;
 
-function isRecord(
-  value: unknown,
-): value is UnknownRecord {
+function isRecord(value: unknown): value is UnknownRecord {
   return (
     typeof value === "object" &&
     value !== null &&
@@ -70,21 +68,15 @@ function normalizeCategory(
 
   const normalized = category.toLowerCase();
 
-  if (
-    Object.prototype.hasOwnProperty.call(
-      CATEGORY_LABELS,
-      normalized,
-    )
-  ) {
-    return normalized as NotificationCategory;
-  }
-
-  return "system";
+  return Object.prototype.hasOwnProperty.call(
+    CATEGORY_LABELS,
+    normalized,
+  )
+    ? (normalized as NotificationCategory)
+    : "system";
 }
 
-function formatTime(
-  value: string,
-): string {
+function formatTime(value: string): string {
   const timestamp = new Date(value).getTime();
 
   if (!Number.isFinite(timestamp)) {
@@ -96,9 +88,7 @@ function formatTime(
     Date.now() - timestamp,
   );
 
-  const minutes = Math.floor(
-    difference / 60_000,
-  );
+  const minutes = Math.floor(difference / 60_000);
 
   if (minutes < 1) {
     return "Just now";
@@ -123,9 +113,7 @@ function formatTime(
   return new Date(timestamp).toLocaleDateString();
 }
 
-function safeHref(
-  value: unknown,
-): string {
+function safeHref(value: unknown): string {
   if (typeof value !== "string") {
     return "/my-u";
   }
@@ -215,6 +203,23 @@ export function mapNotification(
   };
 }
 
+function unwrapList(value: unknown): unknown {
+  let payload = value;
+
+  if (isRecord(payload) && "data" in payload) {
+    payload = payload.data;
+  }
+
+  if (
+    isRecord(payload) &&
+    Array.isArray(payload.items)
+  ) {
+    payload = payload.items;
+  }
+
+  return payload;
+}
+
 export async function getNotifications(): Promise<
   NotificationItemData[]
 > {
@@ -222,15 +227,7 @@ export async function getNotifications(): Promise<
     apiEndpoints.notifications.list,
   );
 
-  let payload: unknown = response;
-
-  if (
-    isRecord(payload) &&
-    "items" in payload &&
-    Array.isArray(payload.items)
-  ) {
-    payload = payload.items;
-  }
+  const payload = unwrapList(response);
 
   if (!Array.isArray(payload)) {
     throw new Error(
@@ -241,9 +238,7 @@ export async function getNotifications(): Promise<
   return payload
     .map(normalizeNotificationRecord)
     .filter(
-      (
-        item,
-      ): item is NotificationRecord =>
+      (item): item is NotificationRecord =>
         item !== null,
     )
     .map(mapNotification);
@@ -261,9 +256,7 @@ export async function markNotificationAsRead(
   }
 
   return apiClient.patch<unknown>(
-    apiEndpoints.notifications.readOne(
-      normalizedId,
-    ),
+    apiEndpoints.notifications.readOne(normalizedId),
   );
 }
 
