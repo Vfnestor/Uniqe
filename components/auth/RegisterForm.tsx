@@ -1,40 +1,161 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import {
+  useState,
+  type FormEvent,
+} from "react";
 
-import Button from "@/components/ui/Button";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+import {
+  useAuth,
+} from "./AuthProvider";
+
+import RegistrationFeedback from "./RegistrationFeedback";
+
+import RegistrationFormFields, {
+  type RegistrationFields,
+} from "./RegistrationFormFields";
+
+import {
+  validateRegistration,
+} from "@/lib/auth/registration-validation";
 
 export default function RegisterForm() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] =
+  const router = useRouter();
+
+  const {
+    register,
+    state,
+  } = useAuth();
+
+  const [values, setValues] =
+    useState<RegistrationFields>({
+      name: "",
+      email: "",
+      password: "",
+      passwordConfirm: "",
+    });
+
+  const [loading, setLoading] =
+    useState(false);
+
+  const [error, setError] =
     useState("");
 
-  function handleSubmit(
-    event: FormEvent<HTMLFormElement>
+  function updateField(
+    field: keyof RegistrationFields,
+    value: string,
+  ) {
+    setValues((current) => ({
+      ...current,
+      [field]: value,
+    }));
+
+    if (error) {
+      setError("");
+    }
+  }
+
+  async function handleSubmit(
+    event: FormEvent<HTMLFormElement>,
   ) {
     event.preventDefault();
 
-    /*
-     * Registration backend will be connected
-     * in the future.
-     */
+    if (loading) {
+      return;
+    }
 
-    console.log("Uniqe registration", {
-      name,
-      email,
-      password,
-    });
+    setError("");
+
+    const validationError =
+      validateRegistration(values);
+
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const result =
+        await register(
+          values.name.trim(),
+          values.email.trim().toLowerCase(),
+          values.password,
+        );
+
+      if (!result.success) {
+        setError(
+          result.message ||
+            "ثبت‌نام انجام نشد. اطلاعات را بررسی کنید.",
+        );
+
+        return;
+      }
+
+      setValues({
+        name: "",
+        email: "",
+        password: "",
+        passwordConfirm: "",
+      });
+
+      router.replace(
+        result.redirectTo || "/my",
+      );
+
+      router.refresh();
+    } catch {
+      setError(
+        "ارتباط با سرور ناموفق بود. لطفاً دوباره تلاش کنید.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  if (state.status === "authenticated") {
+    return (
+      <div className="auth-form">
+        <div className="auth-form-header">
+          <span className="auth-form-eyebrow">
+            UNIQE / ACCOUNT
+          </span>
+
+          <h2>
+            You are
+            <br />
+            <span>signed in.</span>
+          </h2>
+
+          <p>
+            شما هم‌اکنون وارد حساب کاربری خود شده‌اید.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          className="button"
+          onClick={() => router.replace("/my")}
+        >
+          ورود به فضای کاربری
+        </button>
+      </div>
+    );
   }
 
   return (
     <form
       className="auth-form"
       onSubmit={handleSubmit}
+      noValidate
     >
       <div className="auth-form-header">
         <span className="auth-form-eyebrow">
-          Create your space
+          UNIQE / REGISTRATION
         </span>
 
         <h2>
@@ -44,76 +165,45 @@ export default function RegisterForm() {
         </h2>
 
         <p>
-          Create the foundation of your personal
-          experience across the Uniqe ecosystem.
+          اطلاعات خود را وارد کنید تا حساب کاربری
+          شما در اکوسیستم Uniqe ایجاد شود.
         </p>
       </div>
 
-      <div className="auth-field">
-        <label htmlFor="register-name">
-          Name
-        </label>
+      <RegistrationFormFields
+        values={values}
+        disabled={loading}
+        onChange={updateField}
+      />
 
-        <input
-          id="register-name"
-          name="name"
-          type="text"
-          autoComplete="name"
-          placeholder="Your name"
-          value={name}
-          onChange={(event) =>
-            setName(event.target.value)
-          }
-          required
-        />
-      </div>
+      <RegistrationFeedback
+        message={error}
+        type="error"
+      />
 
-      <div className="auth-field">
-        <label htmlFor="register-email">
-          Email
-        </label>
-
-        <input
-          id="register-email"
-          name="email"
-          type="email"
-          autoComplete="email"
-          placeholder="you@example.com"
-          value={email}
-          onChange={(event) =>
-            setEmail(event.target.value)
-          }
-          required
-        />
-      </div>
-
-      <div className="auth-field">
-        <label htmlFor="register-password">
-          Password
-        </label>
-
-        <input
-          id="register-password"
-          name="password"
-          type="password"
-          autoComplete="new-password"
-          placeholder="Create a password"
-          value={password}
-          onChange={(event) =>
-            setPassword(event.target.value)
-          }
-          required
-        />
-      </div>
-
-      <Button type="submit">
-        Create account
-      </Button>
+      <button
+        type="submit"
+        className="button"
+        disabled={loading}
+      >
+        {loading
+          ? "در حال ایجاد حساب..."
+          : "ایجاد حساب کاربری"}
+      </button>
 
       <p className="auth-form-note">
-        Account creation will become functional
-        when the authentication backend is connected.
+        حساب شما پس از تأیید موفق سرور ایجاد می‌شود.
       </p>
+
+      <div className="auth-form-links">
+        <span>
+          قبلاً حساب دارید؟
+        </span>
+
+        <Link href="/auth/login">
+          ورود
+        </Link>
+      </div>
     </form>
   );
 }
