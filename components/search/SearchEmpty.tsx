@@ -1,49 +1,36 @@
-import Container from "@/components/ui/Container";
-import Reveal from "@/components/ui/Reveal";
+import Link from "next/link";
 
 type SearchEmptyProps = {
   query: string;
 };
 
-export default function SearchEmpty({
-  query,
-}: SearchEmptyProps) {
+export default function SearchEmpty({ query }: SearchEmptyProps) {
   return (
-    <section className="search-empty-section section">
-      <Container>
-        <Reveal animation="scale">
-          <div className="search-empty">
-            <span className="search-empty-icon">
-              ?
-            </span>
+    <div className="mx-auto max-w-xl rounded-2xl border border-dashed border-gray-300 px-6 py-12 text-center dark:border-gray-700">
+      <div className="mb-4 text-5xl" aria-hidden="true">
+        🔍
+      </div>
 
-            <span className="section-eyebrow">
-              No Results
-            </span>
+      <h2 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
+        {query
+          ? "نتیجه‌ای پیدا نشد"
+          : "عبارت موردنظر خود را جست‌وجو کنید"}
+      </h2>
 
-            <h2>
-              Nothing found for
-              <br />
-              <span>"{query}"</span>
-            </h2>
+      <p className="mx-auto mb-6 max-w-md leading-7 text-gray-600 dark:text-gray-400">
+        {query
+          ? `برای عبارت «${query}» نتیجه‌ای پیدا نکردیم. املای عبارت را بررسی کنید یا با واژه‌های دیگری جست‌وجو کنید.`
+          : "نام برنامه، خدمات یا بخش موردنظر خود را در کادر جست‌وجو وارد کنید."}
+      </p>
 
-            <p>
-              Try another search term or explore
-              the main areas of the Uniqe ecosystem.
-            </p>
-
-            <div className="search-empty-hints">
-              <span>UApps</span>
-              <span>UWeb</span>
-              <span>UShop</span>
-              <span>USchool</span>
-              <span>UCore</span>
-              <span>LAB</span>
-              <span>My U</span>
-            </div>
-          </div>
-        </Reveal>
-      </Container>
-    </section>
+      {query && (
+        <Link
+          href="/"
+          className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700"
+        >
+          بازگشت به صفحه اصلی
+        </Link>
+      )}
+    </div>
   );
 }
