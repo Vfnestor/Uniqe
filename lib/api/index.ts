@@ -11,22 +11,6 @@ export {
   apiEndpoints,
 } from "./endpoints";
 
-export type {
-  ApiResponse,
-  ApiErrorBody,
-  export {
-  apiClient,
-  ApiError,
-} from "./client";
-
-export {
-  apiConfig,
-} from "./config";
-
-export {
-  apiEndpoints,
-} from "./endpoints";
-
 export {
   getFavorites,
   createFavorite,
@@ -52,9 +36,19 @@ export type {
   NotificationCategory,
 } from "./notifications";
 
+export {
+  searchUniqe,
+} from "./search";
+
+export type {
+  SearchResult,
+  SearchResponse,
+  SearchResultType,
+  SearchOptions,
+} from "./search";
+
 export type {
   ApiResponse,
   ApiErrorBody,
   ApiRequestOptions,
-} from "./types";,
 } from "./types";
