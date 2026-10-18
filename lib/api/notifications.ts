@@ -36,7 +36,10 @@ export type NotificationItemData = {
   read: boolean;
 };
 
-const CATEGORY_LABELS: Record<string, string> = {
+const CATEGORY_LABELS: Record<
+  NotificationCategory,
+  string
+> = {
   system: "System",
   uapps: "UApps",
   uweb: "UWeb",
@@ -47,11 +50,20 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 function normalizeCategory(
-  category: string,
+  category: unknown,
 ): NotificationCategory {
+  if (typeof category !== "string") {
+    return "system";
+  }
+
   const normalized = category.toLowerCase();
 
-  if (normalized in CATEGORY_LABELS) {
+  if (
+    Object.prototype.hasOwnProperty.call(
+      CATEGORY_LABELS,
+      normalized,
+    )
+  ) {
     return normalized as NotificationCategory;
   }
 
@@ -82,23 +94,37 @@ function formatTime(value: string): string {
     return `${minutes}m ago`;
   }
 
-  const hours = Math.floor(
-    minutes / 60,
-  );
+  const hours = Math.floor(minutes / 60);
 
   if (hours < 24) {
     return `${hours}h ago`;
   }
 
-  const days = Math.floor(
-    hours / 24,
-  );
+  const days = Math.floor(hours / 24);
 
   if (days < 30) {
     return `${days}d ago`;
   }
 
   return new Date(timestamp).toLocaleDateString();
+}
+
+function safeHref(value: unknown): string {
+  if (typeof value !== "string") {
+    return "/my-u";
+  }
+
+  const href = value.trim();
+
+  if (
+    !href.startsWith("/") ||
+    href.startsWith("//") ||
+    href.includes("\\")
+  ) {
+    return "/my-u";
+  }
+
+  return href;
 }
 
 export function mapNotification(
@@ -115,7 +141,7 @@ export function mapNotification(
     category,
     categoryLabel: CATEGORY_LABELS[category],
     time: formatTime(notification.createdAt),
-    href: notification.href || "/my-u",
+    href: safeHref(notification.href),
     icon: notification.icon || "◇",
     read: notification.read,
   };
@@ -129,15 +155,33 @@ export async function getNotifications(): Promise<
   >(apiEndpoints.notifications.list);
 
   if (!Array.isArray(result)) {
-    return [];
+    throw new Error(
+      "The notifications API returned an invalid response.",
+    );
   }
 
-  return result.map(mapNotification);
+  return result
+    .filter(
+      (item): item is NotificationRecord =>
+        Boolean(
+          item &&
+          typeof item.id === "string" &&
+          typeof item.title === "string" &&
+          typeof item.message === "string",
+        ),
+    )
+    .map(mapNotification);
 }
 
 export async function markNotificationAsRead(
   id: string,
 ): Promise<unknown> {
+  if (!id.trim()) {
+    throw new Error(
+      "A notification ID is required.",
+    );
+  }
+
   return apiClient.patch<unknown>(
     apiEndpoints.notifications.readOne(id),
   );
