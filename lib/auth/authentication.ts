@@ -8,7 +8,9 @@ import {
 
 import type {
   AuthLoginResult,
+  AuthRegisterResult,
   AuthResult,
+  AuthUserRole,
 } from "./types";
 
 import {
@@ -16,18 +18,65 @@ import {
 } from "./auth-storage";
 
 function getRedirectPath(
-  role: AuthLoginResult["role"],
-) {
+  role: AuthUserRole | undefined,
+): string {
   switch (role) {
     case "owner":
       return "/admin";
 
     case "user":
-      return "/my";
-
     default:
       return "/my";
   }
+}
+
+function getErrorMessage(
+  error: unknown,
+  fallback: string,
+): string {
+  if (
+    error instanceof Error &&
+    error.message.trim()
+  ) {
+    return error.message;
+  }
+
+  return fallback;
+}
+
+function saveAuthentication(
+  response: AuthResult,
+): AuthLoginResult {
+  const user = response?.user;
+  const tokens = response?.tokens;
+
+  if (
+    !user ||
+    typeof user.id !== "string" ||
+    typeof user.email !== "string" ||
+    !tokens?.accessToken ||
+    !tokens?.refreshToken
+  ) {
+    return {
+      success: false,
+      message:
+        "پاسخ احراز هویت از سرور معتبر نیست.",
+    };
+  }
+
+  setStoredAuthSession({
+    authenticated: true,
+    user,
+    tokens,
+  });
+
+  return {
+    success: true,
+    user,
+    role: user.role,
+    redirectTo:
+      getRedirectPath(user.role),
+  };
 }
 
 export async function authenticate(
@@ -42,52 +91,53 @@ export async function authenticate(
       await apiClient.post<AuthResult>(
         apiEndpoints.auth.login,
         {
-          email:
-            normalizedEmail,
+          email: normalizedEmail,
           password,
         },
       );
 
-    const user =
-      response.user;
-
-    if (
-      !user ||
-      !response.tokens?.accessToken ||
-      !response.tokens?.refreshToken
-    ) {
-      return {
-        success: false,
-        message:
-          "Invalid authentication response.",
-      };
-    }
-
-    setStoredAuthSession({
-      authenticated: true,
-      user,
-      tokens:
-        response.tokens,
-    });
-
-    return {
-      success: true,
-      role: user.role,
-      user,
-      redirectTo:
-        getRedirectPath(
-          user.role,
-        ),
-    };
+    return saveAuthentication(response);
   } catch (error) {
-    const message =
-      error instanceof Error
-        ? error.message
-        : "Invalid email or password.";
-
     return {
       success: false,
-      message,
+      message: getErrorMessage(
+        error,
+        "ورود ناموفق بود. دوباره تلاش کنید.",
+      ),
+    };
+  }
+}
+
+export async function registerAccount(
+  name: string,
+  email: string,
+  password: string,
+): Promise<AuthRegisterResult> {
+  const normalizedName =
+    name.trim();
+
+  const normalizedEmail =
+    email.trim().toLowerCase();
+
+  try {
+    const response =
+      await apiClient.post<AuthResult>(
+        apiEndpoints.auth.register,
+        {
+          name: normalizedName,
+          email: normalizedEmail,
+          password,
+        },
+      );
+
+    return saveAuthentication(response);
+  } catch (error) {
+    return {
+      success: false,
+      message: getErrorMessage(
+        error,
+        "ثبت‌نام ناموفق بود. دوباره تلاش کنید.",
+      ),
     };
   }
 }
