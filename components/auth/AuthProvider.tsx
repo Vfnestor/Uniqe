@@ -19,6 +19,7 @@ import {
 
 import {
   authenticate,
+  registerAccount,
 } from "@/lib/auth/authentication";
 
 import {
@@ -31,6 +32,7 @@ import {
 import type {
   AuthContextValue,
   AuthLoginResult,
+  AuthRegisterResult,
   AuthSession,
   AuthState,
   AuthTokens,
@@ -67,6 +69,8 @@ export default function AuthProvider({
     });
 
   useEffect(() => {
+    let cancelled = false;
+
     async function restoreSession() {
       const stored =
         getStoredAuthSession();
@@ -75,12 +79,13 @@ export default function AuthProvider({
         !stored?.authenticated ||
         !stored.tokens
       ) {
-        setState({
-          status:
-            "unauthenticated",
-          user: null,
-          session: null,
-        });
+        if (!cancelled) {
+          setState({
+            status: "unauthenticated",
+            user: null,
+            session: null,
+          });
+        }
 
         return;
       }
@@ -91,18 +96,18 @@ export default function AuthProvider({
             apiEndpoints.auth.session,
           );
 
-        const session:
-          AuthSession = {
+        if (cancelled) {
+          return;
+        }
+
+        const session: AuthSession = {
           authenticated: true,
-          user:
-            response.user,
+          user: response.user,
         };
 
         setState({
-          status:
-            "authenticated",
-          user:
-            response.user,
+          status: "authenticated",
+          user: response.user,
           session,
         });
       } catch {
@@ -112,12 +117,13 @@ export default function AuthProvider({
         if (!refreshToken) {
           clearStoredAuthSession();
 
-          setState({
-            status:
-              "unauthenticated",
-            user: null,
-            session: null,
-          });
+          if (!cancelled) {
+            setState({
+              status: "unauthenticated",
+              user: null,
+              session: null,
+            });
+          }
 
           return;
         }
@@ -131,42 +137,45 @@ export default function AuthProvider({
               },
             );
 
+          if (cancelled) {
+            return;
+          }
+
           setStoredAuthSession({
             authenticated: true,
-            user:
-              response.user,
-            tokens:
-              response.tokens,
+            user: response.user,
+            tokens: response.tokens,
           });
 
-          const session:
-            AuthSession = {
+          const session: AuthSession = {
             authenticated: true,
-            user:
-              response.user,
+            user: response.user,
           };
 
           setState({
-            status:
-              "authenticated",
-            user:
-              response.user,
+            status: "authenticated",
+            user: response.user,
             session,
           });
         } catch {
           clearStoredAuthSession();
 
-          setState({
-            status:
-              "unauthenticated",
-            user: null,
-            session: null,
-          });
+          if (!cancelled) {
+            setState({
+              status: "unauthenticated",
+              user: null,
+              session: null,
+            });
+          }
         }
       }
     }
 
     void restoreSession();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   async function login(
@@ -179,26 +188,50 @@ export default function AuthProvider({
         password,
       );
 
-    if (!result.success) {
+    if (!result.success || !result.user) {
       return result;
     }
 
-    if (result.user) {
-      const session:
-        AuthSession = {
-        authenticated: true,
-        user:
-          result.user,
-      };
+    const session: AuthSession = {
+      authenticated: true,
+      user: result.user,
+    };
 
-      setState({
-        status:
-          "authenticated",
-        user:
-          result.user,
-        session,
-      });
+    setState({
+      status: "authenticated",
+      user: result.user,
+      session,
+    });
+
+    return result;
+  }
+
+  async function register(
+    name: string,
+    email: string,
+    password: string,
+  ): Promise<AuthRegisterResult> {
+    const result =
+      await registerAccount(
+        name,
+        email,
+        password,
+      );
+
+    if (!result.success || !result.user) {
+      return result;
     }
+
+    const session: AuthSession = {
+      authenticated: true,
+      user: result.user,
+    };
+
+    setState({
+      status: "authenticated",
+      user: result.user,
+      session,
+    });
 
     return result;
   }
@@ -215,14 +248,15 @@ export default function AuthProvider({
             refreshToken,
           },
         );
-      } catch {}
+      } catch {
+        // نشست محلی حتی در صورت خطای سرور پاک می‌شود.
+      }
     }
 
     clearStoredAuthSession();
 
     setState({
-      status:
-        "unauthenticated",
+      status: "unauthenticated",
       user: null,
       session: null,
     });
@@ -233,15 +267,14 @@ export default function AuthProvider({
       () => ({
         state,
         login,
+        register,
         logout,
       }),
       [state],
     );
 
   return (
-    <AuthContext.Provider
-      value={value}
-    >
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
@@ -249,9 +282,7 @@ export default function AuthProvider({
 
 export function useAuth(): AuthContextValue {
   const context =
-    useContext(
-      AuthContext,
-    );
+    useContext(AuthContext);
 
   if (!context) {
     throw new Error(
