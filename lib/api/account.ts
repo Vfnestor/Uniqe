@@ -1,10 +1,5 @@
-import {
-  apiClient,
-} from "./client";
-
-import {
-  apiEndpoints,
-} from "./endpoints";
+import { apiClient } from "./client";
+import { apiEndpoints } from "./endpoints";
 
 export type AccountUser = {
   id: string;
@@ -45,6 +40,20 @@ export type AccountResponse = {
   preferences: AccountPreferences | null;
 };
 
+export type UpdateProfileInput = {
+  displayName?: string;
+  bio?: string;
+  avatarUrl?: string;
+  language?: string;
+  theme?: "system" | "light" | "dark";
+};
+
+export type UpdatePreferencesInput = {
+  theme?: "system" | "light" | "dark";
+  language?: string;
+  notificationsEnabled?: boolean;
+};
+
 function isRecord(
   value: unknown,
 ): value is Record<string, unknown> {
@@ -59,6 +68,16 @@ function requiredString(
   value: unknown,
 ): value is string {
   return typeof value === "string";
+}
+
+function unwrapPayload(
+  value: unknown,
+): unknown {
+  if (isRecord(value) && "data" in value) {
+    return value.data;
+  }
+
+  return value;
 }
 
 function normalizeUser(
@@ -85,7 +104,7 @@ function normalizeUser(
   const status =
     typeof value.status === "string" &&
     validStatuses.includes(value.status)
-      ? value.status as AccountUser["status"]
+      ? (value.status as AccountUser["status"])
       : "active";
 
   return {
@@ -136,7 +155,7 @@ function normalizeProfile(
   const theme =
     typeof value.theme === "string" &&
     validThemes.includes(value.theme)
-      ? value.theme as AccountProfile["theme"]
+      ? (value.theme as AccountProfile["theme"])
       : "system";
 
   return {
@@ -190,7 +209,7 @@ function normalizePreferences(
   const theme =
     typeof value.theme === "string" &&
     validThemes.includes(value.theme)
-      ? value.theme as AccountPreferences["theme"]
+      ? (value.theme as AccountPreferences["theme"])
       : "system";
 
   return {
@@ -221,24 +240,16 @@ export async function getAccount(): Promise<AccountResponse> {
     apiEndpoints.user.me,
   );
 
-  let payload: unknown = response;
-
-  if (isRecord(payload) && "data" in payload) {
-    payload = payload.data;
-  }
+  const payload = unwrapPayload(response);
 
   if (!isRecord(payload)) {
-    throw new Error(
-      "Invalid account response.",
-    );
+    throw new Error("Invalid account response.");
   }
 
   const user = normalizeUser(payload.user);
 
   if (!user) {
-    throw new Error(
-      "Account information is incomplete.",
-    );
+    throw new Error("Account information is incomplete.");
   }
 
   return {
@@ -248,4 +259,52 @@ export async function getAccount(): Promise<AccountResponse> {
       payload.preferences,
     ),
   };
+}
+
+export async function updateProfile(
+  input: UpdateProfileInput,
+): Promise<AccountProfile> {
+  const response = await apiClient.patch<unknown>(
+    apiEndpoints.user.profile,
+    {
+      ...input,
+      ...(input.theme
+        ? { theme: input.theme.toUpperCase() }
+        : {}),
+    },
+  );
+
+  const profile = normalizeProfile(
+    unwrapPayload(response),
+  );
+
+  if (!profile) {
+    throw new Error("Invalid profile response.");
+  }
+
+  return profile;
+}
+
+export async function updatePreferences(
+  input: UpdatePreferencesInput,
+): Promise<AccountPreferences> {
+  const response = await apiClient.patch<unknown>(
+    apiEndpoints.user.preferences,
+    {
+      ...input,
+      ...(input.theme
+        ? { theme: input.theme.toUpperCase() }
+        : {}),
+    },
+  );
+
+  const preferences = normalizePreferences(
+    unwrapPayload(response),
+  );
+
+  if (!preferences) {
+    throw new Error("Invalid preferences response.");
+  }
+
+  return preferences;
 }
