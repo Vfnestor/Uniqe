@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import type {
   NotificationItemData,
-} from "./notifications";
+} from "@/lib/api/notifications";
 
 type NotificationItemProps = {
   notification: NotificationItemData;
