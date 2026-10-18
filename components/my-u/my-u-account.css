@@ -1,0 +1,163 @@
+.my-u-account-card {
+  min-width: 0;
+}
+
+.my-u-account-avatar {
+  width: 64px;
+  height: 64px;
+  flex: 0 0 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.my-u-account-avatar-image {
+  object-fit: cover;
+}
+
+.my-u-account-content {
+  overflow-wrap: anywhere;
+}
+
+.my-u-account-heading {
+  margin: 18px 0 8px;
+  font-size: clamp(1.7rem, 3vw, 2.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.045em;
+  overflow-wrap: anywhere;
+}
+
+.my-u-account-email {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.my-u-account-bio {
+  margin: 16px 0 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+.my-u-account-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.my-u-account-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1.4;
+  text-transform: capitalize;
+}
+
+.my-u-account-status-active {
+  color: var(--text-primary);
+}
+
+.my-u-account-status-inactive,
+.my-u-account-status-suspended {
+  border-color: #b91c1c;
+  color: #b91c1c;
+}
+
+.my-u-account-muted {
+  margin: 14px 0;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.my-u-account-retry {
+  align-self: flex-start;
+  margin-top: 12px;
+  padding: 10px 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition:
+    background var(--transition-normal),
+    border-color var(--transition-normal);
+}
+
+.my-u-account-retry:hover {
+  border-color: var(--text-primary);
+  background: var(--surface-hover);
+}
+
+.my-u-account-loading-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--surface-hover);
+  animation: my-u-account-pulse 1.3s ease-in-out infinite;
+}
+
+.my-u-account-loading-lines {
+  display: grid;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.my-u-account-loading-lines span {
+  display: block;
+  height: 12px;
+  border-radius: 6px;
+  background: var(--surface-hover);
+  animation: my-u-account-pulse 1.3s ease-in-out infinite;
+}
+
+.my-u-account-loading-lines span:nth-child(1) {
+  width: 75%;
+  height: 18px;
+}
+
+.my-u-account-loading-lines span:nth-child(2) {
+  width: 90%;
+}
+
+.my-u-account-loading-lines span:nth-child(3) {
+  width: 55%;
+}
+
+@keyframes my-u-account-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .my-u-account-loading-avatar,
+  .my-u-account-loading-lines span {
+    animation: none;
+  }
+}
