@@ -1,17 +1,8 @@
-export type SearchCategory =
-  | "UApps"
-  | "UWeb"
-  | "UShop"
-  | "USchool"
-  | "UCore"
-  | "LAB"
-  | "My U";
-
 export type SearchResult = {
   id: string;
   title: string;
   description: string;
-  category: SearchCategory;
+  category: string;
   href: string;
   icon: string;
   keywords: string[];
@@ -19,148 +10,84 @@ export type SearchResult = {
 
 export const searchResults: SearchResult[] = [
   {
-    id: "search-uapps",
+    id: "uapps",
     title: "UApps",
-    description:
-      "Applications, digital tools and experiences inside the UApps ecosystem.",
-    category: "UApps",
+    description: "کشف و استفاده از برنامه‌ها و ابزارهای کاربردی.",
+    category: "برنامه‌ها",
     href: "/uapps",
-    icon: "◈",
-    keywords: [
-      "apps",
-      "applications",
-      "tools",
-      "productivity",
-      "automation",
-    ],
+    icon: "📱",
+    keywords: ["اپلیکیشن", "برنامه", "ابزار", "uapps"],
   },
   {
-    id: "search-uweb",
+    id: "uweb",
     title: "UWeb",
-    description:
-      "Websites and digital projects created within the Uniqe ecosystem.",
-    category: "UWeb",
+    description: "ابزارها و امکانات مرتبط با وب‌سایت‌ها.",
+    category: "وب",
     href: "/uweb",
-    icon: "◇",
-    keywords: [
-      "web",
-      "websites",
-      "projects",
-      "digital",
-      "internet",
-    ],
+    icon: "🌐",
+    keywords: ["وب", "سایت", "وب‌سایت", "uweb"],
   },
   {
-    id: "search-ushop",
+    id: "ushop",
     title: "UShop",
-    description:
-      "The commerce layer for products, services and digital experiences.",
-    category: "UShop",
+    description: "بخش خریدوفروش و امکانات فروشگاهی یونیک.",
+    category: "فروشگاه",
     href: "/ushop",
-    icon: "□",
-    keywords: [
-      "shop",
-      "store",
-      "products",
-      "services",
-      "commerce",
-    ],
+    icon: "🛍️",
+    keywords: ["فروشگاه", "خرید", "فروش", "محصول", "ushop"],
   },
   {
-    id: "search-uschool",
+    id: "uschool",
     title: "USchool",
-    description:
-      "Learning paths, educational resources and future learning experiences.",
-    category: "USchool",
+    description: "فضایی برای آموزش و یادگیری.",
+    category: "آموزش",
     href: "/uschool",
-    icon: "✦",
-    keywords: [
-      "school",
-      "education",
-      "learning",
-      "courses",
-      "knowledge",
-    ],
+    icon: "🎓",
+    keywords: ["مدرسه", "آموزش", "یادگیری", "دوره", "uschool"],
   },
   {
-    id: "search-ucore",
+    id: "ucore",
     title: "UCore",
-    description:
-      "The central technical foundation connecting the different layers of Uniqe.",
-    category: "UCore",
+    description: "بخش مرکزی خدمات و امکانات اکوسیستم یونیک.",
+    category: "خدمات",
     href: "/ucore",
-    icon: "◈",
-    keywords: [
-      "core",
-      "platform",
-      "data",
-      "integration",
-      "infrastructure",
-    ],
+    icon: "⚙️",
+    keywords: ["هسته", "خدمات", "امکانات", "ucore"],
   },
   {
-    id: "search-lab",
-    title: "LAB",
-    description:
-      "Experimental ideas, prototypes, research and emerging technologies.",
-    category: "LAB",
+    id: "lab",
+    title: "U-LAB",
+    description: "محیط ایده‌ها، آزمایش‌ها و تجربه‌های جدید.",
+    category: "نوآوری",
     href: "/lab",
-    icon: "✧",
-    keywords: [
-      "lab",
-      "research",
-      "experiment",
-      "prototype",
-      "technology",
-      "ai",
-    ],
+    icon: "🧪",
+    keywords: ["آزمایشگاه", "نوآوری", "ایده", "lab"],
   },
   {
-    id: "search-my-u",
-    title: "My U",
-    description:
-      "Your personal space for profile, activity and future Uniqe services.",
-    category: "My U",
+    id: "favorites",
+    title: "علاقه‌مندی‌های من",
+    description: "دسترسی سریع به مواردی که ذخیره کرده‌اید.",
+    category: "حساب کاربری",
+    href: "/my-u/favorites",
+    icon: "⭐",
+    keywords: ["علاقه‌مندی", "ذخیره", "نشان‌شده"],
+  },
+  {
+    id: "notifications",
+    title: "اعلان‌های من",
+    description: "مشاهده اعلان‌ها و پیام‌های حساب کاربری.",
+    category: "حساب کاربری",
+    href: "/my-u/notifications",
+    icon: "🔔",
+    keywords: ["اعلان", "پیام", "اطلاع‌رسانی"],
+  },
+  {
+    id: "profile",
+    title: "حساب کاربری من",
+    description: "مدیریت اطلاعات و تنظیمات حساب کاربری.",
+    category: "حساب کاربری",
     href: "/my-u",
-    icon: "U",
-    keywords: [
-      "account",
-      "profile",
-      "activity",
-      "personal",
-      "dashboard",
-    ],
-  },
-  {
-    id: "search-profile",
-    title: "Profile",
-    description:
-      "Manage your identity and personal preferences inside Uniqe.",
-    category: "My U",
-    href: "/my-u/profile",
-    icon: "◎",
-    keywords: [
-      "profile",
-      "identity",
-      "preferences",
-      "account",
-      "settings",
-    ],
-  },
-  {
-    id: "search-activity",
-    title: "Activity",
-    description:
-      "View your activity timeline across the Uniqe ecosystem.",
-    category: "My U",
-    href: "/my-u/activity",
-    icon: "↗",
-    keywords: [
-      "activity",
-      "timeline",
-      "history",
-      "tracking",
-      "actions",
-    ],
+    icon: "👤",
+    keywords: ["حساب", "پروفایل", "تنظیمات", "کاربر"],
   },
 ];
