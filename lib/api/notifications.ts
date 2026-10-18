@@ -49,6 +49,18 @@ const CATEGORY_LABELS: Record<
   lab: "LAB",
 };
 
+type UnknownRecord = Record<string, unknown>;
+
+function isRecord(
+  value: unknown,
+): value is UnknownRecord {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    !Array.isArray(value)
+  );
+}
+
 function normalizeCategory(
   category: unknown,
 ): NotificationCategory {
@@ -70,7 +82,9 @@ function normalizeCategory(
   return "system";
 }
 
-function formatTime(value: string): string {
+function formatTime(
+  value: string,
+): string {
   const timestamp = new Date(value).getTime();
 
   if (!Number.isFinite(timestamp)) {
@@ -109,7 +123,9 @@ function formatTime(value: string): string {
   return new Date(timestamp).toLocaleDateString();
 }
 
-function safeHref(value: unknown): string {
+function safeHref(
+  value: unknown,
+): string {
   if (typeof value !== "string") {
     return "/my-u";
   }
@@ -125,6 +141,58 @@ function safeHref(value: unknown): string {
   }
 
   return href;
+}
+
+function normalizeNotificationRecord(
+  value: unknown,
+): NotificationRecord | null {
+  if (!isRecord(value)) {
+    return null;
+  }
+
+  if (
+    typeof value.id !== "string" ||
+    typeof value.title !== "string" ||
+    typeof value.message !== "string" ||
+    typeof value.read !== "boolean" ||
+    typeof value.createdAt !== "string"
+  ) {
+    return null;
+  }
+
+  return {
+    id: value.id,
+    userId:
+      typeof value.userId === "string"
+        ? value.userId
+        : "",
+    category:
+      typeof value.category === "string"
+        ? value.category
+        : "system",
+    title: value.title,
+    message: value.message,
+    read: value.read,
+    href:
+      typeof value.href === "string" ||
+      value.href === null
+        ? value.href
+        : undefined,
+    icon:
+      typeof value.icon === "string" ||
+      value.icon === null
+        ? value.icon
+        : undefined,
+    metadata: isRecord(value.metadata)
+      ? value.metadata
+      : null,
+    createdAt: value.createdAt,
+    readAt:
+      typeof value.readAt === "string" ||
+      value.readAt === null
+        ? value.readAt
+        : undefined,
+  };
 }
 
 export function mapNotification(
@@ -150,25 +218,33 @@ export function mapNotification(
 export async function getNotifications(): Promise<
   NotificationItemData[]
 > {
-  const result = await apiClient.get<
-    NotificationRecord[]
-  >(apiEndpoints.notifications.list);
+  const response = await apiClient.get<unknown>(
+    apiEndpoints.notifications.list,
+  );
 
-  if (!Array.isArray(result)) {
+  let payload: unknown = response;
+
+  if (
+    isRecord(payload) &&
+    "items" in payload &&
+    Array.isArray(payload.items)
+  ) {
+    payload = payload.items;
+  }
+
+  if (!Array.isArray(payload)) {
     throw new Error(
       "The notifications API returned an invalid response.",
     );
   }
 
-  return result
+  return payload
+    .map(normalizeNotificationRecord)
     .filter(
-      (item): item is NotificationRecord =>
-        Boolean(
-          item &&
-          typeof item.id === "string" &&
-          typeof item.title === "string" &&
-          typeof item.message === "string",
-        ),
+      (
+        item,
+      ): item is NotificationRecord =>
+        item !== null,
     )
     .map(mapNotification);
 }
@@ -176,20 +252,24 @@ export async function getNotifications(): Promise<
 export async function markNotificationAsRead(
   id: string,
 ): Promise<unknown> {
-  if (!id.trim()) {
+  const normalizedId = id.trim();
+
+  if (!normalizedId) {
     throw new Error(
       "A notification ID is required.",
     );
   }
 
   return apiClient.patch<unknown>(
-    apiEndpoints.notifications.readOne(id),
+    apiEndpoints.notifications.readOne(
+      normalizedId,
+    ),
   );
 }
 
 export async function markAllNotificationsAsRead(): Promise<unknown> {
   return apiClient.patch<unknown>(
-    apiEndpoints.notifications.read,
+    apiEndpoints.notifications.readAll,
     {},
   );
 }
