@@ -100,6 +100,10 @@ export const notificationFilters = [
     label: "All",
   },
   {
+    id: "unread",
+    label: "Unread",
+  },
+  {
     id: "system",
     label: "System",
   },
