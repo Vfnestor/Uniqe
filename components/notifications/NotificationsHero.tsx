@@ -17,18 +17,28 @@ export default function NotificationsHero() {
             <p className="notifications-hero-description">
               Keep track of important updates, activity and
               new possibilities across the Uniqe ecosystem.
+              Review unread messages and manage your
+              notification status from one place.
             </p>
           </div>
 
-          <div className="notifications-hero-visual">
+          <div
+            className="notifications-hero-visual"
+            aria-hidden="true"
+          >
             <div className="notifications-orbit">
               <span className="notifications-orbit-ring notifications-orbit-ring-one" />
+
               <span className="notifications-orbit-ring notifications-orbit-ring-two" />
+
               <div className="notifications-orbit-core">
                 <span>◇</span>
               </div>
+
               <span className="notifications-orbit-dot notifications-orbit-dot-one" />
+
               <span className="notifications-orbit-dot notifications-orbit-dot-two" />
+
               <span className="notifications-orbit-dot notifications-orbit-dot-three" />
             </div>
           </div>
