@@ -17,9 +17,11 @@ export type ActivityResponse = {
   limit: number;
 };
 
+type UnknownRecord = Record<string, unknown>;
+
 function isRecord(
   value: unknown,
-): value is Record<string, unknown> {
+): value is UnknownRecord {
   return (
     typeof value === "object" &&
     value !== null &&
@@ -68,31 +70,50 @@ function normalizeActivity(
 export async function getActivity(
   limit = 20,
 ): Promise<ActivityResponse> {
-  const safeLimit = Math.min(
-    Math.max(Math.trunc(limit), 1),
-    50,
-  );
+  const requestedLimit = Number(limit);
+
+  const safeLimit = Number.isFinite(
+    requestedLimit,
+  )
+    ? Math.min(
+        Math.max(
+          Math.trunc(requestedLimit),
+          1,
+        ),
+        50,
+      )
+    : 20;
+
+  const params = new URLSearchParams({
+    limit: String(safeLimit),
+  });
 
   const response = await apiClient.get<unknown>(
-    `${apiEndpoints.activity.list}?limit=${safeLimit}`,
+    `${apiEndpoints.activity.list}?${params.toString()}`,
   );
 
   let payload: unknown = response;
 
-  if (isRecord(payload) && "data" in payload) {
+  if (
+    isRecord(payload) &&
+    "data" in payload
+  ) {
     payload = payload.data;
   }
 
   const rawItems = Array.isArray(payload)
     ? payload
-    : isRecord(payload) && Array.isArray(payload.items)
+    : isRecord(payload) &&
+        Array.isArray(payload.items)
       ? payload.items
       : [];
 
   const items = rawItems
     .map(normalizeActivity)
     .filter(
-      (item): item is ActivityRecord =>
+      (
+        item,
+      ): item is ActivityRecord =>
         item !== null,
     );
 
