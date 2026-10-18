@@ -12,6 +12,26 @@ export {
 } from "./endpoints";
 
 export {
+  getAccount,
+} from "./account";
+
+export type {
+  AccountUser,
+  AccountProfile,
+  AccountPreferences,
+  AccountResponse,
+} from "./account";
+
+export {
+  getActivity,
+} from "./activity";
+
+export type {
+  ActivityRecord,
+  ActivityResponse,
+} from "./activity";
+
+export {
   getFavorites,
   createFavorite,
   deleteFavorite,
