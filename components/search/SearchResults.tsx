@@ -1,40 +1,69 @@
 import Link from "next/link";
-import type { SearchResult } from "./search-data";
+
+import type {
+  SearchResult,
+} from "./search-data";
 
 type SearchResultsProps = {
   results: SearchResult[];
   query: string;
+  total?: number;
+};
+
+const TYPE_LABELS: Record<string, string> = {
+  uapp: "برنامه",
+  course: "دوره",
+  category: "دسته‌بندی",
+  knowledge: "دانش",
+  unknown: "عمومی",
 };
 
 export default function SearchResults({
   results,
   query,
+  total,
 }: SearchResultsProps) {
   if (results.length === 0) {
     return null;
   }
 
+  const resultCount =
+    typeof total === "number"
+      ? total
+      : results.length;
+
   return (
     <div>
       <div className="mb-5 flex flex-wrap items-center justify-between gap-2">
         <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-          {query ? "نتایج جست‌وجو" : "بخش‌های پیشنهادی یونیک"}
+          {query
+            ? "نتایج جست‌وجو"
+            : "بخش‌های پیشنهادی یونیک"}
         </h2>
 
-        <span className="text-sm text-gray-500 dark:text-gray-400">
-          {results.length} نتیجه
+        <span
+          className="text-sm text-gray-500 dark:text-gray-400"
+          aria-live="polite"
+        >
+          {resultCount} نتیجه
+          {resultCount > results.length
+            ? ` — نمایش ${results.length} مورد`
+            : ""}
         </span>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {results.map((result) => (
           <Link
-            key={result.id}
+            key={`${result.sourceType || "local"}-${result.id}`}
             href={result.href}
             className="group rounded-2xl border border-gray-200 bg-white p-5 transition hover:-translate-y-0.5 hover:border-blue-400 hover:shadow-md dark:border-gray-700 dark:bg-gray-900 dark:hover:border-blue-500"
           >
             <div className="flex items-start gap-4">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-2xl dark:bg-gray-800">
+              <div
+                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-2xl dark:bg-gray-800"
+                aria-hidden="true"
+              >
                 {result.icon}
               </div>
 
@@ -49,6 +78,13 @@ export default function SearchResults({
                   </span>
                 </div>
 
+                {result.sourceType && (
+                  <p className="mb-2 text-xs text-gray-500 dark:text-gray-400">
+                    {TYPE_LABELS[result.sourceType] ||
+                      TYPE_LABELS.unknown}
+                  </p>
+                )}
+
                 <p className="text-sm leading-6 text-gray-600 dark:text-gray-400">
                   {result.description}
                 </p>
@@ -57,7 +93,11 @@ export default function SearchResults({
 
             <div className="mt-4 flex items-center justify-end text-sm font-medium text-blue-600 dark:text-blue-400">
               مشاهده بخش
-              <span className="mr-2 transition-transform group-hover:-translate-x-1">
+
+              <span
+                aria-hidden="true"
+                className="mr-2 transition-transform group-hover:-translate-x-1"
+              >
                 ←
               </span>
             </div>
