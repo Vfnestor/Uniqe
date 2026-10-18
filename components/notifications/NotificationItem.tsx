@@ -9,11 +9,13 @@ import type {
 type NotificationItemProps = {
   notification: NotificationItemData;
   onRead: (id: string) => void;
+  isPending?: boolean;
 };
 
 export default function NotificationItem({
   notification,
   onRead,
+  isPending = false,
 }: NotificationItemProps) {
   return (
     <article
@@ -22,8 +24,12 @@ export default function NotificationItem({
           ? "is-read"
           : "is-unread"
       }`}
+      aria-busy={isPending}
     >
-      <div className="notification-item-icon">
+      <div
+        className="notification-item-icon"
+        aria-hidden="true"
+      >
         {notification.icon}
       </div>
 
@@ -60,8 +66,9 @@ export default function NotificationItem({
             type="button"
             className="notification-read-button"
             onClick={() => onRead(notification.id)}
+            disabled={isPending}
           >
-            Mark read
+            {isPending ? "Saving..." : "Mark read"}
           </button>
         )}
 
