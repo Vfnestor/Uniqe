@@ -4,7 +4,7 @@ import NotificationItem from "./NotificationItem";
 
 import type {
   NotificationItemData,
-} from "./notifications";
+} from "@/lib/api/notifications";
 
 type NotificationsListProps = {
   notifications: NotificationItemData[];
