@@ -30,9 +30,7 @@ export type SearchOptions = {
 
 type UnknownRecord = Record<string, unknown>;
 
-function isRecord(
-  value: unknown,
-): value is UnknownRecord {
+function isRecord(value: unknown): value is UnknownRecord {
   return (
     typeof value === "object" &&
     value !== null &&
@@ -55,21 +53,25 @@ function readString(
 function normalizeSearchType(
   value: unknown,
 ): SearchResultType | "unknown" {
-  if (
-    value === "uapp" ||
-    value === "course" ||
-    value === "category" ||
-    value === "knowledge"
-  ) {
-    return value;
+  if (typeof value !== "string") {
+    return "unknown";
   }
 
-  return "unknown";
+  switch (value.toLowerCase()) {
+    case "uapp":
+      return "uapp";
+    case "course":
+      return "course";
+    case "category":
+      return "category";
+    case "knowledge":
+      return "knowledge";
+    default:
+      return "unknown";
+  }
 }
 
-function safeHref(
-  value: unknown,
-): string {
+function safeHref(value: unknown): string {
   if (typeof value !== "string") {
     return "/";
   }
@@ -101,16 +103,12 @@ function normalizeSearchResult(
     return null;
   }
 
-  const type = normalizeSearchType(
-    value.type,
-  );
+  const type = normalizeSearchType(value.type);
 
   const category = readString(
     value,
     "category",
-    type === "unknown"
-      ? "عمومی"
-      : type,
+    type === "unknown" ? "عمومی" : type,
   );
 
   const iconValue = value.icon;
@@ -118,10 +116,7 @@ function normalizeSearchResult(
   return {
     id,
     title,
-    description: readString(
-      value,
-      "description",
-    ),
+    description: readString(value, "description"),
     category,
     type,
     href: safeHref(value.href),
@@ -143,10 +138,7 @@ function normalizeSearchResponse(
 ): SearchResponse {
   let payload: unknown = value;
 
-  if (
-    isRecord(payload) &&
-    "data" in payload
-  ) {
+  if (isRecord(payload) && "data" in payload) {
     payload = payload.data;
   }
 
@@ -154,9 +146,7 @@ function normalizeSearchResponse(
     const results = payload
       .map(normalizeSearchResult)
       .filter(
-        (
-          item,
-        ): item is SearchResult =>
+        (item): item is SearchResult =>
           item !== null,
       );
 
@@ -175,9 +165,7 @@ function normalizeSearchResponse(
     };
   }
 
-  const rawResults = Array.isArray(
-    payload.results,
-  )
+  const rawResults = Array.isArray(payload.results)
     ? payload.results
     : Array.isArray(payload.items)
       ? payload.items
@@ -186,26 +174,18 @@ function normalizeSearchResponse(
   const results = rawResults
     .map(normalizeSearchResult)
     .filter(
-      (
-        item,
-      ): item is SearchResult =>
+      (item): item is SearchResult =>
         item !== null,
     );
-
-  const rawTotal = payload.total;
 
   return {
     results,
     total:
-      typeof rawTotal === "number" &&
-      Number.isFinite(rawTotal)
-        ? rawTotal
+      typeof payload.total === "number" &&
+      Number.isFinite(payload.total)
+        ? Math.max(0, payload.total)
         : results.length,
-    query: readString(
-      payload,
-      "query",
-      query,
-    ),
+    query: readString(payload, "query", query),
   };
 }
 
@@ -229,15 +209,14 @@ export async function searchUniqe(
     );
   }
 
-  const requestedLimit = options.limit ?? 20;
+  const requestedLimit = Number(options.limit ?? 20);
 
-  const limit = Math.min(
-    50,
-    Math.max(
-      1,
-      Math.trunc(requestedLimit),
-    ),
-  );
+  const limit = Number.isFinite(requestedLimit)
+    ? Math.min(
+        50,
+        Math.max(1, Math.trunc(requestedLimit)),
+      )
+    : 20;
 
   const params = new URLSearchParams({
     q: normalizedQuery,
