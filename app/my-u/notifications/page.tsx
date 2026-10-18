@@ -20,6 +20,7 @@ import type {
 
 import {
   getNotifications,
+  markAllNotificationsAsRead,
   markNotificationAsRead,
 } from "@/lib/api/notifications";
 
@@ -39,38 +40,37 @@ export default function NotificationsPage() {
   const [pendingIds, setPendingIds] =
     useState<string[]>([]);
 
-  useEffect(() => {
-    let active = true;
+  const [isMarkingAllRead, setIsMarkingAllRead] =
+    useState(false);
 
-    async function loadNotifications() {
-      try {
+  const loadNotifications = useCallback(
+    async (showLoading = true) => {
+      if (showLoading) {
         setLoading(true);
-        setError(null);
+      }
 
+      setError(null);
+
+      try {
         const result = await getNotifications();
-
-        if (active) {
-          setItems(result);
-        }
+        setItems(result);
       } catch {
-        if (active) {
-          setError(
-            "Unable to load notifications. Please sign in and try again.",
-          );
-        }
+        setError(
+          "Unable to load notifications. Please check your connection and sign-in status.",
+        );
       } finally {
-        if (active) {
+        if (showLoading) {
           setLoading(false);
         }
       }
-    }
+    },
+    [],
+  );
 
+  useEffect(() => {
     void loadNotifications();
 
-    return () => {
-      active = false;
-    };
-  }, []);
+  }, [loadNotifications]);
 
   const unreadCount = useMemo(
     () =>
@@ -83,6 +83,12 @@ export default function NotificationsPage() {
   const filteredNotifications = useMemo(() => {
     if (activeFilter === "all") {
       return items;
+    }
+
+    if (activeFilter === "unread") {
+      return items.filter(
+        (notification) => !notification.read,
+      );
     }
 
     return items.filter(
@@ -100,7 +106,8 @@ export default function NotificationsPage() {
       if (
         !notification ||
         notification.read ||
-        pendingIds.includes(id)
+        pendingIds.includes(id) ||
+        isMarkingAllRead
       ) {
         return;
       }
@@ -127,7 +134,7 @@ export default function NotificationsPage() {
         );
       } catch {
         setError(
-          "The notification status could not be saved.",
+          "The notification status could not be saved. Please try again.",
         );
       } finally {
         setPendingIds((current) =>
@@ -137,7 +144,44 @@ export default function NotificationsPage() {
         );
       }
     },
-    [items, pendingIds],
+    [items, pendingIds, isMarkingAllRead],
+  );
+
+  const markAllAsRead = useCallback(
+    async () => {
+      if (
+        unreadCount === 0 ||
+        isMarkingAllRead ||
+        pendingIds.length > 0
+      ) {
+        return;
+      }
+
+      setIsMarkingAllRead(true);
+      setError(null);
+
+      try {
+        await markAllNotificationsAsRead();
+
+        setItems((current) =>
+          current.map((item) => ({
+            ...item,
+            read: true,
+          })),
+        );
+      } catch {
+        setError(
+          "Unable to mark all notifications as read. Please try again.",
+        );
+      } finally {
+        setIsMarkingAllRead(false);
+      }
+    },
+    [
+      unreadCount,
+      isMarkingAllRead,
+      pendingIds.length,
+    ],
   );
 
   return (
@@ -147,6 +191,8 @@ export default function NotificationsPage() {
       <NotificationsSummary
         total={items.length}
         unread={unreadCount}
+        isMarkingAllRead={isMarkingAllRead}
+        onMarkAllRead={markAllAsRead}
       />
 
       <section className="notifications-content section">
@@ -165,6 +211,7 @@ export default function NotificationsPage() {
             <NotificationsFilters
               activeFilter={activeFilter}
               onFilterChange={setActiveFilter}
+              unreadCount={unreadCount}
             />
           </div>
 
@@ -175,16 +222,27 @@ export default function NotificationsPage() {
           )}
 
           {error && (
-            <p role="alert">
-              {error}
-            </p>
+            <div
+              className="notifications-feedback notifications-feedback-error"
+              role="alert"
+            >
+              <p>{error}</p>
+
+              <button
+                type="button"
+                onClick={() => void loadNotifications()}
+                disabled={loading}
+              >
+                {loading ? "Loading..." : "Try again"}
+              </button>
+            </div>
           )}
 
           {!loading && (
             <>
               <NotificationsList
                 notifications={filteredNotifications}
-                onRead={markAsRead}
+                onRead={(id) => void markAsRead(id)}
               />
 
               {filteredNotifications.length === 0 && (
@@ -195,7 +253,8 @@ export default function NotificationsPage() {
             </>
           )}
 
-          {pendingIds.length > 0 && (
+          {(pendingIds.length > 0 ||
+            isMarkingAllRead) && (
             <p role="status">
               Saving notification status...
             </p>
