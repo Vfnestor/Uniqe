@@ -19,14 +19,30 @@ export type ActivityResponse = {
 
 type UnknownRecord = Record<string, unknown>;
 
-function isRecord(
-  value: unknown,
-): value is UnknownRecord {
+function isRecord(value: unknown): value is UnknownRecord {
   return (
     typeof value === "object" &&
     value !== null &&
     !Array.isArray(value)
   );
+}
+
+function safeHref(value: unknown): string | undefined {
+  if (typeof value !== "string") {
+    return undefined;
+  }
+
+  const href = value.trim();
+
+  if (
+    !href.startsWith("/") ||
+    href.startsWith("//") ||
+    href.includes("\\")
+  ) {
+    return undefined;
+  }
+
+  return href;
 }
 
 function normalizeActivity(
@@ -59,10 +75,7 @@ function normalizeActivity(
       typeof value.icon === "string"
         ? value.icon
         : "◈",
-    href:
-      typeof value.href === "string"
-        ? value.href
-        : undefined,
+    href: safeHref(value.href),
     createdAt: value.createdAt,
   };
 }
@@ -72,14 +85,9 @@ export async function getActivity(
 ): Promise<ActivityResponse> {
   const requestedLimit = Number(limit);
 
-  const safeLimit = Number.isFinite(
-    requestedLimit,
-  )
+  const safeLimit = Number.isFinite(requestedLimit)
     ? Math.min(
-        Math.max(
-          Math.trunc(requestedLimit),
-          1,
-        ),
+        Math.max(Math.trunc(requestedLimit), 1),
         50,
       )
     : 20;
@@ -94,26 +102,20 @@ export async function getActivity(
 
   let payload: unknown = response;
 
-  if (
-    isRecord(payload) &&
-    "data" in payload
-  ) {
+  if (isRecord(payload) && "data" in payload) {
     payload = payload.data;
   }
 
   const rawItems = Array.isArray(payload)
     ? payload
-    : isRecord(payload) &&
-        Array.isArray(payload.items)
+    : isRecord(payload) && Array.isArray(payload.items)
       ? payload.items
       : [];
 
   const items = rawItems
     .map(normalizeActivity)
     .filter(
-      (
-        item,
-      ): item is ActivityRecord =>
+      (item): item is ActivityRecord =>
         item !== null,
     );
 
@@ -121,8 +123,9 @@ export async function getActivity(
     items,
     total:
       isRecord(payload) &&
-      typeof payload.total === "number"
-        ? payload.total
+      typeof payload.total === "number" &&
+      Number.isFinite(payload.total)
+        ? Math.max(0, payload.total)
         : items.length,
     limit: safeLimit,
   };
