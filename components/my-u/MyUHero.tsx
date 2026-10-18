@@ -24,10 +24,11 @@ export default function MyUHero() {
 
             <Reveal animation="up" delay={180}>
               <p className="my-u-hero-description">
-                My U is the personal layer of Uniqe —
-                a future space for your profile,
-                activity, applications, preferences
-                and experiences across the ecosystem.
+                Your personal space across Uniqe.
+                Access your account information,
+                review recorded activity and reach
+                the services connected to your
+                ecosystem.
               </p>
             </Reveal>
 
