@@ -4,7 +4,8 @@ export type NotificationCategory =
   | "uweb"
   | "ushop"
   | "uschool"
-  | "ucore";
+  | "ucore"
+  | "lab";
 
 export type NotificationItemData = {
   id: string;
@@ -121,5 +122,9 @@ export const notificationFilters = [
   {
     id: "ucore",
     label: "UCore",
+  },
+  {
+    id: "lab",
+    label: "LAB",
   },
 ] as const;
