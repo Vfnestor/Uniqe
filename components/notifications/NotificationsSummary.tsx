@@ -3,11 +3,15 @@
 type NotificationsSummaryProps = {
   total: number;
   unread: number;
+  isMarkingAllRead?: boolean;
+  onMarkAllRead?: () => void;
 };
 
 export default function NotificationsSummary({
   total,
   unread,
+  isMarkingAllRead = false,
+  onMarkAllRead,
 }: NotificationsSummaryProps) {
   return (
     <section className="notifications-summary section">
@@ -45,19 +49,33 @@ export default function NotificationsSummary({
             </div>
           </div>
 
-          <div className="notification-summary-card surface">
+          <div className="notification-summary-card surface notification-summary-action-card">
             <span className="notification-summary-icon">
               ✓
             </span>
 
-            <div>
+            <div className="notification-summary-action-content">
               <span className="notification-summary-label">
-                Source
+                Notification actions
               </span>
 
-              <strong className="notification-summary-status">
-                Account
-              </strong>
+              {onMarkAllRead && (
+                <button
+                  type="button"
+                  className="notification-mark-all-button"
+                  onClick={onMarkAllRead}
+                  disabled={
+                    unread === 0 ||
+                    isMarkingAllRead
+                  }
+                >
+                  {isMarkingAllRead
+                    ? "Saving..."
+                    : unread === 0
+                      ? "All caught up"
+                      : "Mark all as read"}
+                </button>
+              )}
             </div>
           </div>
         </div>
