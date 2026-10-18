@@ -11,12 +11,18 @@ export default function SearchInput({
 }: SearchInputProps) {
   return (
     <div className="relative">
-      <label htmlFor="uniqe-search" className="sr-only">
+      <label
+        htmlFor="uniqe-search"
+        className="sr-only"
+      >
         جست‌وجو در یونیک
       </label>
 
       <div className="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-4 py-3 shadow-sm transition focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-100 dark:border-gray-700 dark:bg-gray-900 dark:focus-within:ring-blue-950">
-        <span aria-hidden="true" className="text-xl">
+        <span
+          aria-hidden="true"
+          className="text-xl"
+        >
           🔎
         </span>
 
@@ -25,10 +31,13 @@ export default function SearchInput({
           type="search"
           dir="auto"
           value={value}
-          onChange={(event) => onChange(event.target.value)}
+          onChange={(event) =>
+            onChange(event.target.value)
+          }
           maxLength={200}
           placeholder="دنبال چه چیزی می‌گردید؟"
           autoComplete="off"
+          aria-describedby="uniqe-search-hint"
           className="min-w-0 flex-1 bg-transparent py-1 text-gray-900 outline-none placeholder:text-gray-400 dark:text-white"
         />
 
@@ -44,9 +53,18 @@ export default function SearchInput({
         )}
       </div>
 
-      <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-        نام برنامه، خدمات یا بخش موردنظر خود را وارد کنید.
-      </p>
+      <div
+        id="uniqe-search-hint"
+        className="mt-2 flex flex-wrap items-center justify-between gap-2 text-xs text-gray-500 dark:text-gray-400"
+      >
+        <span>
+          نام برنامه، خدمات یا بخش موردنظر خود را وارد کنید.
+        </span>
+
+        <span aria-live="polite">
+          {value.length}/200
+        </span>
+      </div>
     </div>
   );
 }
