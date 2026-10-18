@@ -53,6 +53,7 @@ export default function NotificationsPage() {
 
       try {
         const result = await getNotifications();
+
         setItems(result);
       } catch {
         setError(
@@ -69,7 +70,6 @@ export default function NotificationsPage() {
 
   useEffect(() => {
     void loadNotifications();
-
   }, [loadNotifications]);
 
   const unreadCount = useMemo(
@@ -144,7 +144,11 @@ export default function NotificationsPage() {
         );
       }
     },
-    [items, pendingIds, isMarkingAllRead],
+    [
+      items,
+      pendingIds,
+      isMarkingAllRead,
+    ],
   );
 
   const markAllAsRead = useCallback(
@@ -243,6 +247,7 @@ export default function NotificationsPage() {
               <NotificationsList
                 notifications={filteredNotifications}
                 onRead={(id) => void markAsRead(id)}
+                pendingIds={pendingIds}
               />
 
               {filteredNotifications.length === 0 && (
