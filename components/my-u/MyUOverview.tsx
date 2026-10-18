@@ -2,6 +2,12 @@ import Container from "@/components/ui/Container";
 import Card from "@/components/ui/Card";
 import Reveal from "@/components/ui/Reveal";
 
+import MyUAccountCard from "./MyUAccountCard";
+
+import type {
+  AccountResponse,
+} from "@/lib/api/account";
+
 import type {
   MyUQuickAction,
   MyUService,
@@ -10,6 +16,10 @@ import type {
 type MyUOverviewProps = {
   services: MyUService[];
   actions: MyUQuickAction[];
+  account: AccountResponse | null;
+  isAccountLoading: boolean;
+  accountError: string | null;
+  onRetryAccount: () => void;
 };
 
 function Status({
@@ -32,6 +42,10 @@ function Status({
 export default function MyUOverview({
   services,
   actions,
+  account,
+  isAccountLoading,
+  accountError,
+  onRetryAccount,
 }: MyUOverviewProps) {
   return (
     <section
@@ -54,56 +68,21 @@ export default function MyUOverview({
             </div>
 
             <p className="section-description">
-              A central place for accessing the
-              different layers of the Uniqe ecosystem.
-              This dashboard will become personalized
-              as My U evolves.
+              Your account information and shortcuts
+              to the different layers of the Uniqe
+              ecosystem, together in one place.
             </p>
           </div>
         </Reveal>
 
         <div className="my-u-overview-grid">
           <Reveal animation="up" delay={100}>
-            <Card
-              hover
-              className="my-u-profile-card"
-            >
-              <div className="my-u-profile-top">
-                <div className="my-u-avatar">
-                  U
-                </div>
-
-                <span className="my-u-profile-label">
-                  Personal Space
-                </span>
-              </div>
-
-              <div className="my-u-profile-content">
-                <span className="my-u-profile-eyebrow">
-                  Welcome to My U
-                </span>
-
-                <h3>
-                  Your journey
-                  <br />
-                  starts here.
-                </h3>
-
-                <p>
-                  Your profile, activity,
-                  preferences and connected Uniqe
-                  experiences will eventually live in
-                  this space.
-                </p>
-              </div>
-
-              <div className="my-u-profile-footer">
-                <span>
-                  Authentication coming in the next
-                  layer.
-                </span>
-              </div>
-            </Card>
+            <MyUAccountCard
+              account={account}
+              isLoading={isAccountLoading}
+              error={accountError}
+              onRetry={onRetryAccount}
+            />
           </Reveal>
 
           <div className="my-u-services">
@@ -133,19 +112,13 @@ export default function MyUOverview({
                     </div>
 
                     <div className="my-u-service-content">
-                      <h3>
-                        {service.name}
-                      </h3>
+                      <h3>{service.name}</h3>
 
-                      <p>
-                        {service.description}
-                      </p>
+                      <p>{service.description}</p>
                     </div>
 
                     <div className="my-u-service-bottom">
-                      <span>
-                        Explore
-                      </span>
+                      <span>Explore</span>
 
                       <span className="my-u-service-arrow">
                         ↗
@@ -164,9 +137,7 @@ export default function MyUOverview({
               Quick Actions
             </span>
 
-            <h3>
-              Go anywhere in Uniqe.
-            </h3>
+            <h3>Go anywhere in Uniqe.</h3>
           </div>
         </Reveal>
 
@@ -186,13 +157,9 @@ export default function MyUOverview({
                 </span>
 
                 <span className="my-u-action-content">
-                  <strong>
-                    {action.title}
-                  </strong>
+                  <strong>{action.title}</strong>
 
-                  <span>
-                    {action.description}
-                  </span>
+                  <span>{action.description}</span>
                 </span>
 
                 <span className="my-u-action-arrow">
