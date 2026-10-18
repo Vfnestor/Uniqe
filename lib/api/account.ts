@@ -54,9 +54,9 @@ export type UpdatePreferencesInput = {
   notificationsEnabled?: boolean;
 };
 
-function isRecord(
-  value: unknown,
-): value is Record<string, unknown> {
+type UnknownRecord = Record<string, unknown>;
+
+function isRecord(value: unknown): value is UnknownRecord {
   return (
     typeof value === "object" &&
     value !== null &&
@@ -64,15 +64,11 @@ function isRecord(
   );
 }
 
-function requiredString(
-  value: unknown,
-): value is string {
+function isString(value: unknown): value is string {
   return typeof value === "string";
 }
 
-function unwrapPayload(
-  value: unknown,
-): unknown {
+function unwrapPayload(value: unknown): unknown {
   if (isRecord(value) && "data" in value) {
     return value.data;
   }
@@ -80,17 +76,34 @@ function unwrapPayload(
   return value;
 }
 
-function normalizeUser(
+function normalizeTheme(
   value: unknown,
-): AccountUser | null {
+): "system" | "light" | "dark" {
+  if (typeof value !== "string") {
+    return "system";
+  }
+
+  switch (value.toLowerCase()) {
+    case "system":
+      return "system";
+    case "light":
+      return "light";
+    case "dark":
+      return "dark";
+    default:
+      return "system";
+  }
+}
+
+function normalizeUser(value: unknown): AccountUser | null {
   if (!isRecord(value)) {
     return null;
   }
 
   if (
-    !requiredString(value.id) ||
-    !requiredString(value.name) ||
-    !requiredString(value.email)
+    !isString(value.id) ||
+    !isString(value.name) ||
+    !isString(value.email)
   ) {
     return null;
   }
@@ -103,31 +116,27 @@ function normalizeUser(
 
   const status =
     typeof value.status === "string" &&
-    validStatuses.includes(value.status)
-      ? (value.status as AccountUser["status"])
+    validStatuses.includes(value.status.toLowerCase())
+      ? (value.status.toLowerCase() as AccountUser["status"])
       : "active";
 
   return {
     id: value.id,
     name: value.name,
     email: value.email,
-    avatarUrl:
-      typeof value.avatarUrl === "string"
-        ? value.avatarUrl
-        : null,
+    avatarUrl: isString(value.avatarUrl)
+      ? value.avatarUrl
+      : null,
     status,
-    role:
-      typeof value.role === "string"
-        ? value.role
-        : "user",
-    createdAt:
-      typeof value.createdAt === "string"
-        ? value.createdAt
-        : "",
-    updatedAt:
-      typeof value.updatedAt === "string"
-        ? value.updatedAt
-        : "",
+    role: isString(value.role)
+      ? value.role.toLowerCase()
+      : "user",
+    createdAt: isString(value.createdAt)
+      ? value.createdAt
+      : "",
+    updatedAt: isString(value.updatedAt)
+      ? value.updatedAt
+      : "",
   };
 }
 
@@ -139,50 +148,33 @@ function normalizeProfile(
   }
 
   if (
-    !requiredString(value.id) ||
-    !requiredString(value.userId) ||
-    !requiredString(value.displayName)
+    !isString(value.id) ||
+    !isString(value.userId) ||
+    !isString(value.displayName)
   ) {
     return null;
   }
-
-  const validThemes = [
-    "system",
-    "light",
-    "dark",
-  ];
-
-  const theme =
-    typeof value.theme === "string" &&
-    validThemes.includes(value.theme)
-      ? (value.theme as AccountProfile["theme"])
-      : "system";
 
   return {
     id: value.id,
     userId: value.userId,
     displayName: value.displayName,
-    bio:
-      typeof value.bio === "string"
-        ? value.bio
-        : null,
-    avatarUrl:
-      typeof value.avatarUrl === "string"
-        ? value.avatarUrl
-        : null,
-    language:
-      typeof value.language === "string"
-        ? value.language
-        : "en",
-    theme,
-    createdAt:
-      typeof value.createdAt === "string"
-        ? value.createdAt
-        : "",
-    updatedAt:
-      typeof value.updatedAt === "string"
-        ? value.updatedAt
-        : "",
+    bio: isString(value.bio)
+      ? value.bio
+      : null,
+    avatarUrl: isString(value.avatarUrl)
+      ? value.avatarUrl
+      : null,
+    language: isString(value.language)
+      ? value.language
+      : "en",
+    theme: normalizeTheme(value.theme),
+    createdAt: isString(value.createdAt)
+      ? value.createdAt
+      : "",
+    updatedAt: isString(value.updatedAt)
+      ? value.updatedAt
+      : "",
   };
 }
 
@@ -194,44 +186,29 @@ function normalizePreferences(
   }
 
   if (
-    !requiredString(value.id) ||
-    !requiredString(value.userId)
+    !isString(value.id) ||
+    !isString(value.userId)
   ) {
     return null;
   }
 
-  const validThemes = [
-    "system",
-    "light",
-    "dark",
-  ];
-
-  const theme =
-    typeof value.theme === "string" &&
-    validThemes.includes(value.theme)
-      ? (value.theme as AccountPreferences["theme"])
-      : "system";
-
   return {
     id: value.id,
     userId: value.userId,
-    theme,
-    language:
-      typeof value.language === "string"
-        ? value.language
-        : "en",
+    theme: normalizeTheme(value.theme),
+    language: isString(value.language)
+      ? value.language
+      : "en",
     notificationsEnabled:
       typeof value.notificationsEnabled === "boolean"
         ? value.notificationsEnabled
         : true,
-    createdAt:
-      typeof value.createdAt === "string"
-        ? value.createdAt
-        : "",
-    updatedAt:
-      typeof value.updatedAt === "string"
-        ? value.updatedAt
-        : "",
+    createdAt: isString(value.createdAt)
+      ? value.createdAt
+      : "",
+    updatedAt: isString(value.updatedAt)
+      ? value.updatedAt
+      : "",
   };
 }
 
@@ -255,23 +232,23 @@ export async function getAccount(): Promise<AccountResponse> {
   return {
     user,
     profile: normalizeProfile(payload.profile),
-    preferences: normalizePreferences(
-      payload.preferences,
-    ),
+    preferences: normalizePreferences(payload.preferences),
   };
 }
 
 export async function updateProfile(
   input: UpdateProfileInput,
 ): Promise<AccountProfile> {
+  const payload = {
+    ...input,
+    ...(input.theme
+      ? { theme: input.theme.toUpperCase() }
+      : {}),
+  };
+
   const response = await apiClient.patch<unknown>(
     apiEndpoints.user.profile,
-    {
-      ...input,
-      ...(input.theme
-        ? { theme: input.theme.toUpperCase() }
-        : {}),
-    },
+    payload,
   );
 
   const profile = normalizeProfile(
@@ -288,14 +265,16 @@ export async function updateProfile(
 export async function updatePreferences(
   input: UpdatePreferencesInput,
 ): Promise<AccountPreferences> {
+  const payload = {
+    ...input,
+    ...(input.theme
+      ? { theme: input.theme.toUpperCase() }
+      : {}),
+  };
+
   const response = await apiClient.patch<unknown>(
     apiEndpoints.user.preferences,
-    {
-      ...input,
-      ...(input.theme
-        ? { theme: input.theme.toUpperCase() }
-        : {}),
-    },
+    payload,
   );
 
   const preferences = normalizePreferences(
