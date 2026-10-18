@@ -6,7 +6,10 @@ import {
 } from "react";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+
+import {
+  useRouter,
+} from "next/navigation";
 
 import {
   useAuth,
@@ -80,19 +83,17 @@ export default function RegisterForm() {
     setLoading(true);
 
     try {
-      const result =
-        await register(
-          values.name.trim(),
-          values.email.trim().toLowerCase(),
-          values.password,
-        );
+      const result = await register(
+        values.name.trim(),
+        values.email.trim().toLowerCase(),
+        values.password,
+      );
 
       if (!result.success) {
         setError(
           result.message ||
             "ثبت‌نام انجام نشد. اطلاعات را بررسی کنید.",
         );
-
         return;
       }
 
@@ -104,7 +105,7 @@ export default function RegisterForm() {
       });
 
       router.replace(
-        result.redirectTo || "/my",
+        result.redirectTo || "/my-u",
       );
 
       router.refresh();
@@ -132,14 +133,21 @@ export default function RegisterForm() {
           </h2>
 
           <p>
-            شما هم‌اکنون وارد حساب کاربری خود شده‌اید.
+            شما هم‌اکنون وارد حساب کاربری خود
+            شده‌اید.
           </p>
         </div>
 
         <button
           type="button"
           className="button"
-          onClick={() => router.replace("/my")}
+          onClick={() =>
+            router.replace(
+              state.user?.role === "owner"
+                ? "/admin"
+                : "/my-u",
+            )
+          }
         >
           ورود به فضای کاربری
         </button>
@@ -165,8 +173,8 @@ export default function RegisterForm() {
         </h2>
 
         <p>
-          اطلاعات خود را وارد کنید تا حساب کاربری
-          شما در اکوسیستم Uniqe ایجاد شود.
+          اطلاعات خود را وارد کنید تا حساب
+          کاربری شما در اکوسیستم Uniqe ایجاد شود.
         </p>
       </div>
 
