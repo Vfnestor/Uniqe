@@ -10,25 +10,15 @@ import type {
   AuthLoginResult,
   AuthRegisterResult,
   AuthResult,
-  AuthUserRole,
 } from "./types";
 
 import {
   setStoredAuthSession,
 } from "./auth-storage";
 
-function getRedirectPath(
-  role: AuthUserRole | undefined,
-): string {
-  switch (role) {
-    case "owner":
-      return "/admin";
-
-    case "user":
-    default:
-      return "/my";
-  }
-}
+import {
+  getPostAuthRedirectPath,
+} from "./redirects";
 
 function getErrorMessage(
   error: unknown,
@@ -75,7 +65,9 @@ function saveAuthentication(
     user,
     role: user.role,
     redirectTo:
-      getRedirectPath(user.role),
+      getPostAuthRedirectPath(
+        user.role,
+      ),
   };
 }
 
@@ -83,20 +75,20 @@ export async function authenticate(
   email: string,
   password: string,
 ): Promise<AuthLoginResult> {
-  const normalizedEmail =
-    email.trim().toLowerCase();
-
   try {
     const response =
       await apiClient.post<AuthResult>(
         apiEndpoints.auth.login,
         {
-          email: normalizedEmail,
+          email:
+            email.trim().toLowerCase(),
           password,
         },
       );
 
-    return saveAuthentication(response);
+    return saveAuthentication(
+      response,
+    );
   } catch (error) {
     return {
       success: false,
@@ -113,24 +105,21 @@ export async function registerAccount(
   email: string,
   password: string,
 ): Promise<AuthRegisterResult> {
-  const normalizedName =
-    name.trim();
-
-  const normalizedEmail =
-    email.trim().toLowerCase();
-
   try {
     const response =
       await apiClient.post<AuthResult>(
         apiEndpoints.auth.register,
         {
-          name: normalizedName,
-          email: normalizedEmail,
+          name: name.trim(),
+          email:
+            email.trim().toLowerCase(),
           password,
         },
       );
 
-    return saveAuthentication(response);
+    return saveAuthentication(
+      response,
+    );
   } catch (error) {
     return {
       success: false,
