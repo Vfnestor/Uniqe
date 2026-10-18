@@ -19,6 +19,7 @@ export type MyUActivity = {
   description: string;
   time: string;
   icon: string;
+  href?: string;
 };
 
 export type MyUQuickAction = {
@@ -72,32 +73,7 @@ export const myUServices: MyUService[] = [
   },
 ];
 
-export const myUActivity: MyUActivity[] = [
-  {
-    id: "activity-01",
-    title: "Explored UApps",
-    description:
-      "Visited the UApps application hub.",
-    time: "Recently",
-    icon: "◈",
-  },
-  {
-    id: "activity-02",
-    title: "Explored UWeb",
-    description:
-      "Visited the UWeb project hub.",
-    time: "Recently",
-    icon: "◇",
-  },
-  {
-    id: "activity-03",
-    title: "Visited LAB",
-    description:
-      "Explored experimental Uniqe projects.",
-    time: "Recently",
-    icon: "✦",
-  },
-];
+export const myUActivity: MyUActivity[] = [];
 
 export const myUQuickActions: MyUQuickAction[] = [
   {
