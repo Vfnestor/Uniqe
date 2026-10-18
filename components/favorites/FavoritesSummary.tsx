@@ -56,7 +56,7 @@ export default function FavoritesSummary({
               </span>
 
               <strong className="favorite-summary-status">
-                Local
+                Account
               </strong>
             </div>
           </div>
