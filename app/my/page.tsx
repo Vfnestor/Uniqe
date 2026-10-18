@@ -1,15 +1,7 @@
-import "@/components/my/my-u.css";
-
-import MyU from "@/components/my/MyU";
-
 import {
-  myUProducts,
-} from "@/lib/my-u/products";
+  redirect,
+} from "next/navigation";
 
-export default function MyUPage() {
-  return (
-    <MyU
-      products={myUProducts}
-    />
-  );
+export default function MyPage() {
+  redirect("/my-u");
 }
