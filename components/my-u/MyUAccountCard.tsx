@@ -9,9 +9,7 @@ type MyUAccountCardProps = {
   onRetry: () => void;
 };
 
-function getInitials(
-  name: string,
-): string {
+function getInitials(name: string): string {
   const normalized = name.trim();
 
   if (!normalized) {
@@ -25,9 +23,7 @@ function getInitials(
     .join("");
 }
 
-function formatRole(
-  role: string,
-): string {
+function formatRole(role: string): string {
   switch (role.toLowerCase()) {
     case "owner":
       return "Owner";
@@ -101,22 +97,24 @@ export default function MyUAccountCard({
         >
           Try again
         </button>
+
+        <a
+          href="/my-u/settings"
+          className="my-u-account-settings-link"
+        >
+          Account settings ↗
+        </a>
       </section>
     );
   }
 
-  const {
-    user,
-    profile,
-  } = account;
+  const { user, profile } = account;
 
   const displayName =
-    profile?.displayName?.trim() ||
-    user.name;
+    profile?.displayName?.trim() || user.name;
 
   const avatarUrl =
-    profile?.avatarUrl ||
-    user.avatarUrl;
+    profile?.avatarUrl || user.avatarUrl;
 
   return (
     <section
@@ -174,9 +172,18 @@ export default function MyUAccountCard({
       </div>
 
       <div className="my-u-profile-footer">
-        {profile
-          ? `Profile language: ${profile.language.toUpperCase()}`
-          : "Your profile has not been configured yet."}
+        <span>
+          {profile
+            ? `Profile language: ${profile.language.toUpperCase()}`
+            : "Your profile has not been configured yet."}
+        </span>
+
+        <a
+          href="/my-u/settings"
+          className="my-u-account-settings-link"
+        >
+          Edit account settings ↗
+        </a>
       </div>
     </section>
   );
