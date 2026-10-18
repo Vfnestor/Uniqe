@@ -1,0 +1,103 @@
+.my-u-activity-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: 200px;
+  padding: 32px 24px;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.my-u-activity-state > span:first-child {
+  font-size: 1.6rem;
+}
+
+.my-u-activity-state h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.15rem;
+}
+
+.my-u-activity-state p {
+  max-width: 540px;
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.my-u-activity-empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  color: var(--text-primary);
+}
+
+.my-u-activity-error {
+  border-color: #b91c1c;
+}
+
+.my-u-activity-retry {
+  padding: 10px 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.my-u-activity-retry:hover {
+  background: var(--surface-hover);
+}
+
+.my-u-activity-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.my-u-activity-link:focus-visible {
+  outline: 2px solid var(--text-primary);
+  outline-offset: 4px;
+  border-radius: var(--radius-lg);
+}
+
+.my-u-activity-link .my-u-activity-card {
+  transition:
+    border-color var(--transition-normal),
+    background var(--transition-normal),
+    transform var(--transition-normal);
+}
+
+.my-u-activity-link:hover .my-u-activity-card {
+  border-color: var(--border-strong);
+  background: var(--surface-hover);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 767px) {
+  .my-u-activity-state {
+    min-height: 180px;
+    padding: 26px 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .my-u-activity-link .my-u-activity-card {
+    transition: none;
+  }
+
+  .my-u-activity-link:hover .my-u-activity-card {
+    transform: none;
+  }
+}
