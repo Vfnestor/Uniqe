@@ -44,14 +44,30 @@ const FAVORITE_CATEGORIES: FavoriteCategory[] = [
   "LAB",
 ];
 
-function isRecord(
-  value: unknown,
-): value is UnknownRecord {
+function isRecord(value: unknown): value is UnknownRecord {
   return (
     typeof value === "object" &&
     value !== null &&
     !Array.isArray(value)
   );
+}
+
+function safeHref(value: unknown): string | null {
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  const href = value.trim();
+
+  if (
+    !href.startsWith("/") ||
+    href.startsWith("//") ||
+    href.includes("\\")
+  ) {
+    return null;
+  }
+
+  return href;
 }
 
 function normalizeFavorite(
@@ -66,8 +82,7 @@ function normalizeFavorite(
     typeof value.targetId !== "string" ||
     typeof value.title !== "string" ||
     typeof value.description !== "string" ||
-    typeof value.category !== "string" ||
-    typeof value.href !== "string"
+    typeof value.category !== "string"
   ) {
     return null;
   }
@@ -77,6 +92,12 @@ function normalizeFavorite(
       value.category as FavoriteCategory,
     )
   ) {
+    return null;
+  }
+
+  const href = safeHref(value.href);
+
+  if (!href) {
     return null;
   }
 
@@ -90,7 +111,7 @@ function normalizeFavorite(
     title: value.title,
     description: value.description,
     category: value.category as FavoriteCategory,
-    href: value.href,
+    href,
     icon:
       typeof value.icon === "string" ||
       value.icon === null
@@ -110,6 +131,23 @@ function normalizeFavorite(
   };
 }
 
+function unwrapList(value: unknown): unknown {
+  let payload = value;
+
+  if (isRecord(payload) && "data" in payload) {
+    payload = payload.data;
+  }
+
+  if (
+    isRecord(payload) &&
+    Array.isArray(payload.items)
+  ) {
+    payload = payload.items;
+  }
+
+  return payload;
+}
+
 export async function getFavorites(): Promise<
   FavoriteRecord[]
 > {
@@ -117,15 +155,7 @@ export async function getFavorites(): Promise<
     apiEndpoints.favorites.list,
   );
 
-  let payload: unknown = response;
-
-  if (
-    isRecord(payload) &&
-    "items" in payload &&
-    Array.isArray(payload.items)
-  ) {
-    payload = payload.items;
-  }
+  const payload = unwrapList(response);
 
   if (!Array.isArray(payload)) {
     throw new Error(
@@ -136,9 +166,7 @@ export async function getFavorites(): Promise<
   return payload
     .map(normalizeFavorite)
     .filter(
-      (
-        item,
-      ): item is FavoriteRecord =>
+      (item): item is FavoriteRecord =>
         item !== null,
     );
 }
@@ -148,11 +176,11 @@ export async function createFavorite(
 ): Promise<FavoriteRecord> {
   const targetId = favorite.targetId.trim();
   const title = favorite.title.trim();
-  const href = favorite.href.trim();
+  const href = safeHref(favorite.href);
 
   if (!targetId || !title || !href) {
     throw new Error(
-      "Favorite target, title and URL are required.",
+      "Favorite target, title and a valid local URL are required.",
     );
   }
 
@@ -194,9 +222,7 @@ export async function deleteFavorite(
   }
 
   const response = await apiClient.delete<unknown>(
-    apiEndpoints.favorites.remove(
-      normalizedId,
-    ),
+    apiEndpoints.favorites.remove(normalizedId),
   );
 
   if (
@@ -210,8 +236,7 @@ export async function deleteFavorite(
   }
 
   return {
-    success:
-      response.success === true,
+    success: response.success === true,
     id: response.id,
     targetId: response.targetId,
   };
