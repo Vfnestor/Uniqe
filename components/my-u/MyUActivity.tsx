@@ -4,7 +4,11 @@ import Container from "@/components/ui/Container";
 import Card from "@/components/ui/Card";
 import Reveal from "@/components/ui/Reveal";
 
-import type { MyUActivity as MyUActivityItem } from "./dashboard";
+import "./my-u-activity.css";
+
+import type {
+  MyUActivity as MyUActivityItem,
+} from "./dashboard";
 
 type MyUActivityProps = {
   activities: MyUActivityItem[];
@@ -50,7 +54,8 @@ export default function MyUActivity({
             className="my-u-activity-state"
           >
             <span aria-hidden="true">◌</span>
-            Loading your recent activity...
+
+            <p>Loading your recent activity...</p>
           </div>
         )}
 
@@ -73,67 +78,71 @@ export default function MyUActivity({
           </div>
         )}
 
-        {!isLoading && !error && activities.length === 0 && (
-          <div className="my-u-activity-state">
-            <span
-              aria-hidden="true"
-              className="my-u-activity-empty-icon"
-            >
-              ◈
-            </span>
+        {!isLoading &&
+          !error &&
+          activities.length === 0 && (
+            <div className="my-u-activity-state">
+              <span
+                aria-hidden="true"
+                className="my-u-activity-empty-icon"
+              >
+                ◈
+              </span>
 
-            <h3>No activity yet</h3>
+              <h3>No activity yet</h3>
 
-            <p>
-              Your saved items, notifications and
-              account transactions will appear here
-              when activity is recorded.
-            </p>
-          </div>
-        )}
+              <p>
+                Your saved items, notifications and
+                account transactions will appear here
+                when activity is recorded.
+              </p>
+            </div>
+          )}
 
-        {!isLoading && !error && activities.length > 0 && (
-          <div className="my-u-activity-list">
-            {activities.map((activity, index) => {
-              const content = (
-                <Card className="my-u-activity-card">
-                  <div className="my-u-activity-icon">
-                    {activity.icon}
-                  </div>
+        {!isLoading &&
+          !error &&
+          activities.length > 0 && (
+            <div className="my-u-activity-list">
+              {activities.map((activity, index) => {
+                const content = (
+                  <Card className="my-u-activity-card">
+                    <div className="my-u-activity-icon">
+                      {activity.icon}
+                    </div>
 
-                  <div className="my-u-activity-content">
-                    <h3>{activity.title}</h3>
+                    <div className="my-u-activity-content">
+                      <h3>{activity.title}</h3>
 
-                    <p>{activity.description}</p>
-                  </div>
+                      <p>{activity.description}</p>
+                    </div>
 
-                  <span className="my-u-activity-time">
-                    {activity.time}
-                  </span>
-                </Card>
-              );
+                    <span className="my-u-activity-time">
+                      {activity.time}
+                    </span>
+                  </Card>
+                );
 
-              return (
-                <Reveal
-                  key={activity.id}
-                  animation="up"
-                  delay={100 + index * 50}
-                >
-                  {activity.href ? (
-                    <Link
-                      href={activity.href}
-                      className="my-u-activity-link"
-                    >
-                      {content}
-                    </Link>
-                  ) : (
-                    content
-                  )}
-                </Reveal>
-              );
-            })}
-          </div>
-        )}
+                return (
+                  <Reveal
+                    key={activity.id}
+                    animation="up"
+                    delay={100 + index * 50}
+                  >
+                    {activity.href ? (
+                      <Link
+                        href={activity.href}
+                        className="my-u-activity-link"
+                      >
+                        {content}
+                      </Link>
+                    ) : (
+                      content
+                    )}
+                  </Reveal>
+                );
+              })}
+            </div>
+          )}
       </Container>
     </section>
   );
