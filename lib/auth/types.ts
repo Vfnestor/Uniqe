@@ -46,11 +46,27 @@ export type AuthLoginResult = {
   message?: string;
 };
 
+export type AuthRegisterResult =
+  AuthLoginResult;
+
+export type AuthResult = {
+  user: AuthUser;
+  tokens: AuthTokens;
+};
+
 export type AuthContextValue = {
   state: AuthState;
+
   login: (
     email: string,
     password: string,
   ) => Promise<AuthLoginResult>;
+
+  register: (
+    name: string,
+    email: string,
+    password: string,
+  ) => Promise<AuthRegisterResult>;
+
   logout: () => Promise<void>;
 };
