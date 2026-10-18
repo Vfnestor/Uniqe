@@ -52,11 +52,11 @@ export default function NotificationsSummary({
 
             <div>
               <span className="notification-summary-label">
-                Status
+                Source
               </span>
 
               <strong className="notification-summary-status">
-                Connected
+                Account
               </strong>
             </div>
           </div>
