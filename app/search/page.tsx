@@ -1,79 +1,106 @@
 "use client";
 
-import {
-  ChangeEvent,
-  useMemo,
-  useState,
-} from "react";
-
-import "@/components/search/search.css";
-
+import { useEffect, useMemo, useState } from "react";
 import SearchHero from "@/components/search/SearchHero";
 import SearchInput from "@/components/search/SearchInput";
 import SearchResults from "@/components/search/SearchResults";
 import SearchEmpty from "@/components/search/SearchEmpty";
-
+import SearchStatus from "@/components/search/SearchStatus";
 import {
-  searchResults,
+  searchResults as initialResults,
+  type SearchResult as UIResult,
 } from "@/components/search/search-data";
+import { searchUniqe, type SearchResult as APIResult } from "@/lib/api/search";
+
+function mapAPIResult(item: APIResult): UIResult {
+  return {
+    id: item.id,
+    title: item.title,
+    description: item.description ?? "",
+    category: item.category,
+    href: item.href,
+    icon: item.icon ?? "🔎",
+    keywords: [item.title, item.description ?? "", item.category],
+  };
+}
 
 export default function SearchPage() {
   const [query, setQuery] = useState("");
+  const [remoteResults, setRemoteResults] = useState<UIResult[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const filteredResults = useMemo(() => {
-    const normalizedQuery =
-      query.trim().toLowerCase();
+  const normalizedQuery = query.trim();
 
+  useEffect(() => {
     if (!normalizedQuery) {
-      return searchResults;
+      setRemoteResults([]);
+      setIsLoading(false);
+      setError(null);
+      return;
     }
 
-    return searchResults.filter((result) => {
-      const searchableText = [
-        result.title,
-        result.description,
-        result.category,
-        ...result.keywords,
-      ]
-        .join(" ")
-        .toLowerCase();
+    let active = true;
 
-      return searchableText.includes(
-        normalizedQuery
-      );
-    });
-  }, [query]);
+    const timeout = window.setTimeout(async () => {
+      setIsLoading(true);
+      setError(null);
 
-  const handleChange = (
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
-    setQuery(event.target.value);
-  };
+      try {
+        const response = await searchUniqe(normalizedQuery);
+
+        if (!active) return;
+
+        setRemoteResults(
+          response.results.map((item) => mapAPIResult(item)),
+        );
+      } catch {
+        if (!active) return;
+
+        setRemoteResults([]);
+        setError("در دریافت نتایج جست‌وجو مشکلی پیش آمد. دوباره تلاش کنید.");
+      } finally {
+        if (active) {
+          setIsLoading(false);
+        }
+      }
+    }, 300);
+
+    return () => {
+      active = false;
+      window.clearTimeout(timeout);
+    };
+  }, [normalizedQuery]);
+
+  const visibleResults = useMemo(() => {
+    if (normalizedQuery) {
+      return remoteResults;
+    }
+
+    return initialResults;
+  }, [normalizedQuery, remoteResults]);
 
   return (
-    <main className="search-page">
+    <main className="container mx-auto max-w-7xl px-4 py-8">
       <SearchHero />
 
-      <section className="search-controls">
-        <div className="search-controls-inner">
-          <SearchInput
-            value={query}
-            onChange={handleChange}
-          />
-
-          <span className="search-shortcut">
-            Search across Uniqe
-          </span>
-        </div>
+      <section className="mx-auto mt-8 max-w-3xl">
+        <SearchInput value={query} onChange={setQuery} />
       </section>
 
-      {filteredResults.length > 0 ? (
-        <SearchResults
-          results={filteredResults}
-          query={query}
-        />
-      ) : (
-        <SearchEmpty query={query} />
+      <SearchStatus isLoading={isLoading} error={error} />
+
+      {!isLoading && !error && (
+        <section className="mt-8">
+          {visibleResults.length > 0 ? (
+            <SearchResults
+              results={visibleResults}
+              query={normalizedQuery}
+            />
+          ) : (
+            <SearchEmpty query={normalizedQuery} />
+          )}
+        </section>
       )}
     </main>
   );
