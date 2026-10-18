@@ -109,6 +109,3 @@ export const favoriteFilters = [
     label: "LAB",
   },
 ] as const;
-
-export const FAVORITES_STORAGE_KEY =
-  "uniqe-favorites";
