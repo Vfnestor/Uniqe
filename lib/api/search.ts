@@ -1,73 +1,140 @@
-import {
-  apiClient,
-} from "./client";
-
-import {
-  apiEndpoints,
-} from "./endpoints";
-
-export type SearchResultType =
-  | "uapp"
-  | "course"
-  | "category"
-  | "knowledge";
+import { apiClient } from "./client";
+import { apiEndpoints } from "./endpoints";
 
 export type SearchResult = {
   id: string;
-  type: SearchResultType;
   title: string;
   description: string;
-  category?: string;
+  category: string;
   href: string;
-  icon?: string;
-  updatedAt: string;
+  icon?: string | null;
 };
 
 export type SearchResponse = {
-  query: string;
-  total: number;
   results: SearchResult[];
-};
-
-export type SearchOptions = {
+  total: number;
   query: string;
-  limit?: number;
 };
 
-export async function searchUniqe(
-  options: SearchOptions,
-): Promise<SearchResponse> {
-  const query = options.query.trim();
+type UnknownRecord = Record<string, unknown>;
 
-  if (!query) {
+function isRecord(value: unknown): value is UnknownRecord {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    !Array.isArray(value)
+  );
+}
+
+function readString(
+  record: UnknownRecord,
+  key: string,
+  fallback = "",
+): string {
+  const value = record[key];
+
+  return typeof value === "string" ? value : fallback;
+}
+
+function normalizeSearchResult(value: unknown): SearchResult | null {
+  if (!isRecord(value)) {
+    return null;
+  }
+
+  const id = readString(value, "id");
+  const title = readString(value, "title");
+
+  if (!id || !title) {
+    return null;
+  }
+
+  const iconValue = value.icon;
+
+  return {
+    id,
+    title,
+    description: readString(value, "description"),
+    category: readString(value, "category", "عمومی"),
+    href: readString(value, "href", "/"),
+    icon:
+      typeof iconValue === "string" || iconValue === null
+        ? iconValue
+        : undefined,
+  };
+}
+
+function normalizeSearchResponse(
+  value: unknown,
+  query: string,
+): SearchResponse {
+  let payload: unknown = value;
+
+  if (isRecord(payload) && "data" in payload) {
+    payload = payload.data;
+  }
+
+  if (Array.isArray(payload)) {
+    const results = payload
+      .map(normalizeSearchResult)
+      .filter((item): item is SearchResult => item !== null);
+
     return {
-      query: "",
-      total: 0,
-      results: [],
+      results,
+      total: results.length,
+      query,
     };
   }
 
-  const params = new URLSearchParams();
-
-  params.set("q", query);
-
-  if (options.limit !== undefined) {
-    params.set(
-      "limit",
-      String(options.limit),
-    );
+  if (!isRecord(payload)) {
+    return {
+      results: [],
+      total: 0,
+      query,
+    };
   }
 
-  const result =
-    await apiClient.get<SearchResponse>(
-      `${apiEndpoints.search.query}?${params.toString()}`,
-    );
+  const rawResults = Array.isArray(payload.results)
+    ? payload.results
+    : Array.isArray(payload.items)
+      ? payload.items
+      : [];
+
+  const results = rawResults
+    .map(normalizeSearchResult)
+    .filter((item): item is SearchResult => item !== null);
+
+  const rawTotal = payload.total;
 
   return {
-    query: result.query,
-    total: result.total,
-    results: Array.isArray(result.results)
-      ? result.results
-      : [],
+    results,
+    total:
+      typeof rawTotal === "number" && Number.isFinite(rawTotal)
+        ? rawTotal
+        : results.length,
+    query: readString(payload, "query", query),
   };
+}
+
+export async function searchUniqe(
+  query: string,
+): Promise<SearchResponse> {
+  const normalizedQuery = query.trim();
+
+  if (!normalizedQuery) {
+    return {
+      results: [],
+      total: 0,
+      query: "",
+    };
+  }
+
+  if (normalizedQuery.length > 200) {
+    throw new Error("عبارت جست‌وجو نباید بیشتر از ۲۰۰ نویسه باشد.");
+  }
+
+  const response = await apiClient.get<unknown>(
+    `${apiEndpoints.search.query}?q=${encodeURIComponent(normalizedQuery)}`,
+  );
+
+  return normalizeSearchResponse(response, normalizedQuery);
 }
