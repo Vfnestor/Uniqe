@@ -19,13 +19,20 @@ export const apiEndpoints = {
 
   notifications: {
     list: "/notifications",
+
     read: "/notifications/read",
+
+    readOne: (id: string) =>
+      `/notifications/${encodeURIComponent(id)}/read`,
   },
 
   favorites: {
     list: "/favorites",
+
     create: "/favorites",
-    remove: "/favorites",
+
+    remove: (targetId: string) =>
+      `/favorites/${encodeURIComponent(targetId)}`,
   },
 
   search: {
