@@ -1,6 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 
 import "@/components/my-u/my-u.css";
 
@@ -15,19 +19,54 @@ import {
   type MyUActivity as MyUActivityItem,
 } from "@/components/my-u/dashboard";
 
-import { getActivity } from "@/lib/api/activity";
+import {
+  getAccount,
+  type AccountResponse,
+} from "@/lib/api/account";
+
+import {
+  getActivity,
+} from "@/lib/api/activity";
 
 export default function MyUPage() {
-  const [activities, setActivities] = useState<
-    MyUActivityItem[]
-  >([]);
+  const [account, setAccount] =
+    useState<AccountResponse | null>(null);
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [isAccountLoading, setIsAccountLoading] =
+    useState(true);
+
+  const [accountError, setAccountError] =
+    useState<string | null>(null);
+
+  const [activities, setActivities] =
+    useState<MyUActivityItem[]>([]);
+
+  const [isActivityLoading, setIsActivityLoading] =
+    useState(true);
+
+  const [activityError, setActivityError] =
+    useState<string | null>(null);
+
+  const loadAccount = useCallback(async () => {
+    setIsAccountLoading(true);
+    setAccountError(null);
+
+    try {
+      const response = await getAccount();
+      setAccount(response);
+    } catch {
+      setAccount(null);
+      setAccountError(
+        "دریافت اطلاعات حساب ناموفق بود. اتصال به سرور و وضعیت ورود را بررسی کنید.",
+      );
+    } finally {
+      setIsAccountLoading(false);
+    }
+  }, []);
 
   const loadActivity = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
+    setIsActivityLoading(true);
+    setActivityError(null);
 
     try {
       const response = await getActivity(20);
@@ -44,17 +83,18 @@ export default function MyUPage() {
       );
     } catch {
       setActivities([]);
-      setError(
+      setActivityError(
         "دریافت فعالیت‌های حساب کاربری ناموفق بود. اتصال به سرور را بررسی کنید.",
       );
     } finally {
-      setIsLoading(false);
+      setIsActivityLoading(false);
     }
   }, []);
 
   useEffect(() => {
+    void loadAccount();
     void loadActivity();
-  }, [loadActivity]);
+  }, [loadAccount, loadActivity]);
 
   return (
     <main className="my-u-page">
@@ -63,12 +103,16 @@ export default function MyUPage() {
       <MyUOverview
         services={myUServices}
         actions={myUQuickActions}
+        account={account}
+        isAccountLoading={isAccountLoading}
+        accountError={accountError}
+        onRetryAccount={loadAccount}
       />
 
       <MyUActivity
         activities={activities}
-        isLoading={isLoading}
-        error={error}
+        isLoading={isActivityLoading}
+        error={activityError}
         onRetry={loadActivity}
       />
 
@@ -77,7 +121,9 @@ export default function MyUPage() {
   );
 }
 
-function formatActivityTime(value: string): string {
+function formatActivityTime(
+  value: string,
+): string {
   const date = new Date(value);
 
   if (Number.isNaN(date.getTime())) {
@@ -89,7 +135,9 @@ function formatActivityTime(value: string): string {
     Date.now() - date.getTime(),
   );
 
-  const minutes = Math.floor(elapsed / 60_000);
+  const minutes = Math.floor(
+    elapsed / 60_000,
+  );
 
   if (minutes < 1) {
     return "Just now";
