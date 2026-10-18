@@ -1,0 +1,288 @@
+.my-u-settings-page {
+  min-height: 70vh;
+  overflow: hidden;
+}
+
+.my-u-settings-hero {
+  padding: 160px 0 70px;
+}
+
+.my-u-settings-title {
+  margin: 24px 0;
+  font-size: clamp(3rem, 8vw, 6.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.065em;
+  font-weight: 800;
+}
+
+.my-u-settings-title span {
+  color: var(--text-muted);
+}
+
+.my-u-settings-description {
+  max-width: 650px;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.9;
+}
+
+.my-u-settings-content {
+  padding-top: 20px;
+  padding-bottom: 120px;
+}
+
+.my-u-settings-form {
+  display: grid;
+  gap: 22px;
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.my-u-settings-panel {
+  padding: clamp(24px, 5vw, 48px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--surface);
+}
+
+.my-u-settings-panel-heading {
+  margin-bottom: 32px;
+}
+
+.my-u-settings-panel-heading h2 {
+  margin: 16px 0 10px;
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  letter-spacing: -0.04em;
+}
+
+.my-u-settings-panel-heading p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.my-u-settings-field {
+  display: grid;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.my-u-settings-field label {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.my-u-settings-field input,
+.my-u-settings-field textarea,
+.my-u-settings-field select {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 15px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  outline: none;
+  background: var(--background);
+  color: var(--text-primary);
+  font: inherit;
+  transition:
+    border-color var(--transition-normal),
+    box-shadow var(--transition-normal);
+}
+
+.my-u-settings-field textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.my-u-settings-field input:focus,
+.my-u-settings-field textarea:focus,
+.my-u-settings-field select:focus {
+  border-color: var(--border-strong);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--text-primary) 8%, transparent);
+}
+
+.my-u-settings-field input:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.my-u-settings-field small,
+.my-u-settings-toggle small {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.7;
+}
+
+.my-u-settings-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 30px;
+  padding: 20px 0 0;
+  border-top: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.my-u-settings-toggle-copy {
+  display: grid;
+  gap: 6px;
+}
+
+.my-u-settings-toggle-copy strong {
+  font-size: 0.95rem;
+}
+
+.my-u-settings-toggle input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.my-u-settings-toggle-track {
+  position: relative;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 28px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: var(--background);
+  transition: background var(--transition-normal);
+}
+
+.my-u-settings-toggle-track::after {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  content: "";
+  transition:
+    transform var(--transition-normal),
+    background var(--transition-normal);
+}
+
+.my-u-settings-toggle input:checked
+  + .my-u-settings-toggle-track {
+  background: var(--text-primary);
+}
+
+.my-u-settings-toggle input:checked
+  + .my-u-settings-toggle-track::after {
+  transform: translateX(20px);
+  background: var(--surface);
+}
+
+.my-u-settings-toggle input:focus-visible
+  + .my-u-settings-toggle-track {
+  outline: 2px solid var(--text-primary);
+  outline-offset: 4px;
+}
+
+.my-u-settings-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 6px;
+}
+
+.my-u-settings-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 12px 24px;
+  border: 1px solid var(--text-primary);
+  border-radius: var(--radius-md);
+  background: var(--text-primary);
+  color: var(--background);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    opacity var(--transition-normal),
+    transform var(--transition-normal);
+}
+
+.my-u-settings-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.my-u-settings-button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.my-u-settings-back {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.my-u-settings-back:hover {
+  color: var(--text-primary);
+}
+
+.my-u-settings-feedback,
+.my-u-settings-message {
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.my-u-settings-success {
+  border-color: #25865b;
+}
+
+.my-u-settings-error {
+  border-color: #bd4747;
+}
+
+.my-u-settings-error p {
+  margin: 0 0 16px;
+}
+
+@media (max-width: 767px) {
+  .my-u-settings-hero {
+    padding: 115px 0 50px;
+  }
+
+  .my-u-settings-content {
+    padding-bottom: 80px;
+  }
+
+  .my-u-settings-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .my-u-settings-button {
+    width: 100%;
+  }
+
+  .my-u-settings-back {
+    text-align: center;
+    padding: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .my-u-settings-field input,
+  .my-u-settings-field textarea,
+  .my-u-settings-field select,
+  .my-u-settings-toggle-track,
+  .my-u-settings-toggle-track::after,
+  .my-u-settings-button {
+    transition: none;
+  }
+}
