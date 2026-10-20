@@ -13,48 +13,47 @@ import {
 
 export const runtime = "nodejs";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(
   request: NextRequest,
 ) {
-  try {
-    const token =
-      request.cookies.get(
-        ADMIN_SESSION_COOKIE,
-      )?.value;
+  const token =
+    request.cookies.get(
+      ADMIN_SESSION_COOKIE,
+    )?.value;
 
-    const session =
-      readAdminSession(token);
+  const session =
+    readAdminSession(token);
 
-    if (!session) {
-      return NextResponse.json(
-        {
-          authenticated: false,
-        },
-        {
-          status: 401,
-        },
-      );
-    }
-
-    return NextResponse.json({
-      authenticated: true,
-      role: session.role,
-      expiresAt:
-        session.expiresAt,
-    });
-  } catch (error) {
-    console.error(
-      "[UNIQE AUTH] Session check failed.",
-      error,
-    );
-
+  if (
+    !session ||
+    session.role !== "owner"
+  ) {
     return NextResponse.json(
       {
         authenticated: false,
       },
       {
         status: 401,
+        headers: {
+          "Cache-Control": "no-store",
+        },
       },
     );
   }
+
+  return NextResponse.json(
+    {
+      authenticated: true,
+      role: "owner",
+      expiresAt: session.expiresAt,
+    },
+    {
+      status: 200,
+      headers: {
+        "Cache-Control": "no-store",
+      },
+    },
+  );
 }
