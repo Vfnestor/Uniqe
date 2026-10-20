@@ -1,21 +1,24 @@
-import { createHmac, timingSafeEqual } from "node:crypto";
+import {
+  createHmac,
+  timingSafeEqual,
+} from "node:crypto";
 
-const SESSION_COOKIE =
+export const ADMIN_SESSION_COOKIE =
   "uniqe-admin-session";
 
 const SESSION_DURATION =
   1000 * 60 * 60 * 24;
 
-export const ADMIN_SESSION_COOKIE =
-  SESSION_COOKIE;
-
-function getSecret() {
+function getSecret(): string {
   const secret =
     process.env.UNIQE_AUTH_SECRET;
 
-  if (!secret) {
+  if (
+    !secret ||
+    secret.length < 32
+  ) {
     throw new Error(
-      "UNIQE_AUTH_SECRET is not configured.",
+      "UNIQE_AUTH_SECRET must contain at least 32 characters.",
     );
   }
 
@@ -24,7 +27,7 @@ function getSecret() {
 
 function createSignature(
   payload: string,
-) {
+): string {
   return createHmac(
     "sha256",
     getSecret(),
@@ -33,19 +36,19 @@ function createSignature(
     .digest("base64url");
 }
 
-export function createAdminSession() {
+export function createAdminSession(): string {
+  const now = Date.now();
+
   const payload = JSON.stringify({
     role: "owner",
-    createdAt: Date.now(),
+    createdAt: now,
     expiresAt:
-      Date.now() +
-      SESSION_DURATION,
+      now + SESSION_DURATION,
   });
 
   const encoded =
-    Buffer.from(payload).toString(
-      "base64url",
-    );
+    Buffer.from(payload)
+      .toString("base64url");
 
   const signature =
     createSignature(encoded);
@@ -55,12 +58,13 @@ export function createAdminSession() {
 
 export function verifyAdminSession(
   token: string | undefined,
-) {
+): boolean {
   if (!token) {
     return false;
   }
 
-  const parts = token.split(".");
+  const parts =
+    token.split(".");
 
   if (parts.length !== 2) {
     return false;
@@ -103,29 +107,30 @@ export function verifyAdminSession(
       return false;
     }
 
-    const payload = JSON.parse(
-      Buffer.from(
-        encoded,
-        "base64url",
-      ).toString("utf8"),
-    );
+    const payload =
+      JSON.parse(
+        Buffer.from(
+          encoded,
+          "base64url",
+        ).toString("utf8"),
+      );
 
     if (
-      payload?.role !== "owner"
+      payload?.role !== "owner" ||
+      typeof payload?.createdAt !== "number" ||
+      typeof payload?.expiresAt !== "number"
     ) {
       return false;
     }
 
-    if (
-      typeof payload?.expiresAt !==
-      "number"
-    ) {
-      return false;
-    }
+    const now = Date.now();
 
     if (
-      Date.now() >
-      payload.expiresAt
+      payload.expiresAt <= now ||
+      payload.createdAt > now ||
+      payload.expiresAt -
+        payload.createdAt !==
+        SESSION_DURATION
     ) {
       return false;
     }
