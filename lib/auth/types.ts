@@ -54,6 +54,12 @@ export type AuthResult = {
   tokens: AuthTokens;
 };
 
+export type AdminLoginResult = {
+  success: boolean;
+  role?: "owner";
+  message?: string;
+};
+
 export type AuthContextValue = {
   state: AuthState;
 
@@ -61,6 +67,11 @@ export type AuthContextValue = {
     email: string,
     password: string,
   ) => Promise<AuthLoginResult>;
+
+  loginAdmin: (
+    email: string,
+    password: string,
+  ) => Promise<AdminLoginResult>;
 
   register: (
     name: string,
