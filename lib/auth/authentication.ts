@@ -7,6 +7,7 @@ import {
 } from "@/lib/api/endpoints";
 
 import type {
+  AdminLoginResult,
   AuthLoginResult,
   AuthRegisterResult,
   AuthResult,
@@ -71,6 +72,11 @@ function saveAuthentication(
   };
 }
 
+/**
+ * ورود عادی کاربر.
+ *
+ * نقش کاربر از پاسخ بک‌اند دریافت می‌شود.
+ */
 export async function authenticate(
   email: string,
   password: string,
@@ -100,6 +106,85 @@ export async function authenticate(
   }
 }
 
+/**
+ * ورود اختصاصی مدیر.
+ *
+ * درخواست به مسیر داخلی Next.js فرستاده می‌شود.
+ * بررسی نقش ADMIN در بک‌اند انجام می‌شود.
+ * اطلاعات نشست مدیریتی در کوکی HttpOnly قرار می‌گیرد.
+ */
+export async function authenticateAdmin(
+  email: string,
+  password: string,
+): Promise<AdminLoginResult> {
+  try {
+    const response = await fetch(
+      "/api/admin/login",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+
+        credentials: "same-origin",
+
+        cache: "no-store",
+
+        body: JSON.stringify({
+          email:
+            email.trim().toLowerCase(),
+          password,
+        }),
+      },
+    );
+
+    let result:
+      | {
+          success?: boolean;
+          role?: string;
+          message?: string;
+        }
+      | null = null;
+
+    try {
+      result = await response.json();
+    } catch {
+      result = null;
+    }
+
+    if (
+      !response.ok ||
+      result?.success !== true ||
+      result?.role !== "owner"
+    ) {
+      return {
+        success: false,
+        message:
+          result?.message ||
+          "ورود مدیر ناموفق بود.",
+      };
+    }
+
+    return {
+      success: true,
+      role: "owner",
+    };
+  } catch {
+    return {
+      success: false,
+      message:
+        "ارتباط با سرور برقرار نشد. دوباره تلاش کنید.",
+    };
+  }
+}
+
+/**
+ * ثبت‌نام کاربر عادی.
+ *
+ * نقش و سطح دسترسی توسط بک‌اند تعیین می‌شود.
+ */
 export async function registerAccount(
   name: string,
   email: string,
@@ -111,8 +196,10 @@ export async function registerAccount(
         apiEndpoints.auth.register,
         {
           name: name.trim(),
+
           email:
             email.trim().toLowerCase(),
+
           password,
         },
       );
