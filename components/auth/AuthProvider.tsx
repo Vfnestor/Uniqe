@@ -19,6 +19,7 @@ import {
 
 import {
   authenticate,
+  authenticateAdmin,
   registerAccount,
 } from "@/lib/auth/authentication";
 
@@ -32,6 +33,7 @@ import {
 import type {
   AuthContextValue,
   AuthLoginResult,
+  AdminLoginResult,
   AuthRegisterResult,
   AuthSession,
   AuthState,
@@ -178,6 +180,9 @@ export default function AuthProvider({
     };
   }, []);
 
+  /**
+   * ورود عادی کاربران.
+   */
   async function login(
     email: string,
     password: string,
@@ -188,7 +193,10 @@ export default function AuthProvider({
         password,
       );
 
-    if (!result.success || !result.user) {
+    if (
+      !result.success ||
+      !result.user
+    ) {
       return result;
     }
 
@@ -206,6 +214,25 @@ export default function AuthProvider({
     return result;
   }
 
+  /**
+   * ورود مدیر از مسیر اختصاصی.
+   *
+   * این عملیات نشست مدیر را در کوکی امن ایجاد می‌کند.
+   * نشست مدیریتی با نشست عادی localStorage یکی نیست.
+   */
+  async function loginAdmin(
+    email: string,
+    password: string,
+  ): Promise<AdminLoginResult> {
+    return authenticateAdmin(
+      email,
+      password,
+    );
+  }
+
+  /**
+   * ثبت‌نام کاربران عادی.
+   */
   async function register(
     name: string,
     email: string,
@@ -218,7 +245,10 @@ export default function AuthProvider({
         password,
       );
 
-    if (!result.success || !result.user) {
+    if (
+      !result.success ||
+      !result.user
+    ) {
       return result;
     }
 
@@ -236,6 +266,9 @@ export default function AuthProvider({
     return result;
   }
 
+  /**
+   * خروج از حساب عادی و پاک‌کردن نشست مدیریتی.
+   */
   async function logout(): Promise<void> {
     const refreshToken =
       getRefreshToken();
@@ -249,8 +282,21 @@ export default function AuthProvider({
           },
         );
       } catch {
-        // نشست محلی حتی در صورت خطای سرور پاک می‌شود.
+        // پاک‌سازی نشست محلی مستقل از پاسخ سرور است.
       }
+    }
+
+    try {
+      await fetch(
+        "/api/admin/logout",
+        {
+          method: "POST",
+          credentials: "same-origin",
+          cache: "no-store",
+        },
+      );
+    } catch {
+      // پاک‌سازی نشست عادی ادامه پیدا می‌کند.
     }
 
     clearStoredAuthSession();
@@ -267,6 +313,7 @@ export default function AuthProvider({
       () => ({
         state,
         login,
+        loginAdmin,
         register,
         logout,
       }),
@@ -274,7 +321,9 @@ export default function AuthProvider({
     );
 
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider
+      value={value}
+    >
       {children}
     </AuthContext.Provider>
   );
