@@ -16,13 +16,16 @@ export type AdminSession = {
   expiresAt: number;
 };
 
-function getSecret() {
+function getSecret(): string {
   const secret =
     process.env.UNIQE_AUTH_SECRET;
 
-  if (!secret) {
+  if (
+    !secret ||
+    secret.length < 32
+  ) {
     throw new Error(
-      "UNIQE_AUTH_SECRET is not configured.",
+      "UNIQE_AUTH_SECRET must contain at least 32 characters.",
     );
   }
 
@@ -31,7 +34,7 @@ function getSecret() {
 
 function createSignature(
   payload: string,
-) {
+): string {
   return createHmac(
     "sha256",
     getSecret(),
@@ -42,13 +45,20 @@ function createSignature(
 
 export function createAdminSession(
   role: AdminRole = "owner",
-) {
+): string {
+  if (role !== "owner") {
+    throw new Error(
+      "Only the owner role can create an administrator session.",
+    );
+  }
+
+  const now = Date.now();
+
   const payload: AdminSession = {
     role,
-    createdAt: Date.now(),
+    createdAt: now,
     expiresAt:
-      Date.now() +
-      SESSION_DURATION,
+      now + SESSION_DURATION,
   };
 
   const encoded =
@@ -122,23 +132,21 @@ export function readAdminSession(
       ) as AdminSession;
 
     if (
-      session.role !== "owner" &&
-      session.role !== "staff" &&
-      session.role !== "customer"
+      session.role !== "owner" ||
+      typeof session.createdAt !== "number" ||
+      typeof session.expiresAt !== "number"
     ) {
       return null;
     }
 
-    if (
-      typeof session.expiresAt !==
-      "number"
-    ) {
-      return null;
-    }
+    const now = Date.now();
 
     if (
-      Date.now() >
-      session.expiresAt
+      session.expiresAt <= now ||
+      session.createdAt > now ||
+      session.expiresAt -
+        session.createdAt !==
+        SESSION_DURATION
     ) {
       return null;
     }
@@ -151,8 +159,8 @@ export function readAdminSession(
 
 export function verifyAdminSession(
   token: string | undefined,
-) {
-  return Boolean(
-    readAdminSession(token),
+): boolean {
+  return (
+    readAdminSession(token) !== null
   );
 }
