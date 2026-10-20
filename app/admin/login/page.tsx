@@ -1,13 +1,12 @@
 "use client";
 
 import {
-  FormEvent,
   useState,
+  type FormEvent,
 } from "react";
 
 import {
   useRouter,
-  useSearchParams,
 } from "next/navigation";
 
 import {
@@ -21,18 +20,14 @@ import {
 import "./login.css";
 
 export default function AdminLoginPage() {
-  const router =
-    useRouter();
-
-  const searchParams =
-    useSearchParams();
+  const router = useRouter();
 
   const {
     language,
   } = useLanguage();
 
   const {
-    login,
+    loginAdmin,
   } = useAuth();
 
   const isRtl =
@@ -63,63 +58,63 @@ export default function AdminLoginPage() {
   ) {
     event.preventDefault();
 
+    if (loading) {
+      return;
+    }
+
     setError("");
     setLoading(true);
 
     try {
       const result =
-        await login(
+        await loginAdmin(
           email,
           password,
         );
 
-      if (!result.success) {
+      if (
+        !result.success ||
+        result.role !== "owner"
+      ) {
         setError(
           result.message ||
             (
               isRtl
-                ? "ایمیل یا رمز عبور صحیح نیست."
-                : "Invalid email or password."
+                ? "حساب مدیر معتبر نیست یا اطلاعات ورود اشتباه است."
+                : "Invalid administrator credentials."
             ),
         );
 
         return;
       }
 
-      const redirect =
-        searchParams.get(
-          "redirect",
+      const searchParams =
+        new URLSearchParams(
+          window.location.search,
         );
 
-      if (
-        result.role ===
-        "owner"
-      ) {
-        router.replace(
-          redirect &&
-            redirect.startsWith(
-              "/admin",
-            )
-            ? redirect
-            : "/admin",
-        );
+      const requestedRedirect =
+        searchParams.get("redirect");
 
-        router.refresh();
-
-        return;
-      }
+      const safeRedirect =
+        requestedRedirect &&
+        requestedRedirect.startsWith("/admin/") &&
+        !requestedRedirect.startsWith("//")
+          ? requestedRedirect
+          : requestedRedirect === "/admin"
+            ? "/admin"
+            : "/admin";
 
       router.replace(
-        result.redirectTo ||
-          "/my",
+        safeRedirect,
       );
 
       router.refresh();
     } catch {
       setError(
         isRtl
-          ? "خطایی در ورود رخ داد. دوباره تلاش کنید."
-          : "A login error occurred. Please try again.",
+          ? "خطایی هنگام ورود رخ داد. دوباره تلاش کنید."
+          : "An error occurred during sign-in. Please try again.",
       );
     } finally {
       setLoading(false);
@@ -129,11 +124,7 @@ export default function AdminLoginPage() {
   return (
     <main
       className="admin-login-page"
-      dir={
-        isRtl
-          ? "rtl"
-          : "ltr"
-      }
+      dir={isRtl ? "rtl" : "ltr"}
     >
       <div className="admin-login-background">
         <span />
@@ -148,63 +139,58 @@ export default function AdminLoginPage() {
           </div>
 
           <div>
-            <strong>
-              Uniqe
-            </strong>
+            <strong>Uniqe</strong>
 
             <span>
               {isRtl
-                ? "ورود به Uniqe"
-                : "Uniqe Authentication"}
+                ? "ورود امن مدیر"
+                : "Secure Administrator Access"}
             </span>
           </div>
         </div>
 
         <div className="admin-login-heading">
           <span>
-            SECURE ACCESS
+            SECURE ADMIN ACCESS
           </span>
 
           <h1>
             {isRtl
-              ? "ورود به Uniqe"
-              : "Sign In to Uniqe"}
+              ? "ورود به پنل مدیریت"
+              : "Administrator Sign In"}
           </h1>
 
           <p>
             {isRtl
-              ? "با حساب کاربری خود وارد اکوسیستم Uniqe شوید."
-              : "Sign in to access your Uniqe account."}
+              ? "برای ورود، از حساب مدیریتی ثبت‌شده در سیستم استفاده کنید."
+              : "Sign in using an authorized administrator account."}
           </p>
         </div>
 
         <form
           className="admin-login-form"
-          onSubmit={
-            handleSubmit
-          }
+          onSubmit={handleSubmit}
         >
           <label>
             <span>
-              {isRtl
-                ? "ایمیل"
-                : "Email"}
+              {isRtl ? "ایمیل" : "Email"}
             </span>
 
             <input
               type="email"
+              name="email"
               value={email}
               onChange={(event) =>
-                setEmail(
-                  event.target.value,
-                )
+                setEmail(event.target.value)
               }
               placeholder={
                 isRtl
-                  ? "ایمیل"
-                  : "Email"
+                  ? "ایمیل مدیر"
+                  : "Administrator email"
               }
               autoComplete="username"
+              autoCapitalize="none"
+              spellCheck={false}
               required
               disabled={loading}
             />
@@ -219,11 +205,10 @@ export default function AdminLoginPage() {
 
             <input
               type="password"
+              name="password"
               value={password}
               onChange={(event) =>
-                setPassword(
-                  event.target.value,
-                )
+                setPassword(event.target.value)
               }
               placeholder={
                 isRtl
@@ -237,56 +222,54 @@ export default function AdminLoginPage() {
           </label>
 
           {error ? (
-            <div className="admin-login-error">
-              <span>
-                !
-              </span>
+            <div
+              className="admin-login-error"
+              role="alert"
+              aria-live="polite"
+            >
+              <span>!</span>
 
-              <p>
-                {error}
-              </p>
+              <p>{error}</p>
             </div>
           ) : null}
 
           <button
             type="submit"
             className="admin-login-submit"
-            disabled={loading}
+            disabled={
+              loading ||
+              !email.trim() ||
+              !password
+            }
           >
             <span>
               {loading
                 ? isRtl
-                  ? "در حال ورود..."
-                  : "Signing in..."
+                  ? "در حال بررسی..."
+                  : "Verifying..."
                 : isRtl
-                  ? "ورود"
-                  : "Sign In"}
+                  ? "ورود امن"
+                  : "Sign In Securely"}
             </span>
 
-            <b>
-              →
-            </b>
+            <b>→</b>
           </button>
         </form>
 
         <div className="admin-login-security">
-          <span>
-            ✓
-          </span>
+          <span>✓</span>
 
           <p>
             {isRtl
-              ? "اتصال امن • سیستم تشخیص خودکار نقش کاربر"
-              : "Secure connection • Automatic role detection"}
+              ? "دسترسی مدیریتی فقط پس از تأیید سرور مجاز است."
+              : "Administrator access is verified by the server."}
           </p>
         </div>
 
         <div className="admin-login-footer">
           Uniqe Ecosystem
-          <span>
-            •
-          </span>
-          Authentication
+          <span>•</span>
+          Admin Authentication
         </div>
       </section>
     </main>
