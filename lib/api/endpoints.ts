@@ -1,6 +1,7 @@
 export const apiEndpoints = {
   auth: {
     login: "/auth/login",
+    adminLogin: "/auth/admin/login",
     register: "/auth/register",
     refresh: "/auth/refresh",
     session: "/auth/session",
