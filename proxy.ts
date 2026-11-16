@@ -5,7 +5,7 @@ import {
 
 import {
   ADMIN_SESSION_COOKIE,
-  verifyAdminSession,
+  readAdminSession,
 } from "@/lib/auth/admin-auth";
 
 export function proxy(
@@ -33,10 +33,13 @@ export function proxy(
       ADMIN_SESSION_COOKIE,
     )?.value;
 
-  const authenticated =
-    verifyAdminSession(token);
+  const session =
+    readAdminSession(token);
 
-  if (authenticated) {
+  if (
+    session &&
+    session.role === "owner"
+  ) {
     return NextResponse.next();
   }
 
