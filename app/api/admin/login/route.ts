@@ -12,7 +12,6 @@ import {
 } from "@/lib/auth/admin-session";
 
 export const runtime = "nodejs";
-
 export const dynamic = "force-dynamic";
 
 type BackendUser = {
@@ -21,60 +20,43 @@ type BackendUser = {
   role?: string;
 };
 
-type BackendLoginResponse = {
+type BackendTokens = {
+  accessToken?: string;
+  refreshToken?: string;
+};
+
+type BackendPayload = {
   success?: boolean;
   message?: string;
-
+  user?: BackendUser;
+  tokens?: BackendTokens;
   data?: {
     success?: boolean;
     user?: BackendUser;
-    tokens?: {
-      accessToken?: string;
-      refreshToken?: string;
-    };
-  };
-
-  user?: BackendUser;
-
-  tokens?: {
-    accessToken?: string;
-    refreshToken?: string;
+    tokens?: BackendTokens;
   };
 };
 
-function cleanEnvironmentValue(
+function cleanValue(
   value: string | undefined,
 ): string {
-  if (!value) {
-    return "";
-  }
-
-  return value
+  return (value || "")
     .trim()
     .replace(/^["']|["']$/g, "");
 }
 
-/**
- * آدرس بک‌اند ممکن است با /api/v1 یا بدون آن
- * در متغیر محیطی تنظیم شده باشد.
- */
 function getBackendLoginUrl(): string | null {
-  const configuredUrl =
-    cleanEnvironmentValue(
-      process.env.API_INTERNAL_URL ||
+  const configuredUrl = cleanValue(
+    process.env.API_INTERNAL_URL ||
       process.env.NEXT_PUBLIC_API_URL,
-    );
+  );
 
-  if (
-    !configuredUrl ||
-    configuredUrl.startsWith("/")
-  ) {
+  if (!configuredUrl) {
     return null;
   }
 
   try {
-    const url =
-      new URL(configuredUrl);
+    const url = new URL(configuredUrl);
 
     if (
       url.protocol !== "https:" &&
@@ -86,24 +68,15 @@ function getBackendLoginUrl(): string | null {
     url.search = "";
     url.hash = "";
 
-    let pathname =
-      url.pathname.replace(/\/+$/, "");
-
-    pathname =
-      pathname.replace(
-        /\/api\/v1$/i,
-        "",
-      );
-
-    pathname =
-      pathname.replace(
-        /\/auth\/admin\/login$/i,
-        "",
-      );
+    let pathname = url.pathname
+      .replace(/\/+$/, "")
+      .replace(/\/api\/v1\/auth\/admin\/login$/i, "")
+      .replace(/\/auth\/admin\/login$/i, "")
+      .replace(/\/api\/v1$/i, "")
+      .replace(/\/+$/, "");
 
     url.pathname =
-      `${pathname}/api/v1/auth/admin/login`
-        .replace(/\/+/g, "/");
+      `${pathname}/api/v1/auth/admin/login`;
 
     return url.toString();
   } catch {
@@ -111,8 +84,8 @@ function getBackendLoginUrl(): string | null {
   }
 }
 
-function getBackendPayload(
-  body: BackendLoginResponse,
+function getPayload(
+  body: BackendPayload,
 ) {
   if (
     body &&
@@ -126,32 +99,53 @@ function getBackendPayload(
   return body;
 }
 
+function errorResponse(
+  message: string,
+  status: number,
+) {
+  return NextResponse.json(
+    {
+      success: false,
+      message,
+    },
+    {
+      status,
+      headers: {
+        "Cache-Control": "no-store",
+      },
+    },
+  );
+}
+
 export async function POST(
   request: NextRequest,
 ) {
   try {
-    let requestBody: unknown;
+    let input: unknown;
 
     try {
-      requestBody =
-        await request.json();
+      input = await request.json();
     } catch {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Invalid request body.",
-        },
-        {
-          status: 400,
-        },
+      return errorResponse(
+        "بدنه درخواست معتبر نیست.",
+        400,
       );
     }
 
-    const body =
-      requestBody as {
-        email?: unknown;
-        password?: unknown;
-      };
+    if (
+      !input ||
+      typeof input !== "object"
+    ) {
+      return errorResponse(
+        "اطلاعات ورود معتبر نیست.",
+        400,
+      );
+    }
+
+    const body = input as {
+      email?: unknown;
+      password?: unknown;
+    };
 
     const email =
       typeof body.email === "string"
@@ -169,67 +163,47 @@ export async function POST(
       email.length > 254 ||
       password.length > 1024
     ) {
-      return NextResponse.json(
-        {
-          success: false,
-          message:
-            "ایمیل یا رمز عبور معتبر نیست.",
-        },
-        {
-          status: 400,
-        },
+      return errorResponse(
+        "ایمیل یا رمز عبور معتبر نیست.",
+        400,
       );
     }
 
-    const backendLoginUrl =
-      getBackendLoginUrl();
+    const backendUrl = getBackendLoginUrl();
 
-    if (!backendLoginUrl) {
+    if (!backendUrl) {
       console.error(
-        "[UNIQE ADMIN AUTH] Backend URL is not configured.",
+        "[UNIQE ADMIN AUTH] Backend URL is missing or invalid.",
       );
 
-      return NextResponse.json(
-        {
-          success: false,
-          message:
-            "ارتباط با سرویس احراز هویت تنظیم نشده است.",
-        },
-        {
-          status: 503,
-        },
+      return errorResponse(
+        "آدرس سرویس احراز هویت تنظیم نشده است.",
+        503,
       );
     }
 
-    const backendResponse =
-      await fetch(
-        backendLoginUrl,
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-
-          cache: "no-store",
-
-          signal:
-            AbortSignal.timeout(10000),
-
-          body: JSON.stringify({
-            email,
-            password,
-          }),
+    const backendResponse = await fetch(
+      backendUrl,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
         },
-      );
+        cache: "no-store",
+        signal: AbortSignal.timeout(10000),
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      },
+    );
 
-    let backendBody:
-      BackendLoginResponse | null = null;
+    let backendBody: BackendPayload | null = null;
 
     try {
       backendBody =
-        await backendResponse.json();
+        await backendResponse.json() as BackendPayload;
     } catch {
       backendBody = null;
     }
@@ -238,85 +212,76 @@ export async function POST(
       !backendResponse.ok ||
       !backendBody
     ) {
-      return NextResponse.json(
-        {
-          success: false,
-          message:
-            "ایمیل یا رمز عبور مدیر صحیح نیست.",
-        },
-        {
-          status:
-            backendResponse.status === 429
-              ? 429
-              : 401,
-        },
+      return errorResponse(
+        "ایمیل یا رمز عبور مدیر صحیح نیست.",
+        backendResponse.status === 429
+          ? 429
+          : 401,
       );
     }
 
-    const payload =
-      getBackendPayload(
-        backendBody,
-      );
+    const payload = getPayload(backendBody);
 
     const user =
-      payload.user ||
-      backendBody.user;
+      payload.user || backendBody.user;
 
-    /*
-     * نقش فقط از پاسخ بک‌اند معتبر پذیرفته می‌شود.
-     * نقش ارسال‌شده از مرورگر قابل اعتماد نیست.
-     */
+    const tokens =
+      payload.tokens || backendBody.tokens;
+
     if (
-      user?.role !== "owner" &&
-      user?.role !== "ADMIN"
+      user?.role !== "ADMIN" &&
+      user?.role !== "owner"
     ) {
-      return NextResponse.json(
-        {
-          success: false,
-          message:
-            "این حساب دسترسی مدیر ندارد.",
-        },
-        {
-          status: 403,
-        },
+      return errorResponse(
+        "این حساب دسترسی مدیر ندارد.",
+        403,
       );
     }
 
     /*
-     * توکن نشست مدیریتی فقط روی سرور ساخته می‌شود.
+     * پاسخ بک‌اند باید هر دو توکن را داشته باشد.
+     * توکن‌ها در پاسخ ارسالی به مرورگر قرار نمی‌گیرند.
      */
+    if (
+      typeof tokens?.accessToken !== "string" ||
+      !tokens.accessToken ||
+      typeof tokens?.refreshToken !== "string" ||
+      !tokens.refreshToken
+    ) {
+      console.error(
+        "[UNIQE ADMIN AUTH] Backend returned an incomplete token response.",
+      );
+
+      return errorResponse(
+        "پاسخ احراز هویت سرور معتبر نیست.",
+        502,
+      );
+    }
+
     const sessionToken =
       createAdminSession("owner");
 
-    const response =
-      NextResponse.json(
-        {
-          success: true,
-          role: "owner",
+    const response = NextResponse.json(
+      {
+        success: true,
+        role: "owner",
+      },
+      {
+        status: 200,
+        headers: {
+          "Cache-Control": "no-store",
         },
-        {
-          status: 200,
-          headers: {
-            "Cache-Control": "no-store",
-          },
-        },
-      );
+      },
+    );
 
     response.cookies.set({
       name: ADMIN_SESSION_COOKIE,
-
       value: sessionToken,
-
       httpOnly: true,
-
       secure:
-        process.env.NODE_ENV ===
-        "production",
-
+        process.env.NODE_ENV === "production",
       sameSite: "lax",
-
       path: "/",
-
       maxAge: 60 * 60 * 24,
     });
 
@@ -327,15 +292,9 @@ export async function POST(
       error,
     );
 
-    return NextResponse.json(
-      {
-        success: false,
-        message:
-          "سرویس ورود موقتاً در دسترس نیست.",
-      },
-      {
-        status: 503,
-      },
+    return errorResponse(
+      "سرویس ورود موقتاً در دسترس نیست.",
+      503,
     );
   }
 }
